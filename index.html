@@ -636,20 +636,24 @@
     <tfoot>
         <tr>
             <td>
-                <button id="returnToTopButton" onclick="returnToTop()">Return to Top</button>
+                <button id="returnToTopButton" style ="padding-top: 8px;" onclick="returnToTop()">Return to Top</button>
             </td>
             <td colspan="6">
                 <div class="pagination-container">
-                    <select id="rowsPerPage" style="width: 80px !important;" onchange="updateRowsPerPage()">
-                        <option value="20">20 rows</option>
-                        <option value="50">50 rows</option>
-                        <option value="100">100 rows</option>
-                    </select>
                     <div id="pagination-controls" class="pagination-controls"></div><br>
                 </div>
             </td>
             <td>
-                <button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button>
+                <button id="accessibilityToggleButton" style ="padding-top: 8px;" onclick="toggleAccessibility()">Toggle Accessibility</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <select id="rowsPerPage" style="width: 80px !important;" onchange="updateRowsPerPage()">
+                    <option value="20">20 rows</option>
+                    <option value="50">50 rows</option>
+                    <option value="100">100 rows</option>
+                </select>    
             </td>
         </tr>
     </tfoot>
