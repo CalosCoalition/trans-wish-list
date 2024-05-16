@@ -291,19 +291,30 @@
         #returnToTopButton {
             background-color: #4CAF50; /* Green */
             color: white;
+            padding: 4px 8px; /* Padding for the button */
+            font-size: 10px; /* Match the font size of the checkboxes */
+            cursor: pointer; /* Indicates the button is clickable */
+            border: 1px solid; /* Border color to match the theme */
+            border-radius: 5px; /* Rounded corners for the button */
+            height: 20px; /* Set the height of the button */
+            width: auto; /* Set the width of the button */
+            font-weight: bold;
+            text-decoration: none !important;
+            margin-bottom: 4px; /* Add bottom margin */
+            display: inline-block;
         }
-        /*Pagination Styling*/
+        /* Pagination Styling */
         .pagination-container {
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 10px;
+            width: 100%;
         }
         .pagination-controls {
             display: flex;
             justify-content: center; /* Center the pagination controls */
             align-items: center; /* Center the items vertically */
-            width: 100%;
         }
         .pagination-controls button, .pagination-controls input {
             margin: 0 5px;
@@ -317,6 +328,17 @@
         #accessibilityToggleButton {
             background-color: #008CBA; /* Blue */
             color: white;
+            padding: 4px 8px; /* Padding for the button */
+            font-size: 10px; /* Match the font size of the checkboxes */
+            cursor: pointer; /* Indicates the button is clickable */
+            border: 1px solid; /* Border color to match the theme */
+            border-radius: 5px; /* Rounded corners for the button */
+            height: 20px; /* Set the height of the button */
+            width: auto; /* Set the width of the button */
+            font-weight: bold;
+            text-decoration: none !important;
+            margin-bottom: 4px; /* Add bottom margin */
+            display: inline-block;
         }
     /* Remove any inherited hover effects that might apply broadly */
     tr:hover {
@@ -613,16 +635,14 @@ a.bold {
             <td>
                 <button id="returnToTopButton" onclick="returnToTop()">Return to Top</button>
             </td>
-            <td>
-              <select id="rowsPerPage" onchange="updateRowsPerPage()">
-                  <option value="20">20 rows</option>
-                  <option value="50">50 rows</option>
-                  <option value="100">100 rows</option>
-              </select>              
-            </td>
-            <td colspan="5">
+            <td colspan="6">
                 <div class="pagination-container">
                     <div id="pagination-controls" class="pagination-controls"></div><br>
+                    <select id="rowsPerPage" onchange="updateRowsPerPage()">
+                        <option value="20">20 rows</option>
+                        <option value="50">50 rows</option>
+                        <option value="100">100 rows</option>
+                    </select>
                 </div>
             </td>
             <td>
@@ -1566,64 +1586,64 @@ a.bold {
     }
     //Accesibility Toggle Coding
     function toggleAccessibility() {
-        const rows = document.querySelectorAll("#wishList tbody tr");
+            const rows = document.querySelectorAll("#wishList tbody tr");
 
-        rows.forEach(row => {
-            // Handle Wish Status column
-            const wishStatusCell = row.cells[4];
-            const wishStatusImg = wishStatusCell.querySelector('img');
-            const wishStatusText = wishStatusImg ? wishStatusImg.alt : wishStatusCell.textContent;
+            rows.forEach(row => {
+                // Handle Wish Status column
+                const wishStatusCell = row.cells[4];
+                const wishStatusImg = wishStatusCell.querySelector('img');
+                const wishStatusText = wishStatusImg ? wishStatusImg.alt : wishStatusCell.textContent;
 
-            if (accessibilityEnabled) {
-                // Revert to original image
-                if (wishStatusImg) {
-                    wishStatusImg.style.display = 'block';
+                if (accessibilityEnabled) {
+                    // Revert to original image
+                    if (wishStatusImg) {
+                        wishStatusImg.style.display = 'block';
+                    } else {
+                        wishStatusCell.textContent = wishStatusText;
+                    }
                 } else {
-                    wishStatusCell.textContent = wishStatusText;
+                    // Replace image with text
+                    if (wishStatusImg) {
+                        wishStatusImg.style.display = 'none';
+                        wishStatusCell.textContent = wishStatusText;
+                    }
                 }
+
+                // Handle Verified column
+                const verifiedCell = row.cells[6];
+                const verifiedImg = verifiedCell.querySelector('img');
+                const verifiedText = verifiedImg ? verifiedImg.alt : verifiedCell.textContent;
+
+                if (accessibilityEnabled) {
+                    // Revert to original image
+                    if (verifiedImg) {
+                        verifiedImg.style.display = 'block';
+                    } else {
+                        verifiedCell.textContent = verifiedText;
+                    }
+                } else {
+                    // Replace image with text
+                    if (verifiedImg) {
+                        verifiedImg.style.display = 'none';
+                        verifiedCell.textContent = verifiedText;
+                    }
+                }
+            });
+
+            // Toggle colors and font size
+            if (accessibilityEnabled) {
+                document.body.style.backgroundColor = '#C08CCF'; // Original background color
+                document.body.style.color = '#000000'; // Original text color
+                document.body.style.fontSize = '12px'; // Original font size
             } else {
-                // Replace image with text
-                if (wishStatusImg) {
-                    wishStatusImg.style.display = 'none';
-                    wishStatusCell.textContent = wishStatusText;
-                }
+                document.body.style.backgroundColor = '#F0F0F0'; // More neutral background color
+                document.body.style.color = '#333333'; // More accessible text color
+                document.body.style.fontSize = '16px'; // Increased font size
             }
 
-            // Handle Verified column
-            const verifiedCell = row.cells[6];
-            const verifiedImg = verifiedCell.querySelector('img');
-            const verifiedText = verifiedImg ? verifiedImg.alt : verifiedCell.textContent;
-
-            if (accessibilityEnabled) {
-                // Revert to original image
-                if (verifiedImg) {
-                    verifiedImg.style.display = 'block';
-                } else {
-                    verifiedCell.textContent = verifiedText;
-                }
-            } else {
-                // Replace image with text
-                if (verifiedImg) {
-                    verifiedImg.style.display = 'none';
-                    verifiedCell.textContent = verifiedText;
-                }
-            }
-        });
-
-        // Toggle colors and font size
-        if (accessibilityEnabled) {
-            document.body.style.backgroundColor = '#C08CCF'; // Original background color
-            document.body.style.color = '#000000'; // Original text color
-            document.body.style.fontSize = '12px'; // Original font size
-        } else {
-            document.body.style.backgroundColor = '#F0F0F0'; // More neutral background color
-            document.body.style.color = '#333333'; // More accessible text color
-            document.body.style.fontSize = '16px'; // Increased font size
+            // Toggle the accessibility flag
+            accessibilityEnabled = !accessibilityEnabled;
         }
-
-        // Toggle the accessibility flag
-        accessibilityEnabled = !accessibilityEnabled;
-    }
 </script>
 </body>
 </html>
