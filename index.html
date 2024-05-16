@@ -673,7 +673,6 @@ a.bold {
         const sheetId = '16HWrHX1_-WcRfEK1gPMnDHnyd6z07bprLp09pFI923w';
         const range = 'Public%20TWL'; /* Fetches all data from Sheet1*/
         const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
-        https://sheets.googleapis.com/v4/spreadsheets/16HWrHX1_-WcRfEK1gPMnDHnyd6z07bprLp09pFI923w/values/Public%20TWL?key=AIzaSyD3iSoR9e2c7rCpaFwHvIvxVttekf0dmJo
     try {
         const response = await fetch(url);
         if (!response.ok) {
