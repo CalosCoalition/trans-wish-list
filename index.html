@@ -668,25 +668,17 @@ a.bold {
 <!-- Include Google API script -->
 <script src="https://apis.google.com/js/api.js"></script>
 <script>
-    async function fetchGoogleSheet() {
-        const apiKey = 'AIzaSyD3iSoR9e2c7rCpaFwHvIvxVttekf0dmJo';
-        const sheetId = '16HWrHX1_-WcRfEK1gPMnDHnyd6z07bprLp09pFI923w';
-        const range = 'Public%20TWL'; /* Fetches all data from Sheet1*/
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        const rows = data.values; // Assuming 'values' contains the rows of data
-        const dataWithoutFirstRow = rows.slice(1); // Remove the first row
-        handleData(dataWithoutFirstRow); // Ensure this function is defined elsewhere
-    } catch (error) {
-        console.error('Error fetching Google Sheet:', error);
+    async function fetchWishListData() {
+      const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
+      const data = await response.json();
+      displayWishListData(data);
     }
-}
-    fetchGoogleSheet();
+
+    function displayWishListData(data) {
+      const wishListDiv = document.getElementById('wish-list');
+      wishListDiv.innerHTML = JSON.stringify(data, null, 2);
+    }
+    fetchWishListData();
     //Attach Filter Listeners
     document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
     document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
