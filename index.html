@@ -664,6 +664,24 @@ a.bold {
     <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
 </div>
 <script>
+async function fetchWishListData() {
+    try {
+        const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Fetched Data:', data); // Log fetched data to ensure it's being fetched correctly
+        
+        if (data && data.wishes && Array.isArray(data.wishes)) {
+            handleData(data.wishes); // Pass the wishes array to handleData
+        } else {
+            console.error('Fetched data does not contain an array of wishes');
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
     //Attach Filter Listeners
     document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
     document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
@@ -686,7 +704,7 @@ a.bold {
 
     
 //App Loading Listening Script
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     // Fetch Wish List Data
     fetchWishListData().then((data) => {
         // Log and handle fetched data
@@ -756,15 +774,10 @@ async function fetchWishListData() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Fetched Data:', data); // Log fetched data to ensure it's being fetched correctly
-        
-        if (data && data.wishes && Array.isArray(data.wishes)) {
-            handleData(data.wishes); // Pass the wishes array to handleData
-        } else {
-            console.error('Fetched data does not contain an array of wishes');
-        }
+        return data.wishes; // Assuming the fetched data has a 'wishes' property which is an array
     } catch (error) {
         console.error('Error fetching data:', error);
+        return null;
     }
 }
 
