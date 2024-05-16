@@ -47,8 +47,8 @@
     display: flex;
     justify-content: center; /* Centers items on the main-axis */
     align-items: center; /* Align items on the cross-axis */
-    bottom-padding: 0px;
-    top-padding: 10px;
+    padding-bottom: 2px;
+    padding-top: 10px;
   }
   .header img {
     width: 140px; /* Adjust the width as needed */
@@ -78,7 +78,7 @@
   .even-row {
       background-color: #E8D9F3; /* Darker color for even rows */
   }
-  //Icon Related Styling
+  /*Icon Related Styling*/
   .icon-cell {
       position: relative;
       text-align: center;
@@ -160,7 +160,7 @@
     padding: 4px;
     box-sizing: border-box;
 }
-//Style for the TWL ID # input
+/*Style for the TWL ID # input*/
         .twl-input-wrapper {
             display: flex;
             align-items: center;
@@ -187,7 +187,7 @@
         text-decoration: none !important;
     }
 
-    //Keep the Filter Select2 Fields the width of the Columns
+    /*Keep the Filter Select2 Fields the width of the Columns*/
     .select2-selection select2-selection--multiple {
         width: auto !important;
     }
@@ -287,12 +287,12 @@
     th.filter-column {
         padding: 0; /* Reduces padding in filter column headers to align with the dynamic row */
     }
-    //Unique Table Foot Style Itmes
+    /*Unique Table Foot Style Itmes*/
         #returnToTopButton {
             background-color: #4CAF50; /* Green */
             color: white;
         }
-        //Pagination Styling
+        /*Pagination Styling*/
         .pagination-container {
             display: flex;
             justify-content: center;
@@ -313,7 +313,7 @@
             width: 50px;
             text-align: center;
         }
-        //Accessibility Toggle Styling
+        /*Accessibility Toggle Styling*/
         #accessibilityToggleButton {
             background-color: #008CBA; /* Blue */
             color: white;
@@ -341,7 +341,7 @@
         margin-top: 10;
         margin-right: 50px;
       }
-      //Wish Urgency Tag Styling
+      /*Wish Urgency Tag Styling*/
       .urgency-tag {
           display: inline-block;
           padding: 3px 6px;
@@ -350,7 +350,7 @@
           color: white;
           font-size: 8px;
       }
-      //Urgency Column Tag Style
+      /*Urgency Column Tag Style*/
       .timeframe-tag {
           background-color: #007bff; /* Blue background for timeframe */
       }
@@ -371,16 +371,16 @@
           font-size: 12px; /* Smaller font size for tags */
           font-weight: bold;
           display: block;
-          padding: 2px 4px;  // Uniform padding around text
-          border-radius: 4px; // Optional rounded corners
-          margin-left: 3px; // Space between the intensity and timeframe
-          color: white; // White text for better visibility
+          padding: 2px 4px;  /* Uniform padding around text*/
+          border-radius: 4px; /* Optional rounded corners*/
+          margin-left: 3px; /* Space between the intensity and timeframe*/
+          color: white; /* White text for better visibility*/
           height: 20px;
       }
       /* Specific styling for the intensity span to differentiate it */
       span.urgent-intensity {
-          background-color: #D9D9D9; // Gray background for intensity part
-          color: black; // Black text for better readability
+          background-color: #D9D9D9; /* Gray background for intensity part*/
+          color: black; /*Black text for better readability*/
       }
   .centered { text-align: center; }
   /*End Dynamic Styling for the Wish Urgency Column*/
@@ -641,19 +641,24 @@ a.bold {
 </div>
 <script>
     async function fetchGoogleSheet() {
-        const apiKey = 'YOUR_API_KEY';
-        const sheetId = 'YOUR_SHEET_ID';
-        const range = 'Sheet1!A1:D10';
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
-        
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            displayData(data);
-            } catch (error) {
-            console.error('Error fetching Google Sheet:', error);
-            }
-        }    
+        const apiKey = 'AIzaSyD3iSoR9e2c7rCpaFwHvIvxVttekf0dmJo';
+        const sheetId = '16HWrHX1_-WcRfEK1gPMnDHnyd6z07bprLp09pFI923w';
+        const range = 'Public TWL'; /* Fetches all data from Sheet1*/
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const rows = data.values; // Assuming 'values' contains the rows of data
+        const dataWithoutFirstRow = rows.slice(1); // Remove the first row
+        displayData(dataWithoutFirstRow); // Ensure this function is defined elsewhere
+    } catch (error) {
+        console.error('Error fetching Google Sheet:', error);
+    }
+}
     fetchGoogleSheet();
     //Attach Filter Listeners
     document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
@@ -677,7 +682,7 @@ a.bold {
     //App Loading Listening Script
     document.addEventListener('DOMContentLoaded', function() {
       enhanceAccessibility();
-      var data = JSON.parse(<?= data ?>); // Make sure to parse the JSON string
+      var data = JSON.parse('<?= json_encode($data) ?>'); /* Make sure to parse the JSON string */
       var datePlaceholder = document.getElementById('date-placeholder');
       var today = new Date();
       var formattedDate = 'Accessed on: ' + today.toLocaleDateString();
