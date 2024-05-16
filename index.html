@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- This Code, Application, Images, Data and all related physical, metaphysical and software entites related to this application belong to The Calos Coalition, a registered 501c3 non-profit; developed by Ms. Thea Ross for use within https://www.caloscoalition.com and the Calos App. Reproduction is strictly limited, to shar please share the weblink on our website. To contact us regarding any issues reach out to admin@caloscoalition.com -->
-    <title>Public Trans Wish List</title>
-    <!-- Include jQuery (Latest Stable Version) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Include Select2 CSS (Latest Stable Version) -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<!-- This Code, Application, Images, Data, and all related physical, metaphysical, and software entities related to this application belong to The Calos Coalition, a registered 501c3 non-profit. Developed by Ms. Thea Ross for use within https://www.caloscoalition.com and the Calos App. Reproduction is strictly limited; to share, please share the weblink on our website. To contact us regarding any issues, reach out to admin@caloscoalition.com. -->
+<title>Public Trans Wish List</title>
+<!-- Include jQuery (Latest Stable Version) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Include Select2 CSS (Latest Stable Version) -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<!-- Include Select2 JavaScript (Latest Stable Version) -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<!-- Include Google API script -->
+<script src="https://apis.google.com/js/api.js"></script>
 <style>
 /* Styles for mobile responsiveness and other styling are kept as you provided */
 @media screen and (max-width: 768px) {
@@ -667,9 +671,9 @@ a.bold {
     async function fetchGoogleSheet() {
         const apiKey = 'AIzaSyD3iSoR9e2c7rCpaFwHvIvxVttekf0dmJo';
         const sheetId = '16HWrHX1_-WcRfEK1gPMnDHnyd6z07bprLp09pFI923w';
-        const range = 'Public TWL'; /* Fetches all data from Sheet1*/
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
-
+        const range = 'Public%20TWL'; /* Fetches all data from Sheet1*/
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+        https://sheets.googleapis.com/v4/spreadsheets/16HWrHX1_-WcRfEK1gPMnDHnyd6z07bprLp09pFI923w/values/Public%20TWL?key=AIzaSyD3iSoR9e2c7rCpaFwHvIvxVttekf0dmJo
     try {
         const response = await fetch(url);
         if (!response.ok) {
