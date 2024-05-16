@@ -12,27 +12,6 @@
 <!-- Include Google API script -->
 <script src="https://apis.google.com/js/api.js"></script>
 <style>
-/* Styles for mobile responsiveness and other styling are kept as you provided */
-@media screen and (max-width: 768px) {
-  .header, .table-container, table, .container {
-      width: 100%;
-      margin: 0;
-  }
-  th, td {
-      padding: 4px; /* Smaller padding for smaller screens */
-      font-size: 10px; /* Smaller font size for readability on mobile devices */
-  }
-  /* Set specific widths for Mobile View to the columns to prevent crowding */
-  th:nth-child(1), td:nth-child(1) { width: 8%; }
-  th:nth-child(2), td:nth-child(2) { width: 15%; }
-  th:nth-child(3), td:nth-child(3) { width: 15%; }
-  th:nth-child(4), td:nth-child(4) { width: 27%; }
-  th:nth-child(5), td:nth-child(5) { width: 8%; }
-  th:nth-child(6), td:nth-child(6) { width: 13%; }
-  th:nth-child(7), td:nth-child(7) { width: 4%; }
-  th:nth-child(8), td:nth-child(8) { width: 10%; }
-  }
-  /* mobile styling ends, primary Stylesheet Begins*/
   body {
     font-family: "Roboto", Arial, sans-serif;
     font-size: 12px;
@@ -76,62 +55,136 @@
   .table-container {
     overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
   }
-  .odd-row {
-    background-color: #F6EAFD; /* Lighter color for odd rows */
+  table {
+    width: 95%;
+    margin: 0 auto; /* Center the container */
+    font-size: 12px;
+    border: 2px solid #E89AFF; /* Table border */
+    border-radius: 20px; /* Rounded corners */
+    padding: 20px;
+    background-color: #F0D4FC; /* Primary table background color */
+    table-layout: fixed;
   }
-  .even-row {
-      background-color: #E8D9F3; /* Darker color for even rows */
+  thead {
+    font-size: 18px;
+    padding: 18px;
+    text-align: left;
+    border-bottom: 2px solid #D9D9D9;
+    font-family: "Roboto", Arial, sans-serif;
   }
-  /*Icon Related Styling*/
-  .icon-cell {
-      position: relative;
-      text-align: center;
-      overflow: visible;
-      height: 50px; /* Set according to your needs */
-      width: 50px; /* Set according to your needs */
-      background-position: center;
-      background-size: cover;
-      cursor: pointer; /* Optional: changes the cursor on hover to indicate interactiveness */
+  tbody tr:not(#filterRow):not(#filterDisplayRow):hover td {
+        text-decoration: underline;
+        font-style: italic;
   }
-  .newStatus-icon {
-      background-image: url('https://lh3.google.com/u/0/d/1HKxEOpBRyE35FUjDOovuR5ZTjskvsTMr');
+  td {
+    padding: 8px;
+    text-align: left;
+    font-family: "Roboto", Arial, sans-serif;
+    cursor: pointer;
   }
-  .newStatus-icon:hover {
-      background-image: url('https://lh3.google.com/u/0/d/1HIRdhX_lsmFjNJaabTQz36M-xb1ODz_h');
+  th {
+    cursor: pointer;
+    font-family: "Roboto Bold", Arial, sans-serif; /* Header font bold */
+    text-align: left; /* Default text alignment for all table headers */
   }
-  .fulfilled-icon {
-      background-image: url('https://lh3.google.com/u/0/d/1H78Xxha9fcFXA3hic__5plCWFQ9BkagR');
-      height: 50px; /* Set according to your needs */
-      width: 50px; /* Set according to your needs */
+/* Set specific width to the columns to prevent stretching */
+    th:nth-child(1), td:nth-child(1) { width: 10%; }
+    th:nth-child(2), td:nth-child(2) { width: 10%; }
+    th:nth-child(3), td:nth-child(3) { width: 13%; }
+    th:nth-child(4), td:nth-child(4) { width: 25%; }
+    th:nth-child(5), td:nth-child(5) { width: 10%; }
+    th:nth-child(6), td:nth-child(6) { width: 14%; }
+    th:nth-child(7), td:nth-child(7) { width: 10%; }
+    th:nth-child(8), td:nth-child(8) { width: 8%; }
+/* Set Specific Stlyes by Table Cell; Center text in the 1st, 5th and 7th columns (Date Applied, Wish Status and Verified?) */
+  th:nth-child(1), td:nth-child(1),
+  th:nth-child(2),
+  th:nth-child(3),
+  th:nth-child(5), td:nth-child(5),
+  th:nth-child(6),
+  th:nth-child(7), td:nth-child(7),
+  th:nth-child(8), td:nth-child(8) {
+    text-align: center;
   }
+  /* Bold text in the 1st column (Date) */
+  th:nth-child(1), td:nth-child(1) {
+    font-weight: bold;
+  }
+  /* Bold text in the 5th column but not the colum header(for example, Wish Status) */
+  td:nth-child(8) {
+    font-style: italic;
+  }
+/* Link Styling */  
+    a {
+    text-decoration: none;
+    color: #B9F0FF; /* Link color */
+    }
+    a:hover {
+    text-decoration: underline;
+    }
+    a.bold {
+    color: #E89AFF; /* Bold link color */
+    font-weight: bold;
+    }
 
-  .fulfilled-icon:hover {
-      background-image: url('https://lh3.google.com/u/0/d/1HFzgGRYEQq-Q6L0ZEc8csirgzXhfC5i0');
-      height: 50px; /* Set according to your needs */
-      width: 50px; /* Set according to your needs */
-  }
+/*Alternating Row Color Styling */
+    .odd-row {
+        background-color: #F6EAFD; /* Lighter color for odd rows */
+    }
+    .even-row {
+        background-color: #E8D9F3; /* Darker color for even rows */
+    }
 
-  .unfulfilled-icon {
-      background-image: url('https://lh3.google.com/u/0/d/1HEiT1SchXaXPVCvH9GXPPTF4KXlY9oka');
-      height: 50px; /* Set according to your needs */
-      width: 50px; /* Set according to your needs */
-  }
+/*Icon Related Styling*/
+    .icon-cell {
+        position: relative;
+        text-align: center;
+        overflow: visible;
+        height: 50px; /* Set according to your needs */
+        width: 50px; /* Set according to your needs */
+        background-position: center;
+        background-size: cover;
+        cursor: pointer; /* Optional: changes the cursor on hover to indicate interactiveness */
+    }
+    .newStatus-icon {
+        background-image: url('https://lh3.google.com/u/0/d/1HKxEOpBRyE35FUjDOovuR5ZTjskvsTMr');
+    }
+    .newStatus-icon:hover {
+        background-image: url('https://lh3.google.com/u/0/d/1HIRdhX_lsmFjNJaabTQz36M-xb1ODz_h');
+    }
+    .fulfilled-icon {
+        background-image: url('https://lh3.google.com/u/0/d/1H78Xxha9fcFXA3hic__5plCWFQ9BkagR');
+        height: 50px; /* Set according to your needs */
+        width: 50px; /* Set according to your needs */
+    }
 
-  .unfulfilled-icon:hover {
-      background-image: url('https://lh3.google.com/u/0/d/1HCdAJf4Hh7IEPfTwb5brteGpUbJTAmVB');
-      height: 50px; /* Set according to your needs */
-      width: 50px; /* Set according to your needs */
-  }
-  .icon-image {
-      width: 100%; /* Maintain aspect ratio */
-      height: auto; /* Full height of the cell */
-      position: absolute; /* Positioned absolutely within the relative cell */
-      top: 50%; /* Center vertically */
-      left: 50%; /* Center horizontally */
-      transform: translate(-50%, -50%); /* Offset the icon to truly center it */
-  }
+    .fulfilled-icon:hover {
+        background-image: url('https://lh3.google.com/u/0/d/1HFzgGRYEQq-Q6L0ZEc8csirgzXhfC5i0');
+        height: 50px; /* Set according to your needs */
+        width: 50px; /* Set according to your needs */
+    }
 
-    /* Specific styles for headers in the sortingColumnHeaders row */
+    .unfulfilled-icon {
+        background-image: url('https://lh3.google.com/u/0/d/1HEiT1SchXaXPVCvH9GXPPTF4KXlY9oka');
+        height: 50px; /* Set according to your needs */
+        width: 50px; /* Set according to your needs */
+    }
+
+    .unfulfilled-icon:hover {
+        background-image: url('https://lh3.google.com/u/0/d/1HCdAJf4Hh7IEPfTwb5brteGpUbJTAmVB');
+        height: 50px; /* Set according to your needs */
+        width: 50px; /* Set according to your needs */
+    }
+    .icon-image {
+        width: 100%; /* Maintain aspect ratio */
+        height: auto; /* Full height of the cell */
+        position: absolute; /* Positioned absolutely within the relative cell */
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Offset the icon to truly center it */
+    }
+
+ /* Specific styles for headers in the sortingColumnHeaders row */
     #sortingColumnHeaders th {
       cursor: pointer; /* Ensures cursor appears as pointer */
       background-color: #E8D9F3; /* Gives a distinct background color */
@@ -149,7 +202,8 @@
     #sortingColumnHeaders th {
       text-decoration: none; /* Ensures no underlines unless specifically hovered */
     }
-    /* Style for the th element containing the button and search input */
+
+/* Style for the th element containing the toggle filter button search input and reset search button */
 .header-input-container {
     display: flex;
     align-items: center;
@@ -409,79 +463,6 @@
           color: black; /*Black text for better readability*/
       }
   .centered { text-align: center; }
-  /*End Dynamic Styling for the Wish Urgency Column*/
-  table {
-    width: 95%;
-    margin: 0 auto; /* Center the container */
-    font-size: 12px;
-    border: 2px solid #E89AFF; /* Table border */
-    border-radius: 20px; /* Rounded corners */
-    padding: 20px;
-    background-color: #F0D4FC; /* Primary table background color */
-  }
-  thead {
-    font-size: 18px;
-    padding: 18px;
-    text-align: left;
-    border-bottom: 2px solid #D9D9D9;
-    font-family: "Roboto", Arial, sans-serif;
-  }
-  tr:not(#filterRow):not(#filterDisplayRow):hover td {
-      text-decoration: underline;
-      font-style: italic;
-  }
-  td {
-    padding: 8px;
-    text-align: left;
-    font-family: "Roboto", Arial, sans-serif;
-    cursor: pointer;
-  }
-  th {
-    cursor: pointer;
-    font-family: "Roboto Bold", Arial, sans-serif; /* Header font bold */
-    text-align: left; /* Default text alignment for all table headers */
-  }
-  /* Center text in the 1st, 5th and 7th columns (Date Applied, Wish Status and Verified?) */
-  th:nth-child(1), td:nth-child(1),
-  th:nth-child(2),
-  th:nth-child(3),
-  th:nth-child(5), td:nth-child(5),
-  th:nth-child(6),
-  th:nth-child(7), td:nth-child(7),
-  th:nth-child(8), td:nth-child(8) {
-    text-align: center;
-  }
-  /* Bold text in the 1st column (Date) */
-  th:nth-child(1), td:nth-child(1) {
-    font-weight: bold;
-  }
-  /* Bold text in the 5th column but not the colum header(for example, Wish Status) */
-  td:nth-child(8) {
-    font-style: italic;
-  }
-
-/* Set specific width to the columns to prevent stretching */
-th:nth-child(1), td:nth-child(1) { width: 10%; }
-th:nth-child(2), td:nth-child(2) { width: 10%; }
-th:nth-child(3), td:nth-child(3) { width: 13%; }
-th:nth-child(4), td:nth-child(4) { width: 25%; }
-th:nth-child(5), td:nth-child(5) { width: 10%; }
-th:nth-child(6), td:nth-child(6) { width: 14%; }
-th:nth-child(7), td:nth-child(7) { width: 10%; }
-th:nth-child(8), td:nth-child(8) { width: 8%; }
-
-/* Link Styling */  
-a {
-  text-decoration: none;
-  color: #B9F0FF; /* Link color */
-}
-a:hover {
-  text-decoration: underline;
-}
-a.bold {
-  color: #E89AFF; /* Bold link color */
-  font-weight: bold;
-}
 
 /* Custom Tooltip Styling*/
 .image-tooltip-container {
@@ -538,6 +519,26 @@ a.bold {
   border-radius: 10px; /* Rounded corners */
   padding: 20px;
 }
+/* Styles for mobile responsiveness and other styling are kept as you provided */
+    @media screen and (max-width: 768px) {
+    .header, .table-container, table, .container {
+        width: 100%;
+        margin: 0;
+    }
+    th, td {
+        padding: 4px; /* Smaller padding for smaller screens */
+        font-size: 10px; /* Smaller font size for readability on mobile devices */
+    }
+    /* Set specific widths for Mobile View to the columns to prevent crowding */
+    th:nth-child(1), td:nth-child(1) { width: 8%; }
+    th:nth-child(2), td:nth-child(2) { width: 15%; }
+    th:nth-child(3), td:nth-child(3) { width: 15%; }
+    th:nth-child(4), td:nth-child(4) { width: 27%; }
+    th:nth-child(5), td:nth-child(5) { width: 8%; }
+    th:nth-child(6), td:nth-child(6) { width: 13%; }
+    th:nth-child(7), td:nth-child(7) { width: 4%; }
+    th:nth-child(8), td:nth-child(8) { width: 10%; }
+    }
 </style>
 </head>
 <body>
