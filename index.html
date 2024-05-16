@@ -892,46 +892,51 @@ function displayWishListData(data) {
             }
         }
         function populateFilters(data) {
-    const locationSet = new Set(); // Use a set to avoid duplicate locations
+        const locationSet = new Set(); // Use a set to avoid duplicate locations
 
-    // Add special entries
-    locationSet.add("Rather Not Say");
-    locationSet.add("United States");
+        // Add special entries
+        locationSet.add("Rather Not Say");
+        locationSet.add("United States");
 
-    for (let i = 0; i < data.length; i++) {
-        let item = data[i];
-        let location = item['Location'].trim();
-        // Extract state abbreviation from the location, assuming it might include city names
-        const stateRegex = /\b[A-Z]{2}\b/; // Matches two uppercase letters
-        const match = location.match(stateRegex);
-        if (match) {
-            locationSet.add(match[0]); // Adds the state abbreviation
+        for (let i = 0; i < data.length; i++) {
+            let item = data[i];
+            let location = item['Location'];
+            // Remove leading and trailing whitespace manually
+            let start = 0;
+            let end = location.length - 1;
+
+            while (start <= end && (location[start] === ' ' || location[start] === '\t')) {
+                start++;
+            }
+            while (end >= start && (location[end] === ' ' || location[end] === '\t')) {
+                end--;
+            }
+
+            location = location.substring(start, end + 1);
+
+            // Extract state abbreviation from the location, assuming it might include city names
+            const stateRegex = /\b[A-Z]{2}\b/; // Matches two uppercase letters
+            const match = location.match(stateRegex);
+            if (match) {
+                locationSet.add(match[0]); // Adds the state abbreviation
+            }
         }
-    }
-
-    const locationFilter = document.getElementById('locationFilter');
-    locationSet.forEach(location => {
-        const option = document.createElement('option');
-        option.value = location;
-        option.textContent = location;
-        locationFilter.appendChild(option);
-    });
-
-    // Re-initialize Select2 for locationFilter to apply the changes
-    $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
-}
-
 
         const locationFilter = document.getElementById('locationFilter');
-        locationSet.forEach(location => {
+
+        // Convert the Set to an array and iterate over it using a for loop
+        const locationArray = Array.from(locationSet);
+        for (let i = 0; i < locationArray.length; i++) {
+            const location = locationArray[i];
             const option = document.createElement('option');
             option.value = location;
             option.textContent = location;
             locationFilter.appendChild(option);
-        });
+        }
 
         // Re-initialize Select2 for locationFilter to apply the changes
         $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
+    }
     function updateWishUrgency(cell, timeframe, intensity) {
         // Clear the existing content of the cell
         cell.textContent = '';
