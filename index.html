@@ -1163,9 +1163,6 @@ function logInitialFilterRowState() {
                 // Add click event listener for the detail view modal
                 row.addEventListener('click', () => openDetailView(item));
             }
-            // After populating data, update the iframe height
-            const height = document.documentElement.scrollHeight;
-            window.parent.postMessage({ type: 'resize', height: height }, '*');
         }
 
     function openDetailView(item) {
