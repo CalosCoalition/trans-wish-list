@@ -639,6 +639,10 @@ a.bold {
     <!-- Button to copy TWL ID -->
     <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
 </div>
+<!-- Include Select2 JavaScript (Latest Stable Version) -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<!-- Include Google API script -->
+<script src="https://apis.google.com/js/api.js"></script>
 <script>
     async function fetchGoogleSheet() {
         const apiKey = 'AIzaSyD3iSoR9e2c7rCpaFwHvIvxVttekf0dmJo';
@@ -654,7 +658,7 @@ a.bold {
         const data = await response.json();
         const rows = data.values; // Assuming 'values' contains the rows of data
         const dataWithoutFirstRow = rows.slice(1); // Remove the first row
-        displayData(dataWithoutFirstRow); // Ensure this function is defined elsewhere
+        handleData(dataWithoutFirstRow); // Ensure this function is defined elsewhere
     } catch (error) {
         console.error('Error fetching Google Sheet:', error);
     }
@@ -1445,14 +1449,6 @@ a.bold {
         filterDisplayRow.style.display = 'none'; // Hide row if no filters are active
     }
     }
-        function displayData(data) {
-            const container = document.getElementById('data-container');
-            data.values.forEach(row => {
-                const rowElement = document.createElement('div');
-                rowElement.textContent = row.join(', ');
-                container.appendChild(rowElement);
-            });
-        }
     function resetFilters() {
         // Clear all select inputs
         const selects = document.querySelectorAll('#filterRow select');
@@ -1621,9 +1617,5 @@ a.bold {
         accessibilityEnabled = !accessibilityEnabled;
     }
 </script>
-    <!-- Include Select2 JavaScript (Latest Stable Version) -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-    <!-- Include Google API script -->
-    <script src="https://apis.google.com/js/api.js"></script>
 </body>
 </html>
