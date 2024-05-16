@@ -663,10 +663,6 @@ a.bold {
     <!-- Button to copy TWL ID -->
     <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
 </div>
-<!-- Include Select2 JavaScript (Latest Stable Version) -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-<!-- Include Google API script -->
-<script src="https://apis.google.com/js/api.js"></script>
 <script>
     async function fetchWishListData() {
       const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
@@ -1099,7 +1095,6 @@ a.bold {
             row.addEventListener('click', () => openDetailView(item));
         });
     }
-    google.script.run.withSuccessHandler(handleData).getPublicWishListData();
     function openDetailView(item) {
         var content = `
             <p><strong>Public Name:</strong> ${item['Public Name']}</p>
