@@ -664,6 +664,71 @@ a.bold {
     <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
 </div>
 <script>
+//Attach Filter Listeners
+document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
+document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
+document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
+document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
+document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
+document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
+document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
+document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
+  
+//Define Global Variables
+let prevSortedColumnIndex = null;
+let isFilterVisible = true; // Initial state: visible
+let twlInputTimeout;
+let currentPage = 1;
+let rowsPerPage = 20;
+let accessibilityEnabled = false;
+
+//App Loading Listening Script
+document.addEventListener('DOMContentLoaded', function() {
+    fetchWishListData().then((data) => {
+        console.log('Fetched Data:', data);
+        if (data && Array.isArray(data)) {
+            handleData(data);
+            populateFilters(data);
+        } else {
+            console.error('No data available or data is not in the correct format.');
+        }
+
+        const datePlaceholder = document.getElementById('date-placeholder');
+        const today = new Date();
+        const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
+        datePlaceholder.textContent = formattedDate;
+
+        enhanceAccessibility();
+        initializeSelect2();
+        applyAllFilters();
+        paginateTable(rowsPerPage, currentPage);
+
+        document.getElementById("rowsPerPage").addEventListener("change", function() {
+            updateRowsPerPage();
+        });
+
+        document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
+        handleUrlParameters();
+        setupToggleButton();
+        logInitialFilterRowState();
+
+        document.getElementById("rowsPerPage").addEventListener("change", function() {
+            rowsPerPage = parseInt(this.value);
+            currentPage = 1; // Reset to first page
+            paginateTable(rowsPerPage, currentPage);
+        });
+
+        window.addEventListener('load', function() {
+            const height = document.documentElement.scrollHeight;
+            console.log('Sending message from Google Script on load: height =', height);
+            window.parent.postMessage({ type: 'resize', height: height }, '*');
+        });
+    }).catch(error => {
+        console.error('Error fetching Wish List Data:', error);
+    });
+});
+
 async function fetchWishListData() {
     try {
         const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
@@ -671,139 +736,63 @@ async function fetchWishListData() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Fetched Data:', data); // Log fetched data to ensure it's being fetched correctly
-        
+        console.log('Fetched Data:', data);
         if (data && data.wishes && Array.isArray(data.wishes)) {
-            handleData(data.wishes); // Pass the wishes array to handleData
+            return data.wishes; // Return the wishes array
         } else {
             console.error('Fetched data does not contain an array of wishes');
+            return []; // Return an empty array if data format is incorrect
         }
     } catch (error) {
         console.error('Error fetching data:', error);
+        return []; // Return an empty array in case of error
     }
 }
 
-function displayWishListData(data) {
-    try {
-        if (!Array.isArray(data.wishes)) {
-            throw new Error('Invalid data format');
+function handleUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+    const autoOpen = urlParams.get('autoOpen') === 'true';
+    console.log(searchQuery, autoOpen);
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && searchQuery) {
+        searchInput.value = searchQuery;
+        applyAllFilters();
+        if (autoOpen) {
+            const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
+            if (firstVisibleRow) {
+                const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
+                openDetailView(itemData);
+            }
         }
-        handleData(data.wishes);
-    } catch (error) {
-        console.error('Error processing data:', error);
+    }
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            applyAllFilters();
+        });
     }
 }
-    //Attach Filter Listeners
-    document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
-    document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
-    document.getElementById('searchInput').addEventListener('input', applyAllFilters);
-    document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
-      
-    //Define Global Variables
-    let prevSortedColumnIndex = null;
-    let isFilterVisible = true; // Initial state: visible
-    let twlInputTimeout;
-    let currentPage = 1;
-    let rowsPerPage = 20;
-    let accessibilityEnabled = false;
-    let locationSet = new Set();
 
-    
-    //App Loading Listening Script
-    document.addEventListener('DOMContentLoaded', function() {
-    // This line is to convert the PHP array/object into a JSON string
-    var data = "<?php echo json_encode($data); ?>";
-    // Now `data` contains the parsed JSON data
-    if (data) {
-        // Call your data handling function with the parsed data
-        handleData(data);
+function setupToggleButton() {
+    const toggleButton = document.getElementById('toggleFiltersButton');
+    if (toggleButton) {
+        toggleButton.addEventListener('click', toggleFilterRow);
+        console.log('Toggle button found and event listener added.');
     } else {
-        console.error("No data available to populate the table.");
-    }  
-      fetchWishListData();
-      var datePlaceholder = document.getElementById('date-placeholder');
-      var today = new Date();
-      var formattedDate = 'Accessed on: ' + today.toLocaleDateString();
+        console.error('Toggle button not found');
+    }
+}
 
-      datePlaceholder.textContent = formattedDate;
+function logInitialFilterRowState() {
+    const filterRow = document.getElementById('filterRow');
+    const displayRow = document.getElementById('filterDisplayRow');
+    if (filterRow && displayRow) {
+        console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
+    } else {
+        console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
+    }
+}
 
-      enhanceAccessibility();
-      // Initialize Select2 dropdown menus
-      initializeSelect2();
-      // Populate filters before handling data
-      populateFilters(data);
-      /* Use this data to populate the table
-      handleData(data);*/
-      //Apply Any Filters
-      applyAllFilters();
-      // Initial pagination setup
-      paginateTable(rowsPerPage, currentPage);
-      // Event listener for rowsPerPage dropdown
-      document.getElementById("rowsPerPage").addEventListener("change", function() {
-        updateRowsPerPage();
-      });        
-
-      // Attach the event listener to the filterDisplayRow
-      document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
-
-      // URL Parameter Handling
-      const urlParams = new URLSearchParams(window.location.search);
-      const searchQuery = urlParams.get('search');
-      const autoOpen = urlParams.get('autoOpen') === 'true';
-      console.log(searchQuery, autoOpen);
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput && searchQuery) {
-          searchInput.value = searchQuery;
-          applyAllFilters();
-          if (autoOpen) {
-              const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
-              if (firstVisibleRow) {
-                  const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
-                  openDetailView(itemData);
-              }
-          }
-      }
-      // Ensure the search input updates the display when it changes
-      if (searchInput) {
-          searchInput.addEventListener('input', function() {
-              applyAllFilters();
-          });
-      }
-      // Setup the toggle button for filter rows
-            var toggleButton = document.getElementById('toggleFiltersButton');
-            if (toggleButton) {
-                toggleButton.addEventListener('click', toggleFilterRow);
-                console.log('Toggle button found and event listener added.');
-            } else {
-                console.error('Toggle button not found');
-            }
-
-            // Log the initial visibility state of filterRow and filterDisplayRow
-            var filterRow = document.getElementById('filterRow');
-            var displayRow = document.getElementById('filterDisplayRow');
-            if (filterRow && displayRow) {
-                console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
-            } else {
-                console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
-            }
-        // Event listener for rowsPerPage dropdown
-        document.getElementById("rowsPerPage").addEventListener("change", function() {
-            rowsPerPage = parseInt(this.value);
-            currentPage = 1; // Reset to first page
-            paginateTable(rowsPerPage, currentPage);
-        });
-        //Event Listener to set iframe height for embedded adaptability
-        window.addEventListener('load', function() {
-            var height = document.documentElement.scrollHeight;
-            console.log('Sending message from Google Script on load: height =', height);
-            window.parent.postMessage({ type: 'resize', height: height }, '*');
-        });
-    });
     function updateRowsPerPage() {
           const selectedOption = document.getElementById('rowsPerPage').value;
           // Extract only the numeric part using a regular expression
