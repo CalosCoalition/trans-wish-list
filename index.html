@@ -788,6 +788,7 @@ function handleUrlParameters() {
     if (searchInput && searchQuery) {
         searchInput.value = searchQuery;
         applyAllFilters();
+        paginateTable(rowsPerPage, currentPage);
         if (autoOpen) {
             const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
             if (firstVisibleRow) {
