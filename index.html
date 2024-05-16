@@ -884,6 +884,12 @@ function logInitialFilterRowState() {
     }
 
     function populateFilters(data) {
+        const locationSet = new Set(); // Use a set to avoid duplicate locations
+
+        // Add special entries
+        locationSet.add("Rather Not Say");
+        locationSet.add("United States");
+
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
             let location = item['Location'];
@@ -977,7 +983,6 @@ function logInitialFilterRowState() {
 
         // Re-initialize Select2 for locationFilter to apply the changes
         $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
-        
         function updateWishUrgency(cell, timeframe, intensity) {
         // Clear the existing content of the cell
         cell.textContent = '';
@@ -1034,7 +1039,7 @@ function logInitialFilterRowState() {
             tableBody.innerHTML = ""; // Clear previous entries
 
             for (let i = 0; i < data.length; i++) {
-                let item = data[i];
+                const item = data[i];
                 const row = tableBody.insertRow();
                 row.setAttribute('data-item', JSON.stringify(item)); // Add this line for Search Bar
                 
