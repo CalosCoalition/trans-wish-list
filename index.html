@@ -665,14 +665,13 @@ a.bold {
 </div>
 <script>
     async function fetchWishListData() {
-      const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
-      const data = await response.json();
-      displayWishListData(data);
-    }
-
-    function displayWishListData(data) {
-      const wishListDiv = document.getElementById('wish-list');
-      wishListDiv.innerHTML = JSON.stringify(data, null, 2);
+      try {
+        const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
+        const data = await response.json();
+        handleData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
     fetchWishListData();
     //Attach Filter Listeners
@@ -716,8 +715,8 @@ a.bold {
       initializeSelect2();
       // Populate filters before handling data
       populateFilters(data);
-      // Use this data to populate the table
-      handleData(data);
+      /* Use this data to populate the table
+      handleData(data);*/
       //Apply Any Filters
       applyAllFilters();
       // Initial pagination setup
