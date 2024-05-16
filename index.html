@@ -711,6 +711,8 @@ function displayWishListData(data) {
     let currentPage = 1;
     let rowsPerPage = 20;
     let accessibilityEnabled = false;
+    let locationSet = new Set();
+
     
     //App Loading Listening Script
     document.addEventListener('DOMContentLoaded', function() {
@@ -859,7 +861,7 @@ function displayWishListData(data) {
         });
     }
 
-        function populateFilters(data) {
+    function populateFilters(data) {
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
             let location = item['Location'];
