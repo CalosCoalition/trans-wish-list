@@ -669,6 +669,7 @@ async function fetchWishListData() {
         const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
         const text = await response.text();
         const data = JSON.parse(text);
+        console.log('Fetched Data:', data);
         displayWishListData(data);
     } catch (error) {
         console.error('Error fetching data:', error);
