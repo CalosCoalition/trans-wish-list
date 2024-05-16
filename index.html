@@ -664,29 +664,35 @@ a.bold {
     <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
 </div>
 <script>
-//Attach Filter Listeners
-document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
-document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
-document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
-document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
-document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
-document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
-document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
-document.getElementById('searchInput').addEventListener('input', applyAllFilters);
-document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
-  
-//Define Global Variables
-let prevSortedColumnIndex = null;
-let isFilterVisible = true; // Initial state: visible
-let twlInputTimeout;
-let currentPage = 1;
-let rowsPerPage = 20;
-let accessibilityEnabled = false;
+    //Attach Filter Listeners
+    document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
+    document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
+    document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+    document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
+      
+    //Define Global Variables
+    let prevSortedColumnIndex = null;
+    let isFilterVisible = true; // Initial state: visible
+    let twlInputTimeout;
+    let currentPage = 1;
+    let rowsPerPage = 20;
+    let accessibilityEnabled = false;
+    let locationSet = new Set();
 
+    
 //App Loading Listening Script
 document.addEventListener('DOMContentLoaded', function() {
+    // Fetch Wish List Data
     fetchWishListData().then((data) => {
+        // Log and handle fetched data
         console.log('Fetched Data:', data);
+
+        // Ensure data is an array
         if (data && Array.isArray(data)) {
             handleData(data);
             populateFilters(data);
@@ -694,31 +700,45 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('No data available or data is not in the correct format.');
         }
 
+        // Update date placeholder
         const datePlaceholder = document.getElementById('date-placeholder');
         const today = new Date();
         const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
         datePlaceholder.textContent = formattedDate;
 
+        // Enhance accessibility and initialize Select2 dropdown menus
         enhanceAccessibility();
         initializeSelect2();
+
+        // Apply filters and set up pagination
         applyAllFilters();
         paginateTable(rowsPerPage, currentPage);
 
+        // Add event listener for rowsPerPage dropdown
         document.getElementById("rowsPerPage").addEventListener("change", function() {
             updateRowsPerPage();
         });
 
+        // Attach the event listener to the filterDisplayRow
         document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
+
+        // Handle URL parameters for search and auto-open
         handleUrlParameters();
+
+        // Setup the toggle button for filter rows
         setupToggleButton();
+
+        // Log the initial visibility state of filterRow and filterDisplayRow
         logInitialFilterRowState();
 
+        // Add event listener for rowsPerPage dropdown (redundant, but ensuring it’s set)
         document.getElementById("rowsPerPage").addEventListener("change", function() {
             rowsPerPage = parseInt(this.value);
             currentPage = 1; // Reset to first page
             paginateTable(rowsPerPage, currentPage);
         });
 
+        // Event listener to set iframe height for embedded adaptability
         window.addEventListener('load', function() {
             const height = document.documentElement.scrollHeight;
             console.log('Sending message from Google Script on load: height =', height);
@@ -736,16 +756,15 @@ async function fetchWishListData() {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Fetched Data:', data);
+        console.log('Fetched Data:', data); // Log fetched data to ensure it's being fetched correctly
+        
         if (data && data.wishes && Array.isArray(data.wishes)) {
-            return data.wishes; // Return the wishes array
+            handleData(data.wishes); // Pass the wishes array to handleData
         } else {
             console.error('Fetched data does not contain an array of wishes');
-            return []; // Return an empty array if data format is incorrect
         }
     } catch (error) {
         console.error('Error fetching data:', error);
-        return []; // Return an empty array in case of error
     }
 }
 
@@ -792,6 +811,7 @@ function logInitialFilterRowState() {
         console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
     }
 }
+
 
     function updateRowsPerPage() {
           const selectedOption = document.getElementById('rowsPerPage').value;
