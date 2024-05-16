@@ -1553,6 +1553,10 @@ function logInitialFilterRowState() {
         document.getElementById('searchInput').value = ''; // Clear the search input
         document.getElementById('twlIdInput').value = ''; // Clear the TWL ID input
         applyAllFilters(); // Reapply filters to update view
+
+        // After Reseting Filters, Update the iframe height
+        const height = document.documentElement.scrollHeight;
+        window.parent.postMessage({ type: 'resize', height: height }, '*');
     }
 
     function updateRowColors() {
