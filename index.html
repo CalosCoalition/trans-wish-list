@@ -685,14 +685,22 @@ a.bold {
     
     //App Loading Listening Script
     document.addEventListener('DOMContentLoaded', function() {
-      enhanceAccessibility();
-      var data = JSON.parse('<?= json_encode($data) ?>'); /* Make sure to parse the JSON string */
+    // This line is to convert the PHP array/object into a JSON string
+    var data = "<?php echo json_encode($data); ?>";
+    // Now `data` contains the parsed JSON data
+    if (data) {
+        // Call your data handling function with the parsed data
+        handleData(data);
+    } else {
+        console.error("No data available to populate the table.");
+    }
       var datePlaceholder = document.getElementById('date-placeholder');
       var today = new Date();
       var formattedDate = 'Accessed on: ' + today.toLocaleDateString();
 
       datePlaceholder.textContent = formattedDate;
 
+      enhanceAccessibility();
       // Initialize Select2 dropdown menus
       initializeSelect2();
       // Populate filters before handling data
