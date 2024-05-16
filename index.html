@@ -750,13 +750,6 @@ async function fetchWishListData() {
         // Log the initial visibility state of filterRow and filterDisplayRow
         logInitialFilterRowState();
 
-        // Add event listener for rowsPerPage dropdown (redundant, but ensuring it’s set)
-        document.getElementById("rowsPerPage").addEventListener("change", function() {
-            rowsPerPage = parseInt(this.value);
-            currentPage = 1; // Reset to first page
-            paginateTable(rowsPerPage, currentPage);
-        });
-
         // Event listener to set iframe height for embedded adaptability
         window.addEventListener('load', function() {
             const height = document.documentElement.scrollHeight;
@@ -787,7 +780,7 @@ function handleUrlParameters() {
     const searchQuery = urlParams.get('search');
     const autoOpen = urlParams.get('autoOpen') === 'true';
     console.log(searchQuery, autoOpen);
-    const searchInput = document.getElementById('searchInput');
+    const searchInput = document.getElementById('twlIdInput');
     if (searchInput && searchQuery) {
         searchInput.value = searchQuery;
         applyAllFilters();
