@@ -860,12 +860,6 @@ function displayWishListData(data) {
     }
 
         function populateFilters(data) {
-        const locationSet = new Set(); // Use a set to avoid duplicate locations
-
-        // Add special entries
-        locationSet.add("Rather Not Say");
-        locationSet.add("United States");
-
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
             let location = item['Location'];
