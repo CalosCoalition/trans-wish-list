@@ -891,22 +891,36 @@ function displayWishListData(data) {
                 twlInputTimeout = setTimeout(handleTwlInput, 5000); // Set timeout for 5 seconds
             }
         }
-    function populateFilters(data) {
-        const locationSet = new Set(); // Use a set to avoid duplicate locations
+        function populateFilters(data) {
+    const locationSet = new Set(); // Use a set to avoid duplicate locations
 
-        // Add special entries
-        locationSet.add("Rather Not Say");
-        locationSet.add("United States");
+    // Add special entries
+    locationSet.add("Rather Not Say");
+    locationSet.add("United States");
 
-        data.forEach(item => {
-            let location = item['Location'].trim();
-            // Extract state abbreviation from the location, assuming it might include city names
-            const stateRegex = /\b[A-Z]{2}\b/; // Matches two uppercase letters
-            const match = location.match(stateRegex);
-            if (match) {
-                locationSet.add(match[0]); // Adds the state abbreviation
-            }
-        });
+    for (let i = 0; i < data.length; i++) {
+        let item = data[i];
+        let location = item['Location'].trim();
+        // Extract state abbreviation from the location, assuming it might include city names
+        const stateRegex = /\b[A-Z]{2}\b/; // Matches two uppercase letters
+        const match = location.match(stateRegex);
+        if (match) {
+            locationSet.add(match[0]); // Adds the state abbreviation
+        }
+    }
+
+    const locationFilter = document.getElementById('locationFilter');
+    locationSet.forEach(location => {
+        const option = document.createElement('option');
+        option.value = location;
+        option.textContent = location;
+        locationFilter.appendChild(option);
+    });
+
+    // Re-initialize Select2 for locationFilter to apply the changes
+    $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
+}
+
 
         const locationFilter = document.getElementById('locationFilter');
         locationSet.forEach(location => {
@@ -918,7 +932,6 @@ function displayWishListData(data) {
 
         // Re-initialize Select2 for locationFilter to apply the changes
         $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
-    }
     function updateWishUrgency(cell, timeframe, intensity) {
         // Clear the existing content of the cell
         cell.textContent = '';
