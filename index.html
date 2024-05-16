@@ -38,7 +38,7 @@
     font-size: 12px;
     margin: 0;
     padding: 0;
-    background-color: orange; /* Deepest background color */
+    background-color: #C08CCF; /* Deepest background color */
     color: #000000; /* Default text color */
   }
   .container {
@@ -709,7 +709,7 @@ a.bold {
     //App Loading Listening Script
     document.addEventListener('DOMContentLoaded', function() {
     // This line is to convert the PHP array/object into a JSON string
-    var data = "<?php echo json_encode($data); ?>";
+    var data = JSON.parse(data);
     // Now `data` contains the parsed JSON data
     if (data) {
         // Call your data handling function with the parsed data
@@ -1160,7 +1160,7 @@ a.bold {
             rows.forEach((row, index) => {
                 row.style.display = (index >= (currentPage - 1) * pageSize && index < currentPage * pageSize) ? "" : "none";
             });
-
+            updateRowColors();
             updatePaginationControls(totalPages, currentPage);
         }
     // Pagination Coding
