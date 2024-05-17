@@ -1350,15 +1350,18 @@ function paginateAndRender() {
   const endIndex = startIndex + rowsPerPage;
   const rows = document.querySelectorAll("#wishList tbody tr");
 
+  // Display or hide rows based on the current page
   rows.forEach((row, index) => {
     row.style.display = index >= startIndex && index < endIndex ? '' : 'none';
   });
 
+  // Calculate the total number of pages
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const paginationControls = document.getElementById('pagination-controls');
 
   paginationControls.innerHTML = '';
 
+  // Update pagination controls only if there is more than one page
   if (totalPages > 1) {
     const firstButton = document.createElement('button');
     firstButton.textContent = '<< First';
@@ -1541,7 +1544,50 @@ function handleData(data) {
         row.addEventListener('click', () => openDetailView(item));
     });
 }
+    // Pagination Coding
+    function updatePaginationControls(totalPages, currentPage) {
+            const paginationControls = document.getElementById('pagination-controls');
+            paginationControls.innerHTML = ''; // Clear existing controls
 
+            // Create First button
+            const firstButton = document.createElement('button');
+            firstButton.textContent = 'First';
+            firstButton.disabled = currentPage === 1;
+            firstButton.addEventListener('click', () => paginateTable(rowsPerPage, 1));
+            paginationControls.appendChild(firstButton);
+
+            // Create Previous button
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => paginateTable(rowsPerPage, currentPage - 1));
+            paginationControls.appendChild(prevButton);
+
+            // Create page buttons
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                if (i === currentPage) {
+                    pageButton.disabled = true;
+                }
+                pageButton.addEventListener('click', () => paginateTable(rowsPerPage, i));
+                paginationControls.appendChild(pageButton);
+            }
+
+            // Create Next button
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => paginateTable(rowsPerPage, currentPage + 1));
+            paginationControls.appendChild(nextButton);
+
+            // Create Last button
+            const lastButton = document.createElement('button');
+            lastButton.textContent = 'Last';
+            lastButton.disabled = currentPage === totalPages;
+            lastButton.addEventListener('click', () => paginateTable(rowsPerPage, totalPages));
+            paginationControls.appendChild(lastButton);
+        }
 function sortTable(columnIndex) {
   const table = document.querySelector("#wishList tbody");
   const rows = Array.from(table.rows);
