@@ -771,7 +771,7 @@ window.addEventListener('message', function(event) {
 //Used to Pass Parameters for embedded iframes
 function adjustIframeHeight() {
     const loadHeight = document.documentElement.scrollHeight + 50;
-    console.log('Sending message from HTML Script: height =', height);
+    console.log('Sending message from HTML Script: height =', loadHeight);
     window.parent.postMessage({ type: 'resize', height: loadHeight }, '*');
 }
 function handleUrlParameters() {
