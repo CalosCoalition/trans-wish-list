@@ -680,8 +680,6 @@ async function fetchWishListData() {
         
         if (data && data.wishes && Array.isArray(data.wishes)) {
             handleData(data.wishes); // Pass the wishes array to handleData
-            const loadHeight = document.documentElement.scrollHeight;
-            window.parent.postMessage({ type: 'resize', height: loadHeight }, '*');
         } else {
             console.error('Fetched data does not contain an array of wishes');
         }
@@ -1179,7 +1177,16 @@ function updateRowsPerPage() {
                 // Add click event listener for the detail view modal
                 row.addEventListener('click', () => openDetailView(item));
             }
+            // Adjust iframe height after data is loaded and displayed
+            const loadHeight = document.documentElement.scrollHeight;
+            window.parent.postMessage({ type: 'resize', height: loadHeight }, '*');
         }
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'requestHeight') {
+                const loadHeight = document.documentElement.scrollHeight;
+                window.parent.postMessage({ type: 'resize', height: loadHeight }, '*');
+            }
+        });
 
     function openDetailView(item) {
         var content = `
