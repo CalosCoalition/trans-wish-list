@@ -1077,7 +1077,10 @@ function applyLocationFilter() {
         });
     }    
 function populateFilters(data) {
-  const locationSet = new Set(["Rather Not Say", "United States"]);
+    const locationSet = new Set(); // Use a set to avoid duplicate locations
+    // Add special entries
+    locationSet.add("Rather Not Say");
+    locationSet.add("United States");
 
   data.forEach(item => {
     let location = item['Location'].trim();
@@ -1088,14 +1091,15 @@ function populateFilters(data) {
     }
   });
 
-  const locationFilter = $('#locationFilter');
-  locationFilter.empty();
-
-  locationSet.forEach(location => {
-    const option = new Option(location, location, false, false);
-    locationFilter.append(option);
-  });
-
+  const locationFilter = document.getElementById('locationFilter');
+        locationSet.forEach(location => {
+            const option = document.createElement('option');
+            option.value = location;
+            option.textContent = location;
+            locationFilter.appendChild(option);
+        });
+    // Re-initialize Select2 for locationFilter to apply the changes
+    $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
   locationFilter.trigger('change');
 }
 
@@ -1517,19 +1521,20 @@ function toggleAccessibility() {
 }
 
 function resetFilters() {
-  $('#dateFilter').val(null).trigger('change');
-  $('#locationFilter').val(null).trigger('change');
-  $('#urgencyFilter').val(null).trigger('change');
-  $('#hasContentFilter').val(null).trigger('change');
-  $('#wishStatusFilter').val(null).trigger('change');
-
-  document.getElementById('includeAnonymous').checked = true;
-  document.getElementById('includeUnverified').checked = true;
-  document.getElementById('searchInput').value = '';
-  document.getElementById('twlIdInput').value = '';
-
-  applyAllFilters();
-}
+          // Clear all select inputs
+          const selects = document.querySelectorAll('#filterRow select');
+          selects.forEach(select => {
+              $(select).val(null).off('change').trigger('change');
+              $(select).on('change', applyAllFilters); // Reattach event listener after reset
+          });
+          // Reset checkboxes to default checked state
+          document.querySelectorAll('#filterRow input[type="checkbox"]').forEach(checkbox => {
+              checkbox.checked = true;
+          });
+          document.getElementById('searchInput').value = ''; // Clear the search input
+          document.getElementById('twlIdInput').value = ''; // Clear the TWL ID input
+          applyAllFilters(); // Reapply filters to update view
+      } 
 </script>
 </body>
 </html>
