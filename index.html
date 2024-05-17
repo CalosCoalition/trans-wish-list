@@ -351,7 +351,7 @@
         #returnToTopButton {
             background-color: #4CAF50; /* Green */
             color: white;
-            padding: 4px 8px; /* Padding for the button */
+            padding: 12px 8px; /* Padding for the button */
             font-size: 10px; /* Match the font size of the checkboxes */
             cursor: pointer; /* Indicates the button is clickable */
             border: 1px solid; /* Border color to match the theme */
@@ -360,7 +360,6 @@
             width: auto; /* Set the width of the button */
             font-weight: bold;
             text-decoration: none !important;
-            margin-bottom: 4px; /* Add bottom margin */
             display: inline-block;
         }
         /* Pagination Styling */
@@ -388,7 +387,7 @@
         #accessibilityToggleButton {
             background-color: #008CBA; /* Blue */
             color: white;
-            padding: 4px 8px; /* Padding for the button */
+            padding: 12px 8px; /* Padding for the button */
             font-size: 10px; /* Match the font size of the checkboxes */
             cursor: pointer; /* Indicates the button is clickable */
             border: 1px solid; /* Border color to match the theme */
@@ -397,7 +396,6 @@
             width: auto; /* Set the width of the button */
             font-weight: bold;
             text-decoration: none !important;
-            margin-bottom: 4px; /* Add bottom margin */
             display: inline-block;
         }
     /* Remove any inherited hover effects that might apply broadly */
@@ -418,7 +416,6 @@
       }
       #date-placeholder {
         font-style: italic;
-        font-size: 14px;
         text-align: right;
         margin-top: 10;
         margin-right: 50px;
@@ -661,6 +658,7 @@
                 </div>
             </td>
             <td>
+                <div id="date-placeholder"></div>
                 <button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button>
             </td>
         </tr>
@@ -676,7 +674,6 @@
     </tfoot>
 </table>
 <span>
-<div id="date-placeholder"></div>
 <div id="errorMessage"></div> <!-- Error message element --></span>
 <div id="bottom-disclosure">
     <span>
