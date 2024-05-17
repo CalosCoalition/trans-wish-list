@@ -1588,29 +1588,68 @@ function handleData(data) {
             lastButton.addEventListener('click', () => paginateTable(rowsPerPage, totalPages));
             paginationControls.appendChild(lastButton);
         }
-function sortTable(columnIndex) {
-  const table = document.querySelector("#wishList tbody");
-  const rows = Array.from(table.rows);
-  const order = prevSortedColumnIndex === columnIndex ? 'desc' : 'asc';
+        function sortTable(columnIndex) {
+        var table = document.getElementById("wishList");
+        var tbody = table.getElementsByTagName("tbody")[0];
+        var rows = Array.from(tbody.getElementsByTagName("tr"));
+        var headerRow = table.tHead.rows[3];
+        var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
+        
+        // Clear any existing arrows from the current column header
+        headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
 
-  rows.sort((a, b) => {
-    const cellA = a.cells[columnIndex].innerText;
-    const cellB = b.cells[columnIndex].innerText;
+        headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
-    if (order === 'asc') {
-      return cellA.localeCompare(cellB, undefined, { numeric: true });
-    } else {
-      return cellB.localeCompare(cellA, undefined, { numeric: true });
+        rows.sort(function (a, b) {
+            var aValue = a.cells[columnIndex].getAttribute('data-sort') || a.cells[columnIndex].textContent.trim();
+            var bValue = b.cells[columnIndex].getAttribute('data-sort') || b.cells[columnIndex].textContent.trim();
+
+            if (columnIndex === 7 || columnIndex === 8) { // Numeric sorting for TWL ID and Verified
+                aValue = parseInt(aValue, 10);
+                bValue = parseInt(bValue, 10);
+            } else { // Textual or date sorting
+                if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
+                    // Compare dates
+                    aValue = new Date(aValue);
+                    bValue = new Date(bValue);
+                } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
+                    // Compare numeric values
+                    aValue = parseFloat(aValue);
+                    bValue = parseFloat(bValue);
+                } else {
+                    // Case-insensitive textual comparison
+                    aValue = aValue.toLowerCase();
+                    bValue = bValue.toLowerCase();
+                }
+            }
+
+            if (isAscending) {
+                return aValue > bValue ? 1 : -1;
+            } else {
+                return aValue < bValue ? 1 : -1;
+            }
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+        updateRowColors(); // Update row colors after filtering
+        
+        // Remove the arrow from the previously sorted column
+        if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
+            var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
+            prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
+        }
+
+        // Append the appropriate arrow to the currently sorted column
+        var currentHeaderCell = headerRow.cells[columnIndex];
+        if (isAscending) {
+            currentHeaderCell.textContent += ' ⤓';
+        } else {
+            currentHeaderCell.textContent += ' ⤒';
+        }
+
+        // Update the previously sorted column index
+        prevSortedColumnIndex = columnIndex;
     }
-  });
-
-  rows.forEach(row => table.appendChild(row));
-  prevSortedColumnIndex = order === 'asc' ? columnIndex : null;
-}
-
-function returnToTop() {
-  document.documentElement.scrollTop = 0;
-}
 
 // Function for handling TWL Search Bar Input
     function handleTwlInput() {
