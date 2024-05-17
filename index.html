@@ -790,6 +790,7 @@ function handleUrlParameters() {
         applyAllFilters();
         paginateTable(rowsPerPage, currentPage);
         if (autoOpen) {
+            applyAllFilters();
             const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
             if (firstVisibleRow) {
                 const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
