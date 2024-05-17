@@ -713,15 +713,6 @@
     <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
 </div>
 <script>
-// Define Global Variables
-let prevSortedColumnIndex = null;
-let isFilterVisible = true; // Initial state: visible
-let twlInputTimeout;
-let currentPage = 1;
-let rowsPerPage = 20;
-let accessibilityEnabled = false;
-let locationSet = new Set();
-let filteredData = [];     
 //Begin Asynic Loading of Data to pass for Handling
     async function fetchWishListData() {
         try {
@@ -733,7 +724,6 @@ let filteredData = [];
             console.log('Fetched Data:', data); // Log fetched data to ensure it's being fetched correctly
             
             if (data && data.wishes && Array.isArray(data.wishes)) {
-                handleData(data.wishes); // Pass the wishes array to handleData
                 return data.wishes; // Return the fetched data
             } else {
                 console.error('Fetched data does not contain an array of wishes');
@@ -762,6 +752,15 @@ let filteredData = [];
             handleTwlInput();
         });
     }
+// Define Global Variables
+    let prevSortedColumnIndex = null;
+    let isFilterVisible = true; // Initial state: visible
+    let twlInputTimeout;
+    let currentPage = 1;
+    let rowsPerPage = 20;
+    let accessibilityEnabled = false;
+    let locationSet = new Set();
+    let filteredData = [];     
 /*BEGIN App Loading Listening Script*/
 document.addEventListener('DOMContentLoaded', function() {
     // Fetch Wish List Data
@@ -772,6 +771,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data && Array.isArray(data)) {
             handleData(data);
             populateFilters(data);
+            initializeSelect2();
         } else {
             console.error('No data available or data is not in the correct format.');
         }
@@ -782,7 +782,6 @@ document.addEventListener('DOMContentLoaded', function() {
         datePlaceholder.textContent = formattedDate;
         // Enhance accessibility and initialize Select2 dropdown menus
         enhanceAccessibility();
-        initializeSelect2();
         // Apply filters and set up pagination
         applyAllFilters();
         paginateAndRender();
