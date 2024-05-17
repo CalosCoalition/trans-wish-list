@@ -1589,67 +1589,75 @@ function handleData(data) {
             paginationControls.appendChild(lastButton);
         }
         function sortTable(columnIndex) {
-        var table = document.getElementById("wishList");
-        var tbody = table.getElementsByTagName("tbody")[0];
-        var rows = Array.from(tbody.getElementsByTagName("tr"));
-        var headerRow = table.tHead.rows[3];
-        var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
-        
-        // Clear any existing arrows from the current column header
-        headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
+  const table = document.querySelector("#wishList tbody");
+  const headerRow = document.querySelector("#wishList thead tr"); // Adjust if needed based on your actual header row
+  const isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
 
-        headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
+  // Clear any existing arrows from the current column header
+  headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
 
-        rows.sort(function (a, b) {
-            var aValue = a.cells[columnIndex].getAttribute('data-sort') || a.cells[columnIndex].textContent.trim();
-            var bValue = b.cells[columnIndex].getAttribute('data-sort') || b.cells[columnIndex].textContent.trim();
+  // Toggle sorting order
+  headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
-            if (columnIndex === 7 || columnIndex === 8) { // Numeric sorting for TWL ID and Verified
-                aValue = parseInt(aValue, 10);
-                bValue = parseInt(bValue, 10);
-            } else { // Textual or date sorting
-                if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
-                    // Compare dates
-                    aValue = new Date(aValue);
-                    bValue = new Date(bValue);
-                } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
-                    // Compare numeric values
-                    aValue = parseFloat(aValue);
-                    bValue = parseFloat(bValue);
-                } else {
-                    // Case-insensitive textual comparison
-                    aValue = aValue.toLowerCase();
-                    bValue = bValue.toLowerCase();
-                }
-            }
+  filteredData.sort((a, b) => {
+    let aValue = a[columnIndex] || a[columnIndex].innerText.trim();
+    let bValue = b[columnIndex] || b[columnIndex].innerText.trim();
 
-            if (isAscending) {
-                return aValue > bValue ? 1 : -1;
-            } else {
-                return aValue < bValue ? 1 : -1;
-            }
-        });
-
-        rows.forEach(row => tbody.appendChild(row));
-        updateRowColors(); // Update row colors after filtering
-        
-        // Remove the arrow from the previously sorted column
-        if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
-            var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
-            prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
-        }
-
-        // Append the appropriate arrow to the currently sorted column
-        var currentHeaderCell = headerRow.cells[columnIndex];
-        if (isAscending) {
-            currentHeaderCell.textContent += ' ⤓';
-        } else {
-            currentHeaderCell.textContent += ' ⤒';
-        }
-
-        // Update the previously sorted column index
-        prevSortedColumnIndex = columnIndex;
+    if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
+      // Handle date sorting
+      aValue = new Date(aValue);
+      bValue = new Date(bValue);
+    } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
+      // Handle numeric values
+      aValue = parseFloat(aValue);
+      bValue = parseFloat(bValue);
+    } else {
+      // Handle textual comparison
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
     }
+
+    if (isAscending) {
+      return aValue > bValue ? 1 : -1;
+    } else {
+      return aValue < bValue ? 1 : -1;
+    }
+  });
+
+  // Clear existing rows in the table body
+  table.innerHTML = '';
+
+  // Re-append sorted rows to the table body
+  filteredData.forEach(rowData => {
+    const row = document.createElement('tr');
+    Object.values(rowData).forEach(cellData => {
+      const cell = document.createElement('td');
+      cell.innerText = cellData;
+      row.appendChild(cell);
+    });
+    table.appendChild(row);
+  });
+
+  // Update row colors if needed
+  updateRowColors();
+
+  // Remove the arrow from the previously sorted column
+  if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
+    const prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
+    prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
+  }
+
+  // Append the appropriate arrow to the currently sorted column
+  const currentHeaderCell = headerRow.cells[columnIndex];
+  if (isAscending) {
+    currentHeaderCell.textContent += ' ⤒'; // Ascending arrow
+  } else {
+    currentHeaderCell.textContent += ' ⤓'; // Descending arrow
+  }
+
+  // Update the previously sorted column index
+  prevSortedColumnIndex = columnIndex;
+}
 
 // Function for handling TWL Search Bar Input
     function handleTwlInput() {
