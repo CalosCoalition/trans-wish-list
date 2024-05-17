@@ -592,30 +592,80 @@
       padding: 20px;
     }
   
-    /* Styles for mobile responsiveness and other styling are kept as you provided */
-    @media screen and (max-width: 768px) {
-      .header, .table-container, table, .container {
+/* Tablet styles */
+@media (max-width: 1024px) {
+    body {
+        font-size: 14px;
+        padding: 15px;
+    }
+    .header, .table-container, table, .container {
         width: 100%;
         margin: 0;
-      }
-      
-      th, td {
+    }
+    th, td {
+        padding: 6px;
+        font-size: 12px;
+    }
+    /* Adjust specific widths for Tablet View to the columns to prevent crowding */
+    th:nth-child(1), td:nth-child(1) { width: 8%; }
+    th:nth-child(2), td:nth-child(2) { width: 15%; }
+    th:nth-child(3), td:nth-child(3) { width: 15%; }
+    th:nth-child(4), td:nth-child(4) { width: 27%; }
+    th:nth-child(5), td:nth-child(5) { width: 8%; }
+    th:nth-child(6), td:nth-child(6) { width: 13%; }
+    th:nth-child(7), td:nth-child(7) { width: 4%; }
+    th:nth-child(8), td:nth-child(8) { width: 10%; }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    body {
+        font-size: 12px;
+        padding: 10px;
+    }
+    .header, .table-container, table, .container {
+        width: 100%;
+        margin: 0;
+    }
+    th, td {
         padding: 4px;
         font-size: 10px;
-      }
-      
-      /* Set specific widths for Mobile View to the columns to prevent crowding */
-      th:nth-child(1), td:nth-child(1) { width: 8%; }
-      th:nth-child(2), td:nth-child(2) { width: 15%; }
-      th:nth-child(3), td:nth-child(3) { width: 15%; }
-      th:nth-child(4), td:nth-child(4) { width: 27%; }
-      th:nth-child(5), td:nth-child(5) { width: 8%; }
-      th:nth-child(6), td:nth-child(6) { width: 13%; }
-      th:nth-child(7), td:nth-child(7) { width: 4%; }
-      th:nth-child(8), td:nth-child(8) { width: 10%; }
     }
-  
-    /* END Styles for Mobile Responsiveness */    
+    /* Adjust specific widths for Mobile View to the columns to prevent crowding */
+    th:nth-child(1), td:nth-child(1) { width: 8%; }
+    th:nth-child(2), td:nth-child(2) { width: 15%; }
+    th:nth-child(3), td:nth-child(3) { width: 15%; }
+    th:nth-child(4), td:nth-child(4) { width: 27%; }
+    th:nth-child(5), td:nth-child(5) { width: 8%; }
+    th:nth-child(6), td:nth-child(6) { width: 13%; }
+    th:nth-child(7), td:nth-child(7) { width: 4%; }
+    th:nth-child(8), td:nth-child(8) { width: 10%; }
+}
+
+/* Extra small mobile styles */
+@media (max-width: 480px) {
+    body {
+        font-size: 10px;
+        padding: 5px;
+    }
+    .header, .table-container, table, .container {
+        width: 100%;
+        margin: 0;
+    }
+    th, td {
+        padding: 2px;
+        font-size: 8px;
+    }
+    /* Adjust specific widths for Extra Small Mobile View to the columns to prevent crowding */
+    th:nth-child(1), td:nth-child(1) { width: 8%; }
+    th:nth-child(2), td:nth-child(2) { width: 15%; }
+    th:nth-child(3), td:nth-child(3) { width: 15%; }
+    th:nth-child(4), td:nth-child(4) { width: 27%; }
+    th:nth-child(5), td:nth-child(5) { width: 8%; }
+    th:nth-child(6), td:nth-child(6) { width: 13%; }
+    th:nth-child(7), td:nth-child(7) { width: 4%; }
+    th:nth-child(8), td:nth-child(8) { width: 10%; }
+}  
   </style>
 </head>
 <body>
