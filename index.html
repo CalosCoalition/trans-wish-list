@@ -818,45 +818,6 @@
         <p><button onclick="copyToClipboard()" aria-label="Copy TWL ID and Open Donation Tab">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
       </div>
 <script>
-// Begin Async Loading of Data to pass for Handling
-async function fetchWishListData() {
-  try {
-    const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const data = await response.json();
-    console.log('Fetched Data:', data);
-    if (data && data.wishes && Array.isArray(data.wishes)) {
-      return data.wishes;
-    } else {
-      console.error('Fetched data does not contain an array of wishes');
-      return [];
-    }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return [];
-  }
-}
-
-function addEventListeners() {
-  document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
-  document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
-  document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
-  document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
-  document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
-  document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
-  document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
-  document.getElementById('searchInput').addEventListener('input', applyAllFilters);
-  document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
-  document.getElementById('toggleFiltersButton').addEventListener('click', toggleFilterRow);
-  document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
-  document.getElementById('twlIdInput').addEventListener('blur', function() {
-    clearTimeout(twlInputTimeout);
-    handleTwlInput();
-  });
-}
-
 const wishType64pxIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Clothing%20Icon.png",
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Dream%20Icon.png",
@@ -917,7 +878,6 @@ const wishStatusIcon = [
 const calosEmblemAndTextImageURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-and-text.png";
 const unverifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Unverified.png";
 const verifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Verified.png";
-
 let prevSortedColumnIndex = null;
 let isFilterVisible = true;
 let twlInputTimeout;
@@ -926,10 +886,51 @@ let rowsPerPage = 20;
 let accessibilityEnabled = false;
 let locationSet = new Set();
 let filteredData = [];
-
+// Begin Async Loading of Data to pass for Handling
+async function fetchWishListData() {
+            try {
+                const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('Fetched Data:', data);
+                if (data && data.wishes && Array.isArray(data.wishes)) {
+                    return data.wishes;
+                } else {
+                    console.error('Fetched data does not contain an array of wishes');
+                    return [];
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
+        function addEventListeners() {
+            document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
+            document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
+            document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+            document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
+            document.getElementById('toggleFiltersButton').addEventListener('click', toggleFilterRow);
+            document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
+            document.getElementById('twlIdInput').addEventListener('blur', function() {
+                clearTimeout(twlInputTimeout);
+                handleTwlInput();
+            });
+        }
 document.addEventListener('DOMContentLoaded', async function() {
   try {
     const data = await fetchWishListData();
+    if (!data || !Array.isArray(data)) {
+      console.error('No data available or data is not in the correct format.');
+      return;
+    }
+
     const datePlaceholder = document.getElementById('date-placeholder');
     const today = new Date();
     const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
@@ -939,17 +940,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     enhanceAccessibility();
     initializeSelect2Elements();
     setupToggleButton();
-    handleUrlParameters();
 
-    if (data && Array.isArray(data)) {
-      console.log('Fetched Data:', data);
-      handleData(data);
-      populateFilters(data);
-      applyAllFilters();
-      paginateAndRender();
-    } else {
-      console.error('No data available or data is not in the correct format.');
-    }
+    console.log('Fetched Data:', data);
+    handleData(data);
+    populateFilters(data);
+    applyAllFilters();
+    paginateAndRender();
+
+    handleUrlParameters(); // Ensure this is called after data is loaded and rendered
 
     logInitialFilterRowState();
   } catch (error) {
@@ -958,52 +956,54 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 function handleUrlParameters() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const searchQuery = urlParams.get('search');
-  const autoOpen = urlParams.get('autoOpen') === 'true';
-  console.log(searchQuery, autoOpen);
-  const searchInput = document.getElementById('twlIdInput');
-  if (searchInput && searchQuery) {
-    searchInput.value = searchQuery;
-    applyAllFilters();
-    paginateAndRender();
-    if (autoOpen) {
-      handleTwlInput();
-      const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
-      if (firstVisibleRow) {
-        const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
-        openDetailView(itemData);
-      }
-      firstVisibleRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      window.parent.postMessage({ type: 'scrollToTop' }, '*');
-    }
-  }
-  if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      applyAllFilters();
-    });
-  }
-}
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get('search');
+            const autoOpen = urlParams.get('autoOpen') === 'true';
+            console.log(searchQuery, autoOpen);
+            const searchInput = document.getElementById('twlIdInput');
+            if (searchInput && searchQuery) {
+                searchInput.value = searchQuery;
+                applyAllFilters();
+                paginateAndRender();
+                if (autoOpen) {
+                    handleTwlInput();
+                    const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
+                    if (firstVisibleRow) {
+                        const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
+                        openDetailView(itemData);
+                        firstVisibleRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        window.parent.postMessage({ type: 'scrollToTop' }, '*');
+                    } else {
+                        console.error('Element not found for scrollIntoView');
+                    }
+                }
+            }
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    applyAllFilters();
+                });
+            }
+        }
 
-function setupToggleButton() {
-  const toggleButton = document.getElementById('toggleFiltersButton');
-  if (toggleButton) {
-    toggleButton.addEventListener('click', toggleFilterRow);
-    console.log('Toggle button found and event listener added.');
-  } else {
-    console.error('Toggle button not found');
-  }
-}
+        function setupToggleButton() {
+            const toggleButton = document.getElementById('toggleFiltersButton');
+            if (toggleButton) {
+                toggleButton.addEventListener('click', toggleFilterRow);
+                console.log('Toggle button found and event listener added.');
+            } else {
+                console.error('Toggle button not found');
+            }
+        }
 
-function logInitialFilterRowState() {
-  const filterRow = document.getElementById('filterRow');
-  const displayRow = document.getElementById('filterDisplayRow');
-  if (filterRow && displayRow) {
-    console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
-  } else {
-    console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
-  }
-}
+        function logInitialFilterRowState() {
+            const filterRow = document.getElementById('filterRow');
+            const displayRow = document.getElementById('filterDisplayRow');
+            if (filterRow && displayRow) {
+                console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
+            } else {
+                console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
+            }
+        }
 
 function updateRowsPerPage() {
   const selectedOption = document.getElementById('rowsPerPage').value;
