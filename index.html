@@ -1296,6 +1296,7 @@ function applyAllFilters() {
 
   paginateAndRender();
   updateFilterDisplayRow();
+  updateRowColors(); // Update row colors after filtering
 }
 
 function paginateAndRender() {
@@ -1431,6 +1432,7 @@ function returnToTop() {
         } else {
             applyAllFilters(); // Call the combined filter function
             updateFilterDisplayRow(); // Re-render the filter display row
+            updateRowColors(); // Update row colors after filtering
         }
     }
 
@@ -1534,7 +1536,41 @@ function resetFilters() {
           document.getElementById('searchInput').value = ''; // Clear the search input
           document.getElementById('twlIdInput').value = ''; // Clear the TWL ID input
           applyAllFilters(); // Reapply filters to update view
-      } 
+      }
+      function updateRowColors() {
+        const visibleRows = document.querySelectorAll("#wishList tbody tr:not([style*='display: none'])");
+        visibleRows.forEach((row, index) => {
+            // Remove all possible color classes
+            row.classList.remove('odd-row', 'even-row');  // Assuming 'odd-row' and 'even-row' are your color classes
+
+            // Add color class based on whether the index is even or odd
+            if (index % 2 === 0) {
+                row.classList.add('even-row');
+            } else {
+                row.classList.add('odd-row');
+            }
+        });
+    }
+      function handleFilterRowClick(event) {
+        const button = document.getElementById('removeFiltersButton');
+        // Check if the clicked element is not one of the filter removal links (span tags)
+        if (!event.target.closest('span')) {
+            // Simulate hover effect
+            button.classList.add('hover-effect');
+            setTimeout(() => {
+                button.classList.remove('hover-effect');
+            }, 200); // This timeout removes the hover effect shortly after it's applied
+
+            // Simulate click effect
+            button.classList.add('active');
+            setTimeout(() => {
+                button.classList.remove('active');
+            }, 150); // This timeout removes the active effect, making it seem like a quick press
+
+            // Finally trigger the button's default action
+            button.click();
+        }
+    } 
 </script>
 </body>
 </html>
