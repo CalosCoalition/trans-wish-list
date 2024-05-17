@@ -884,7 +884,7 @@ let twlInputTimeout;
 let currentPage = 1;
 let rowsPerPage = 20;
 let accessibilityEnabled = false;
-let locationSet = new Set();
+const locationSet = new Set();
 let filteredData = [];
 // Begin Async Loading of Data to pass for Handling
 async function fetchWishListData() {
@@ -1629,9 +1629,9 @@ function handleData(data) {
 
     // Re-append sorted rows to the table body
     filteredData.forEach(rowData => {
-        const row = document.createElement('tr');
+        let row = document.createElement('tr');
         Object.values(rowData).forEach(cellData => {
-            const cell = document.createElement('td');
+            var cell = document.createElement('td');
             cell.innerText = cellData;
             row.appendChild(cell);
         });
@@ -1643,7 +1643,7 @@ function handleData(data) {
 
     // Remove the arrow from the previously sorted column
     if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
-        const prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
+        var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
         if (prevHeaderCell) {
             prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
         }
