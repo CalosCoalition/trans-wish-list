@@ -351,12 +351,12 @@
         #returnToTopButton {
             background-color: #4CAF50; /* Green */
             color: white;
-            padding: 8px 30px; /* Padding for the button */
-            font-size: 10px; /* Match the font size of the checkboxes */
+            padding: 8px 12px; /* Padding for the button */
+            font-size: 8px; /* Match the font size of the checkboxes */
             cursor: pointer; /* Indicates the button is clickable */
             border: 1px solid; /* Border color to match the theme */
             border-radius: 5px; /* Rounded corners for the button */
-            height: 20px; /* Set the height of the button */
+            height: auto; /* Set the height of the button */
             width: auto; /* Set the width of the button */
             font-weight: bold;
             text-decoration: none !important;
@@ -388,30 +388,32 @@
             width: 100px;
             text-align: center;
         }
-        //Accessed On Styling
-        #date-placeholder {
-            font-style: italic;
-            font-size: 14px;
-            text-align: right;
-            margin-top: 10;
-            margin-right: 50px;
-        }
         /*Accessibility Toggle Styling*/
         #accessibilityToggleButton {
             background-color: #008CBA; /* Blue */
             color: white;
-            padding: 4px 8px; /* Padding for the button */
-            font-size: 10px; /* Match the font size of the checkboxes */
+            padding: 8px 12px; /* Padding for the button */
+            font-size: 8px; /* Match the font size of the checkboxes */
             cursor: pointer; /* Indicates the button is clickable */
             border: 1px solid; /* Border color to match the theme */
             border-radius: 5px; /* Rounded corners for the button */
-            height: 20px; /* Set the height of the button */
+            height: auto; /* Set the height of the button */
             width: auto; /* Set the width of the button */
             font-weight: bold;
             text-decoration: none !important;
             margin-bottom: 4px; /* Add bottom margin */
             display: inline-block;
         }
+#date-placeholder {
+    font-style: italic;
+    font-size: 14px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    display: inline-block;
+    text-align: right;
+    float: right;
+    overflow: visible;
+}
     /* Remove any inherited hover effects that might apply broadly */
     tr:hover {
         text-decoration: none; /* Ensure no row-wide hover effects are applied */
@@ -661,24 +663,27 @@
             <td>
                 <button id="returnToTopButton" onclick="returnToTop()">Return to Top</button>
             </td>
-            <td colspan="5">
+            <td colspan="6">
                 <div class="pagination-container">
                     <div id="pagination-controls" class="pagination-controls"></div><br>
                 </div>
             </td>
-            <td colspan="2">
-                <div id="date-placeholder" style="display: flex;overflow-x: visible;"><button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button></div>
+            <td>
+                <button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button>
             </td>
         </tr>
-        <tr>
-            <td colspan="8">
-                <select id="rowsPerPage" style="width: 80px !important;" onchange="updateRowsPerPage()">
-                    <option value="20">20 rows</option>
-                    <option value="50">50 rows</option>
-                    <option value="100">100 rows</option>
-                </select>    
-            </td>
-        </tr>
+<tr>
+    <td colspan="7" style="text-align: center;">
+        <select id="rowsPerPage" style="width: 80px !important;" onchange="updateRowsPerPage()">
+            <option value="20">20 rows</option>
+            <option value="50">50 rows</option>
+            <option value="100">100 rows</option>
+        </select>    
+    </td>
+    <td style="position: relative;">
+        <div id="date-placeholder"></div>
+    </td>
+</tr>
     </tfoot>
 </table>
 <span>
