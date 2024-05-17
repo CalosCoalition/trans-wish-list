@@ -879,20 +879,24 @@ function updateRowsPerPage() {
         };
 
         // Initialize dateFilter for single selection and ensure only one selection is active at a time
-        $('#dateFilter').select2({
+                $('#dateFilter').select2({
             placeholder: ' Filter by Date',
             allowClear: true,
             closeOnSelect: true,
-            minimumResultsForSearch: Infinity, // Disable search box for dateFilter
-            tags: false, // Ensure tags are not allowed
-            width: '100%' // Ensure Select2 is responsive
+            width: '100%'
         }).on('select2:selecting', function (e) {
             // Deselect all currently selected items
             $(this).val(null).trigger('change');
             // Ensure only the new item is selected
             $(this).val(e.params.args.data.id).trigger('change');
         });
-
+        //Location Filter
+        $('#locationFilter').select2({
+            placeholder: 'Select Location',
+            closeOnSelect: false,
+            tags: true,
+            width: '100%'
+        });
         // Apply the helper function with specific placeholders for each multiple selection filter
         setPlaceholderText($('#wishStatusFilter'), 'By Status');
         setPlaceholderText($('#locationFilter'), 'By Location');
@@ -907,50 +911,29 @@ function updateRowsPerPage() {
         });
     }
 
-    function populateFilters(data) {
-        const locationSet = new Set(); // Use a set to avoid duplicate locations
+            function populateFilters(data) {
+            const locationSet = new Set(["Rather Not Say", "United States"]);
 
-        // Add special entries
-        locationSet.add("Rather Not Say");
-        locationSet.add("United States");
+            data.forEach(item => {
+                let location = item['Location'].trim();
+                const stateRegex = /\b[A-Z]{2}\b/;
+                const match = location.match(stateRegex);
+                if (match) {
+                    locationSet.add(match[0]);
+                }
+            });
 
-        for (let i = 0; i < data.length; i++) {
-            let item = data[i];
-            let location = item['Location'];
-            // Remove leading and trailing whitespace manually
-            let start = 0;
-            let end = location.length - 1;
+            const locationFilter = $('#locationFilter');
+            locationFilter.empty(); // Clear existing options
 
-            while (start <= end && (location[start] === ' ' || location[start] === '\t')) {
-                start++;
-            }
-            while (end >= start && (location[end] === ' ' || location[end] === '\t')) {
-                end--;
-            }
+            locationSet.forEach(location => {
+                const option = new Option(location, location, false, false);
+                locationFilter.append(option);
+            });
 
-            location = location.substring(start, end + 1);
-
-            // Extract state abbreviation from the location, assuming it might include city names
-            const stateRegex = /\b[A-Z]{2}\b/; // Matches two uppercase letters
-            const match = location.match(stateRegex);
-            if (match) {
-                locationSet.add(match[0]); // Adds the state abbreviation
-            }
+            locationFilter.trigger('change'); // Update Select2 dropdown
         }
 
-        const locationFilter = document.getElementById('locationFilter');
-        const locationArray = Array.from(locationSet); // Convert Set to Array for iteration
-
-        for (let j = 0; j < locationArray.length; j++) {
-            const option = document.createElement('option');
-            option.value = locationArray[j];
-            option.textContent = locationArray[j];
-            locationFilter.appendChild(option);
-        }
-
-        // Re-initialize Select2 for locationFilter to apply the changes
-        $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
-    }
 
     function initializeLocationFilter() {
         const locationFilter = $('#locationFilter');
@@ -1296,68 +1279,61 @@ function updateRowsPerPage() {
             paginationControls.appendChild(lastButton);
         }
 
-    function sortTable(columnIndex) {
-        var table = document.getElementById("wishList");
-        var tbody = table.getElementsByTagName("tbody")[0];
-        var rows = Array.from(tbody.getElementsByTagName("tr"));
-        var headerRow = table.tHead.rows[3];
-        var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
-        
-        // Clear any existing arrows from the current column header
-        headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
+        function sortTable(columnIndex) {
+    var table = document.getElementById("wishList");
+    var tbody = table.getElementsByTagName("tbody")[0];
+    var rows = Array.from(tbody.getElementsByTagName("tr"));
+    var headerRow = table.tHead.rows[3];
+    var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
+    
+    headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
-        headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
+    rows.sort(function (a, b) {
+        var aValue = a.cells[columnIndex].getAttribute('data-sort') || a.cells[columnIndex].textContent.trim();
+        var bValue = b.cells[columnIndex].getAttribute('data-sort') || b.cells[columnIndex].textContent.trim();
 
-        rows.sort(function (a, b) {
-            var aValue = a.cells[columnIndex].getAttribute('data-sort') || a.cells[columnIndex].textContent.trim();
-            var bValue = b.cells[columnIndex].getAttribute('data-sort') || b.cells[columnIndex].textContent.trim();
-
-            if (columnIndex === 7 || columnIndex === 8) { // Numeric sorting for TWL ID and Verified
-                aValue = parseInt(aValue, 10);
-                bValue = parseInt(bValue, 10);
-            } else { // Textual or date sorting
-                if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
-                    // Compare dates
-                    aValue = new Date(aValue);
-                    bValue = new Date(bValue);
-                } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
-                    // Compare numeric values
-                    aValue = parseFloat(aValue);
-                    bValue = parseFloat(bValue);
-                } else {
-                    // Case-insensitive textual comparison
-                    aValue = aValue.toLowerCase();
-                    bValue = bValue.toLowerCase();
-                }
-            }
-
-            if (isAscending) {
-                return aValue > bValue ? 1 : -1;
+        if (columnIndex === 7) { // Numeric sorting for TWL ID
+            aValue = parseInt(aValue.replace('TWL-', ''), 10); // Remove 'TWL-' prefix
+            bValue = parseInt(bValue.replace('TWL-', ''), 10); // Remove 'TWL-' prefix
+        } else { // Textual or date sorting
+            if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
+            // Compare dates
+                aValue = new Date(aValue);
+                bValue = new Date(bValue);
+            } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
+            // Compare numeric values
+                aValue = parseFloat(aValue);
+                bValue = parseFloat(bValue);
             } else {
-                return aValue < bValue ? 1 : -1;
+            // Case-insensitive textual comparison
+                aValue = aValue.toLowerCase();
+                bValue = bValue.toLowerCase();
             }
-        });
-
-        rows.forEach(row => tbody.appendChild(row));
-        updateRowColors(); // Update row colors after filtering
-        
-        // Remove the arrow from the previously sorted column
-        if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
-            var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
-            prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
         }
 
-        // Append the appropriate arrow to the currently sorted column
-        var currentHeaderCell = headerRow.cells[columnIndex];
-        if (isAscending) {
-            currentHeaderCell.textContent += ' ⤓';
-        } else {
-            currentHeaderCell.textContent += ' ⤒';
-        }
+        return isAscending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
+    });
 
-        // Update the previously sorted column index
-        prevSortedColumnIndex = columnIndex;
+    rows.forEach(row => tbody.appendChild(row));
+updateRowColors(); // Update row colors after filtering
+
+    // Remove the arrow from the previously sorted column
+    if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
+        var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
+        prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
     }
+
+    // Append the appropriate arrow to the currently sorted column
+    var currentHeaderCell = headerRow.cells[columnIndex];
+    if (isAscending) {
+        currentHeaderCell.textContent += ' ⤓';
+    } else {
+        currentHeaderCell.textContent += ' ⤒';
+    }
+
+    // Update the previously sorted column index
+    prevSortedColumnIndex = columnIndex;
+}
     // Combined function to apply all filters
     function applyAllFilters() {
         const dateFilterValues = $('#dateFilter').val() || [];
@@ -1572,16 +1548,24 @@ function updateRowsPerPage() {
         // Clear all select inputs
         const selects = document.querySelectorAll('#filterRow select');
         selects.forEach(select => {
-            $(select).val(null).off('change').trigger('change');
-            $(select).on('change', applyAllFilters); // Reattach event listener after reset
+            $(select).val(null).trigger('change');
         });
+
         // Reset checkboxes to default checked state
         document.querySelectorAll('#filterRow input[type="checkbox"]').forEach(checkbox => {
             checkbox.checked = true;
         });
-        document.getElementById('searchInput').value = ''; // Clear the search input
-        document.getElementById('twlIdInput').value = ''; // Clear the TWL ID input
-        applyAllFilters(); // Reapply filters to update view
+
+        // Clear the search input and TWL ID input
+        document.getElementById('searchInput').value = '';
+        document.getElementById('twlIdInput').value = '';
+
+        // Reset rows per page
+        rowsPerPage = 20; // Or the default value you need
+        currentPage = 1;
+
+        applyAllFilters();
+        paginateTable(rowsPerPage, currentPage);
     }
 
     function updateRowColors() {
