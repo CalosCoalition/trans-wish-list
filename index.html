@@ -1076,20 +1076,34 @@ function applyLocationFilter() {
             row.style.display = locationText.includes(selectedState) ? "" : "none";
         });
     }    
-function populateFilters(data) {
-    const locationSet = new Set(); // Use a set to avoid duplicate locations
-    // Add special entries
-    locationSet.add("Rather Not Say");
-    locationSet.add("United States");
+    function populateFilters(data) {
+        const locationFilter = document.getElementById('locationFilter');
+        const locationSet = new Set(); // Use a set to avoid duplicate locations
 
-  data.forEach(item => {
-    let location = item['Location'].trim();
-    const stateRegex = /\b[A-Z]{2}\b/;
-    const match = location.match(stateRegex);
-    if (match) {
-      locationSet.add(match[0]);
+        // Add special entries
+        locationSet.add("Rather Not Say");
+        locationSet.add("United States");
+
+        data.forEach(item => {
+            let location = item['Location'].trim();
+            // Extract state abbreviation from the location, assuming it might include city names
+            const stateRegex = /\b[A-Z]{2}\b/; // Matches two uppercase letters
+            const match = location.match(stateRegex);
+            if (match) {
+                locationSet.add(match[0]); // Adds the state abbreviation
+            }
+        });
+
+        locationSet.forEach(location => {
+            const option = document.createElement('option');
+            option.value = location;
+            option.textContent = location;
+            locationFilter.appendChild(option);
+        });
+
+        // Re-initialize Select2 for locationFilter to apply the changes
+        $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
     }
-  });
 
   const locationFilter = document.getElementById('locationFilter');
         locationSet.forEach(location => {
@@ -1357,42 +1371,143 @@ function paginateAndRender() {
 }
 
 function handleData(data) {
-  const tbody = document.querySelector('#wishList tbody');
-  tbody.innerHTML = '';
-  let isOddRow = true;
+    if (!data) {
+        return;
+    }
+    const tableBody = document.querySelector("#wishList tbody");
+    tableBody.innerHTML = ""; // Clear previous entries
+    data.forEach(item => {
+        const row = tableBody.insertRow();
+        row.setAttribute('data-item', JSON.stringify(item)); // Add this line for Search Bar
+        
+        // Set the 'data-days' attribute for each row
+        row.setAttribute('data-days', item.daysSince); // 'daysSince' is calculated and passed from the server
+        
+        // Set Date Applied with a sortable ISO string in the 'data-sort' attribute
+        const cellDate = row.insertCell();
+        const date = new Date(item['Date Applied']);
+        const formattedDate = date.toISOString().slice(0, 10);
+        cellDate.textContent = formattedDate;
+        cellDate.setAttribute('data-sort', date.toISOString());
+        
+        // Set Location
+        const cellLocation = row.insertCell();
+        cellLocation.textContent = item['Location'];
+        
+        // Handle Wish Urgency
+        const cellUrgency = row.insertCell();
+        const fullUrgencyText = item['Wish Urgency'];
+        const urgencyParts = fullUrgencyText.split(", "); // Assuming the format is "Intensity, Timeframe"
 
-  data.forEach(item => {
-    const tr = document.createElement('tr');
-    tr.className = isOddRow ? 'odd-row' : 'even-row';
-    isOddRow = !isOddRow;
+        // Use the updateWishUrgency function to handle the cell content and styling
+        updateWishUrgency(cellUrgency, urgencyParts[1], urgencyParts[0]); // Note the order: timeframe, intensity
+        
+        // Determine content availability based on preferences and actual content
+        const hasImage = item['Content Preferences'].includes('Photo(s)') && item['Image URL'] ? true : false;
+        const hasAudio = item['Content Preferences'].includes('Voice Recording') && item['Recorded Message URL'] ? true : false;
+        const hasVideo = item['Content Preferences'].includes('Video Link') && item['Link to Video'] ? true : false;
+        const hasLinks = item['Links'] ? true : false;
+        const hasNoContent = item['Content Preferences'].trim() === 'Wish Story' && !hasImage && !hasAudio && !hasVideo && !hasLinks;
+        // Set Content Related attributes based on content checks
+        row.setAttribute('data-has-image', hasImage);
+        row.setAttribute('data-has-audio', hasAudio);
+        row.setAttribute('data-has-video', hasVideo);
+        row.setAttribute('data-has-links', hasLinks);
+        row.setAttribute('data-has-no-content', hasNoContent);
 
-    tr.setAttribute('data-days', item.days_since_applied);
-    tr.setAttribute('data-item', JSON.stringify(item));
+        // Set Posting Title
+        const cellTitle = row.insertCell();
+        cellTitle.textContent = item['Posting Title'];
 
-    tr.innerHTML = `
-      <td>${item.Date_Applied}</td>
-      <td>${item.Location}</td>
-      <td class="urgent-cell">
-        <span class="${item.urgencyClass}">
-          ${item.Wish_Urgency}
-        </span>
-      </td>
-      <td>
-        <div class="image-tooltip-container">
-          <img class="icon-image" src="${wishType64pxIcon[item.WishTypeIconIndex]}" alt="Wish Type Icon" title="${item.Wish_Type}">
-          <span class="tooltip">${item.Description}</span>
-        </div>
-      </td>
-      <td>${item.Wish_Status}</td>
-      <td>${item.Name}</td>
-      <td>
-        <img src="${item.Verified ? verifiedBadgeURL : unverifiedBadgeURL}" alt="${item.Verified ? 'Verified' : 'Unverified'}" title="${item.Verified ? 'Verified' : 'Unverified'}">
-      </td>
-      <td>${item.TWL_ID}</td>
-    `;
-    tr.onclick = () => openDetailView(item);
-    tbody.appendChild(tr);
-  });
+        // Set Wish Status with Images
+        const statusContainer = document.createElement('div');
+        statusContainer.className = 'image-tooltip-container';
+        const cellWishStatus = row.insertCell();
+        const wishStatus = item['Wish Status'];
+        let statusSortValue = '';
+        const statusImage = document.createElement('img');
+        statusImage.style.display = 'block';
+        statusImage.style.margin = 'auto';
+        statusImage.style.overflow = 'visible';
+        statusImage.style.maxWidth = '50px';
+        statusImage.style.maxHeight = '50px';
+        const statusTooltip = document.createElement('span');
+        statusTooltip.className = 'tooltip';
+        statusTooltip.textContent = wishStatus; // Tooltip text
+        if (wishStatus === 'New/Unfulfilled') {
+            row.setAttribute('data-sort', 'New/Unfulfilled');  // New/Unfulfilled
+            statusImage.src = 'https://lh3.google.com/u/0/d/1HKxEOpBRyE35FUjDOovuR5ZTjskvsTMr';
+            statusImage.className = 'icon-cell newStatus-icon';
+            statusImage.alt = 'New/Unfulfilled';
+            statusSortValue = '3';
+        } else if (wishStatus === 'Unfulfilled') {
+            statusImage.src = 'https://lh3.google.com/u/0/d/1HEiT1SchXaXPVCvH9GXPPTF4KXlY9oka';//URL to Unfulfilled Image
+            statusImage.className = 'icon-cell unfulfilled-icon';
+            statusImage.alt = 'Unfulfilled';
+            statusSortValue = '2';
+            row.setAttribute('data-sort', 'Unfulfilled');  // Unfulfilled
+        } else if (wishStatus === 'Fulfilled') {
+            statusImage.src = 'https://lh3.google.com/u/0/d/1H78Xxha9fcFXA3hic__5plCWFQ9BkagR'; //URL to Fulfilled Image
+            statusImage.className = 'icon-cell fulfilled-icon';
+            statusImage.alt = 'Fulfilled';
+            statusSortValue = '1';
+            row.setAttribute('data-sort', 'Fulfilled');  // Fulfilled
+        }
+        statusContainer.appendChild(statusImage);
+        statusContainer.appendChild(statusTooltip); // Append the tooltip to the container
+        cellWishStatus.appendChild(statusContainer); // Append the container to the cell
+        cellWishStatus.setAttribute('data-sort', statusSortValue);
+
+        // Set Public Name
+        const cellName = row.insertCell();
+        cellName.textContent = item['Public Name'];
+        // Sort alphabetically by public name
+        cellName.setAttribute('data-sort', item['Public Name'].toLowerCase()); // Use lowercase for consistent sorting
+
+        // Set Verified Status with Images
+        const verificationContainer = document.createElement('div');
+        verificationContainer.className = 'image-tooltip-container';
+        const cellVerified = row.insertCell();
+        const verificationStatus = item['Verified?'];
+        let sortValue = '';
+        const verifiedImage = document.createElement('img');
+        verifiedImage.style.display = 'block';
+        verifiedImage.style.margin = 'auto';
+        verifiedImage.style.overflow = 'visible';
+        verifiedImage.style.maxWidth = '40px';
+        verifiedImage.style.maxHeight = '40px';
+        const verifiedTooltip = document.createElement('span');
+        verifiedTooltip.className = 'tooltip';
+        verifiedTooltip.textContent = verificationStatus; // Tooltip text
+        if (verificationStatus === 'Pending') {
+            cellVerified.textContent = verificationStatus;
+            cellVerified.style.textAlign = 'center';
+            row.setAttribute('data-verified', 'Pending');  // Pending
+            sortValue = '3';
+        } else if (verificationStatus === 'Unverified') {
+            verifiedImage.src = 'https://lh3.google.com/u/0/d/1FRB5gDmVzKlWf6DX6GD2LfEZgmsseyvQ';
+            verifiedImage.alt = 'Unverified';
+            sortValue = '2';
+            row.setAttribute('data-verified', 'Unverified');  // Unverified
+        } else if (verificationStatus === 'Verified') {
+            verifiedImage.src = 'https://lh3.google.com/u/0/d/1ylrnVGjCtac2ABcXk-SMA6Is3hueS-j9';
+            verifiedImage.alt = 'Verified';
+            sortValue = '1';
+            row.setAttribute('data-verified', 'Verified');  // Verified
+        }
+        verificationContainer.appendChild(verifiedImage);
+        verificationContainer.appendChild(verifiedTooltip); // Append the tooltip to the container
+        cellVerified.appendChild(verificationContainer); // Append the container to the cell
+        cellVerified.setAttribute('data-sort', sortValue);
+        
+        // Set TWL ID # (assuming numeric sorting)
+        const cellID = row.insertCell();
+        cellID.textContent = item['TWL ID #'];
+        cellID.setAttribute('data-sort', parseInt(item['TWL ID #'], 10).toString());
+
+        // Add click event listener for the detail view modal
+        row.addEventListener('click', () => openDetailView(item));
+    });
 }
 
 function sortTable(columnIndex) {
