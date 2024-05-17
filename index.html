@@ -1219,7 +1219,51 @@ function updateFilterDisplayRow() {
     filterDisplayRow.style.display = 'none';
   }
 }
+    function updateWishUrgency(cell, timeframe, intensity) {
+        // Clear the existing content of the cell
+        cell.textContent = '';
 
+        // Create span for timeframe
+        var timeframeSpan = document.createElement('span');
+        timeframeSpan.textContent = timeframe;
+        timeframeSpan.classList.add('urgency-tag');
+
+        // Apply specific class based on the timeframe value
+        switch (timeframe) {
+            case "Less than 30 Days":
+                timeframeSpan.classList.add('urgent-less30');
+                cell.setAttribute('data-sort', '1');
+                break;
+            case "30-90 Days":
+                timeframeSpan.classList.add('urgent-30to90');
+                cell.setAttribute('data-sort', '2');
+                break;
+            case "90-180 Days":
+                timeframeSpan.classList.add('urgent-90to180');
+                cell.setAttribute('data-sort', '3');
+                break;
+            case "180-365 Days":
+                timeframeSpan.classList.add('urgent-180to365');
+                cell.setAttribute('data-sort', '4');
+                break;
+            case "1+ Year":
+                timeframeSpan.classList.add('urgent-over365');
+                cell.setAttribute('data-sort', '5');
+                break;
+            default:
+                timeframeSpan.style.backgroundColor = '#FFFFFF'; // Default to white if no match
+                cell.setAttribute('data-sort', '0'); // Default case if no match
+        }
+
+        // Create span for intensity
+        var intensitySpan = document.createElement('span');
+        intensitySpan.textContent = intensity;
+        intensitySpan.classList.add('urgency-tag', 'intensity-tag'); // Intensity has its own fixed style
+
+        // Append both spans to the cell
+        cell.appendChild(intensitySpan);
+        cell.appendChild(timeframeSpan);
+    }
 function applyAllFilters() {
   const dateFilterValues = $('#dateFilter').val() || [];
   const locationFilterValues = $('#locationFilter').val() || [];
