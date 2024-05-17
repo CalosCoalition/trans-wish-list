@@ -1,0 +1,57 @@
+----------------------------------------------------------------------------------------
+Current Raw URL List from: CalosCoalition trans-wish-list main assets/images:
+----------------------------------------------------------------------------------------
+0, calos-emblem-and-text.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-and-text.png
+1, Clothing Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Clothing%20Icon.png
+2, Dream Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Dream%20Icon.png
+3, Educational Grant Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Educational%20Grant%20Icon.png
+4, Employment Support Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Employment%20Support%20Icon.png
+5, Experiences Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Experiences%20Icon.png
+6, Family Support Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Family%20Support%20Icon.png
+7, Financial Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Financial%20Assistance%20Icon.png
+8, Food & Essentials Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Food%20%26%20Essentials%20Icon.png
+9, General Aid_Other Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/General%20Aid_Other%20Icon.png
+10, Housing Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Housing%20Assistance%20Icon.png
+11, Legal Aid Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Legal%20Aid%20Icon.png
+12, Medical Aid Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Medical%20Aid%20Icon.png
+13, Mental Health Support Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Mental%20Health%20Support%20Icon.png
+14, Pet Care Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Pet%20Care%20Icon.png
+15, Self-Care & Wellness Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Self-Care%20%26%20Wellness%20Icon.png
+16, Social & Community Engagement Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Social%20%26%20Community%20Engagement%20Icon.png
+17, Technology & Equipment Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Technology%20%26%20Equipment%20Icon.png
+18, Transition Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Transition%20Assistance%20Icon.png
+19, Travel Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Travel%20Assistance%20Icon.png
+20, Type Unknown Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Type%20Unknown%20Icon.png
+21, Vehicle Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Vehicle%20Assistance%20Icon.png
+22, Clothing Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Clothing%20Icon.png
+23, Dream Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Dream%20Icon.png
+24, Educational Grant Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Educational%20Grant%20Icon.png
+25, Employment Support Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Employment%20Support%20Icon.png
+26, Experiences Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Experiences%20Icon.png
+27, Family Support Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Family%20Support%20Icon.png
+28, Financial Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Financial%20Assistance%20Icon.png
+29, Food & Essentials Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Food%20%26%20Essentials%20Icon.png
+30, General Aid_Other Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/General%20Aid_Other%20Icon.png
+31, Housing Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Housing%20Assistance%20Icon.png
+32, Legal Aid Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Legal%20Aid%20Icon.png
+33, Medical Aid Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Medical%20Aid%20Icon.png
+34, Mental Health Support Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Mental%20Health%20Support%20Icon.png
+35, Pet Care Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Pet%20Care%20Icon.png
+36, Self-Care & Wellness Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Self-Care%20%26%20Wellness%20Icon.png
+37, Social & Community Engagement Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Social%20%26%20Community%20Engagement%20Icon.png
+38, Technology & Equipment Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Technology%20%26%20Equipment%20Icon.png
+39, Transition Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Transition%20Assistance%20Icon.png
+40, Travel Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Travel%20Assistance%20Icon.png
+41, Type Unknown Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Type%20Unknown%20Icon.png
+42, Vehicle Assistance Icon.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Vehicle%20Assistance%20Icon.png
+43, Unverified.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Unverified.png
+44, Verified.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Verified.png
+45, Filled Hover.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled%20Hover.png
+46, Filled.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled.png
+47, New Wish Hover.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish%20Hover.png
+48, New Wish.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish.png
+49, Unfilled Hover.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled%20Hover.png
+50, Unfilled.png, https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled.png
+-----------------------------------------
+Thank you for using gitHubURLgit v1.0
+------------------------------------------
