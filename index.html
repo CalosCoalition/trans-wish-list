@@ -13,6 +13,9 @@
 <script src="https://apis.google.com/js/api.js"></script>
 <!-- Include iframe-resizer library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.contentWindow.min.js"></script>
+<!-- Include polyfill library for Compatible -->
+<script src="https://polyfill.io/v3/polyfill.min.js"></script>
+<!-- Do not forget to add vendor tags with autoprefixer and also Minimize the code programatically before final version release -->
 <style>
     :root {
       --primary-bg: #C08CCF;
@@ -676,144 +679,148 @@
   </style>
 </head>
 <body>
-<div class="header">
-  <a href="https://twl.caloscoalition.com">
-    <img src="https://lh3.google.com/u/0/d/1DBTKzgwpwpH-ff24IlUrY9bkLpSB-7Kl" alt="Calos Coalition Shield Emblem Logo">
-  </a>
-  <h1><br>Trans Wish List</h1>
-</div>
-<div class="linkBar">
-  <h2><a href="https://www.caloscoalition.com/submit-trans-wish">Submit Wish</a> | <a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A">Donate</a> | <a href="https://www.caloscoalition.com/submitstory">Share Joy</a></h2>
-</div>
-<table id="wishList">
-  <thead>
-    <tr style="border: 2px solid black; background-color: #E8D9F3; padding: 2px 2px; border-radius: 4px;">
-      <th colspan="8">
-        <div class="header-input-container">
-          <button id="toggleFiltersButton" style="margin-right: 3px; font-size: 14px; height: 28px; font-weight: bold;">▼</button>
-          <input type="text" id="searchInput" placeholder="Search List..." onkeyup="applyAllFilters()">
-          <button id="resetFiltersButton" onclick="resetFilters()" style="margin-left: 3px; width: auto; font-size: 14px; height: 30px; font-weight: bold;">Reset Search</button>
-        </div>
-      </th>
-    </tr>
-    <tr id="filterRow">
-      <th>
-        <select id="dateFilter" onchange="applyAllFilters()" style="padding-left: 8px;" multiple>
-          <option value="30days">Last 30 days</option>
-          <option value="60days">Last 60 days</option>
-          <option value="90days">Last 90 days</option>
-          <option value="180days">Last 180 days</option>
-          <option value="365days">Last 365 days</option>
-        </select>
-      </th>
-      <th>
-        <select id="locationFilter" onchange="applyAllFilters()" multiple>
-          <!-- Dynamic options will be added here via JavaScript -->
-        </select>
-      </th>
-      <th>
-        <select id="urgencyFilter" onchange="applyAllFilters()" multiple>
-          <option value="1">Less than 30 Days</option>
-          <option value="2">30-90 Days</option>
-          <option value="3">90-180 Days</option>
-          <option value="4">180-365 Days</option>
-          <option value="5">A Year or More</option>
-        </select>
-      </th>
-      <th>
-        <select id="hasContentFilter" onchange="applyAllFilters()" multiple>
-          <option value="hasImage">Has Image</option>
-          <option value="hasLinks">Has Links</option>
-          <option value="hasAudio">Has Audio Message</option>
-          <option value="hasVideo">Has Video</option>
-          <option value="hasNoContent">Has No Content</option>
-        </select>
-      </th>
-      <th>
-        <select id="wishStatusFilter" onchange="applyAllFilters()" multiple>
-          <option value="Fulfilled">Fulfilled</option>
-          <option value="Unfulfilled">Unfulfilled</option>
-          <option value="New/Unfulfilled">New/Unfulfilled</option>
-        </select>
-      </th>
-      <th>
-        <label class="filter-row-checkbox">
-          Include: <input type="checkbox" id="includeAnonymous" checked onchange="applyAllFilters()">Anonymous
-        </label>
-      </th>
-      <th>
-        <label class="filter-row-checkbox">
-          <input type="checkbox" id="includeUnverified" checked onchange="applyAllFilters()">Unverified?
-        </label>
-      </th>
-      <th>
-        <div class="twl-input-wrapper">
-          <span style="font-size: 10px; font-weight: normal;">TWL-</span><input type="text" id="twlIdInput" onblur="handleTwlInput()" onkeypress="handleTwlKeyPress(event)" maxlength="6" placeholder="######">
-        </div>
-      </th>
-    </tr>
-    <tr id="filterDisplayRow" onclick="handleFilterRowClick(event);">
-      <!-- Dynamic content to show active filters -->
-    </tr>
-    <tr id="sortingColumnHeaders">
-      <th onclick="sortTable(0)" data-order="asc">Date Applied</th>
-      <th onclick="sortTable(1)" data-order="asc">Location</th>
-      <th onclick="sortTable(2)" data-order="asc">Wish Urgency</th>
-      <th onclick="sortTable(3)" data-order="asc">Posting Title</th>
-      <th onclick="sortTable(4)" data-order="asc">Wish Status</th>
-      <th onclick="sortTable(5)" data-order="asc">Name</th>
-      <th onclick="sortTable(6)" data-order="asc">Verified?</th>
-      <th onclick="sortTable(7)" data-order="asc">TWL ID #</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Table rows will be dynamically populated here -->
-  </tbody>
-  <tfoot>
-    <tr>
-      <td>
-        <button id="returnToTopButton" onclick="returnToTop()">Return to Top</button>
-      </td>
-      <td colspan="6">
-        <div class="pagination-container">
-          <div id="pagination-controls" class="pagination-controls"></div><br>
-        </div>
-      </td>
-      <td class="centered">
-        <button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="8" style="position: relative; text-align: center;">
-        <div id="select-container" style="display: inline-block; width: auto;">
-          <select id="rowsPerPage" style="width: 80px;" onchange="updateRowsPerPage()">
-            <option value="20">20 rows</option>
-            <option value="50">50 rows</option>
-            <option value="100">100 rows</option>
-          </select>
-        </div>
-        <div id="date-placeholder"></div>
-      </td>
-    </tr>
-  </tfoot>
-</table>
-<span>
-<div id="errorMessage"></div>
-</span>
-<div id="bottom-disclosure">
-  <span>
-    <a href="https://www.caloscoalition.com/">The Calos Coalition</a> is a 501(c)3 non-profit corporation legally incorporated in the State of Virginia. All information displayed above has been filtered to the appropriate anonymity each wish applicant has indicated. If there is an issue, please contact an administrator at <a href="mailto:admin@caloscoalition.com" target="_blank" rel="nofollow">admin@caloscoalition.com</a> or call us directly at +1 (202) 987-8145.<br><br>Please read and agree to our Privacy Policy, Community Guidelines & Terms of Service before engaging with the Trans Wish List or any of our programs or services. These can always be found located at <a href="https://www.caloscoalition.com/policy" target="_blank" rel="nofollow">caloscoalition.com/policy</a>.
-  </span>
-</div>
-<div id="modal">
-  <span onclick="document.getElementById('modal').style.display='none'" style="float:right; font-size: 28px; font-weight: bold; cursor:pointer;">&times;</span>
-  <p id="detailContent"></p>
-  <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-<script src="https://apis.google.com/js/api.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.contentWindow.min.js"></script>
+    <div class="header">
+        <a href="https://twl.caloscoalition.com">
+          <img src="https://lh3.google.com/u/0/d/1DBTKzgwpwpH-ff24IlUrY9bkLpSB-7Kl" alt="Calos Coalition Shield Emblem Logo" aria-label="Calos Coalition Home">
+        </a>
+        <h1><br>Trans Wish List</h1>
+      </div>
+      <div class="linkBar">
+        <h2>
+          <a href="https://www.caloscoalition.com/submit-trans-wish" aria-label="Submit Wish">Submit Wish</a> | 
+          <a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" aria-label="Donate">Donate</a> | 
+          <a href="https://www.caloscoalition.com/submitstory" aria-label="Share Joy">Share Joy</a>
+        </h2>
+      </div>
+      <table id="wishList" aria-label="Trans Wish List">
+        <thead>
+          <tr style="border: 2px solid black; background-color: #E8D9F3; padding: 2px 2px; border-radius: 4px;">
+            <th colspan="8">
+              <div class="header-input-container">
+                <button id="toggleFiltersButton" style="margin-right: 3px; font-size: 14px; height: 28px; font-weight: bold;" aria-label="Toggle Filters">▼</button>
+                <input type="text" id="searchInput" placeholder="Search List..." onkeyup="applyAllFilters()" aria-label="Search List">
+                <button id="resetFiltersButton" onclick="resetFilters()" style="margin-left: 3px; width: auto; font-size: 14px; height: 30px; font-weight: bold;" aria-label="Reset Search">Reset Search</button>
+              </div>
+            </th>
+          </tr>
+          <tr id="filterRow">
+            <th>
+              <select id="dateFilter" onchange="applyAllFilters()" style="padding-left: 8px;" multiple aria-label="Filter by Date">
+                <option value="30days">Last 30 days</option>
+                <option value="60days">Last 60 days</option>
+                <option value="90days">Last 90 days</option>
+                <option value="180days">Last 180 days</option>
+                <option value="365days">Last 365 days</option>
+              </select>
+            </th>
+            <th>
+              <select id="locationFilter" onchange="applyAllFilters()" multiple aria-label="Filter by Location">
+                <!-- Dynamic options will be added here via JavaScript -->
+              </select>
+            </th>
+            <th>
+              <select id="urgencyFilter" onchange="applyAllFilters()" multiple aria-label="Filter by Urgency">
+                <option value="1">Less than 30 Days</option>
+                <option value="2">30-90 Days</option>
+                <option value="3">90-180 Days</option>
+                <option value="4">180-365 Days</option>
+                <option value="5">A Year or More</option>
+              </select>
+            </th>
+            <th>
+              <select id="hasContentFilter" onchange="applyAllFilters()" multiple aria-label="Filter by Content Type">
+                <option value="hasImage">Has Image</option>
+                <option value="hasLinks">Has Links</option>
+                <option value="hasAudio">Has Audio Message</option>
+                <option value="hasVideo">Has Video</option>
+                <option value="hasNoContent">Has No Content</option>
+              </select>
+            </th>
+            <th>
+              <select id="wishStatusFilter" onchange="applyAllFilters()" multiple aria-label="Filter by Wish Status">
+                <option value="Fulfilled">Fulfilled</option>
+                <option value="Unfulfilled">Unfulfilled</option>
+                <option value="New/Unfulfilled">New/Unfulfilled</option>
+              </select>
+            </th>
+            <th>
+              <label class="filter-row-checkbox">
+                Include: <input type="checkbox" id="includeAnonymous" checked onchange="applyAllFilters()" aria-label="Include Anonymous Wishes">Anonymous
+              </label>
+            </th>
+            <th>
+              <label class="filter-row-checkbox">
+                <input type="checkbox" id="includeUnverified" checked onchange="applyAllFilters()" aria-label="Include Unverified Wishes">Unverified?
+              </label>
+            </th>
+            <th>
+              <div class="twl-input-wrapper">
+                <span style="font-size: 10px; font-weight: normal;">TWL-</span><input type="text" id="twlIdInput" onblur="handleTwlInput()" onkeypress="handleTwlKeyPress(event)" maxlength="6" placeholder="######" aria-label="TWL ID">
+              </div>
+            </th>
+          </tr>
+          <tr id="filterDisplayRow" onclick="handleFilterRowClick(event);" aria-label="Filter Display Row">
+            <!-- Dynamic content to show active filters -->
+          </tr>
+          <tr id="sortingColumnHeaders">
+            <th onclick="sortTable(0)" data-order="asc" aria-label="Sort by Date Applied">Date Applied</th>
+            <th onclick="sortTable(1)" data-order="asc" aria-label="Sort by Location">Location</th>
+            <th onclick="sortTable(2)" data-order="asc" aria-label="Sort by Wish Urgency">Wish Urgency</th>
+            <th onclick="sortTable(3)" data-order="asc" aria-label="Sort by Posting Title">Posting Title</th>
+            <th onclick="sortTable(4)" data-order="asc" aria-label="Sort by Wish Status">Wish Status</th>
+            <th onclick="sortTable(5)" data-order="asc" aria-label="Sort by Name">Name</th>
+            <th onclick="sortTable(6)" data-order="asc" aria-label="Sort by Verified">Verified?</th>
+            <th onclick="sortTable(7)" data-order="asc" aria-label="Sort by TWL ID">TWL ID #</th>
+          </tr>
+        </thead>
+        <tbody aria-label="Wish List Body">
+          <!-- Table rows will be dynamically populated here -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>
+              <button id="returnToTopButton" onclick="returnToTop()" aria-label="Return to Top">Return to Top</button>
+            </td>
+            <td colspan="6">
+              <div class="pagination-container">
+                <div id="pagination-controls" class="pagination-controls" aria-label="Pagination Controls"></div><br>
+              </div>
+            </td>
+            <td class="centered">
+              <button id="accessibilityToggleButton" onclick="toggleAccessibility()" aria-label="Toggle Accessibility">Toggle Accessibility</button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" style="position: relative; text-align: center;">
+              <div id="select-container" style="display: inline-block; width: auto;">
+                <select id="rowsPerPage" style="width: 80px;" onchange="updateRowsPerPage()" aria-label="Rows Per Page">
+                  <option value="20">20 rows</option>
+                  <option value="50">50 rows</option>
+                  <option value="100">100 rows</option>
+                </select>
+              </div>
+              <div id="date-placeholder" aria-label="Date Placeholder"></div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <span>
+        <div id="errorMessage" aria-live="assertive"></div>
+      </span>
+      <div id="bottom-disclosure" aria-labelledby="bottom-disclosure-heading">
+        <span>
+          <a href="https://www.caloscoalition.com/">The Calos Coalition</a> is a 501(c)3 non-profit corporation legally incorporated in the State of Virginia. All information displayed above has been filtered to the appropriate anonymity each wish applicant has indicated. If there is an issue, please contact an administrator at <a href="mailto:admin@caloscoalition.com" target="_blank" rel="nofollow">admin@caloscoalition.com</a> or call us directly at +1 (202) 987-8145.<br><br>Please read and agree to our Privacy Policy, Community Guidelines & Terms of Service before engaging with the Trans Wish List or any of our programs or services. These can always be found located at <a href="https://www.caloscoalition.com/policy" target="_blank" rel="nofollow">caloscoalition.com/policy</a>.
+        </span>
+      </div>
+      <div id="modal" aria-labelledby="modal-heading">
+        <span onclick="document.getElementById('modal').style.display='none'" style="float:right; font-size: 28px; font-weight: bold; cursor:pointer;" aria-label="Close Modal">&times;</span>
+        <p id="detailContent"></p>
+        <p><button onclick="copyToClipboard()" aria-label="Copy TWL ID and Open Donation Tab">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+      <script src="https://apis.google.com/js/api.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.contentWindow.min.js"></script>
 <script>
 // Begin Async Loading of Data to pass for Handling
 async function fetchWishListData() {
