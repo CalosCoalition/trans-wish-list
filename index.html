@@ -928,26 +928,33 @@ let locationSet = new Set();
 let filteredData = [];
 
 document.addEventListener('DOMContentLoaded', async function() {
-  const data = await fetchWishListData();
-  if (data && Array.isArray(data)) {
-    console.log('Fetched Data:', data);
-    handleData(data);
-    populateFilters(data);
-    initializeSelect2Elements();
+  try {
+    const data = await fetchWishListData();
+    const datePlaceholder = document.getElementById('date-placeholder');
+    const today = new Date();
+    const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
+    datePlaceholder.textContent = formattedDate;
+
     addEventListeners();
-  } else {
-    console.error('No data available or data is not in the correct format.');
+    initializeSelect2Elements();
+    setupToggleButton();
+    handleUrlParameters();
+
+    if (data && Array.isArray(data)) {
+      console.log('Fetched Data:', data);
+      handleData(data);
+      populateFilters(data);
+      applyAllFilters();
+      paginateAndRender();
+    } else {
+      console.error('No data available or data is not in the correct format.');
+    }
+
+    logInitialFilterRowState();
+  } catch (error) {
+    console.error('Error fetching wish list data:', error);
   }
-  const datePlaceholder = document.getElementById('date-placeholder');
-  const today = new Date();
-  const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
-  datePlaceholder.textContent = formattedDate;
   enhanceAccessibility();
-  applyAllFilters();
-  paginateAndRender();
-  handleUrlParameters();
-  setupToggleButton();
-  logInitialFilterRowState();
 });
 
 function handleUrlParameters() {
