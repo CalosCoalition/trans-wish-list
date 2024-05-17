@@ -1105,18 +1105,6 @@ function applyLocationFilter() {
         $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
     }
 
-  const locationFilter = document.getElementById('locationFilter');
-        locationSet.forEach(location => {
-            const option = document.createElement('option');
-            option.value = location;
-            option.textContent = location;
-            locationFilter.appendChild(option);
-        });
-    // Re-initialize Select2 for locationFilter to apply the changes
-    $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
-  locationFilter.trigger('change');
-}
-
 function updateFilterDisplayRow() {
   const filterDisplayRow = document.getElementById('filterDisplayRow');
   filterDisplayRow.innerHTML = '';
