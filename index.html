@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <!-- This Code, Application, Images, Data, and all related physical, metaphysical, and software entities related to this application belong to The Calos Coalition, a registered 501c3 non-profit. Developed by Ms. Thea Ross for use within https://www.caloscoalition.com and the Calos App. Reproduction is strictly limited; to share, please share the weblink on our website. To contact us regarding any issues, reach out to admin@caloscoalition.com. -->
 <title>Trans Wish List</title>
@@ -14,82 +14,93 @@
 <!-- Include iframe-resizer library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.contentWindow.min.js"></script>
 <style>
-  body {
-    font-family: "Roboto", Arial, sans-serif;
-    font-size: 12px;
-    margin: 0;
-    padding: 0;
-    background-color: #C08CCF; /* Deepest background color */
-    color: #000000; /* Default text color */
-  }
-  .container {
-    width: 100%;
-    max-width: 800px; /* Maximum width for the container */
-    margin: 0 auto; /* Center the container */
-    padding: 20px;
-  }
-  .header {
-    display: flex;
-    justify-content: center; /* Centers items on the main-axis */
-    align-items: center; /* Align items on the cross-axis */
-    padding-bottom: 2px;
-    padding-top: 10px;
-  }
-  .header img {
-    width: 140px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 10px; /* Add some space between the image and the heading */
-  }
-  .header h1 {
-    font-family: "Roboto Bold", Arial, sans-serif;
-    font-size: 26px;
-    margin: 0; /* Adjust or remove margin as needed */
-    color: #000000; /* Heading color */
-  }
-  .linkBar h2 {
-    font-family: "Roboto", Arial, sans-serif;
-    font-size: 16px;
-    letter-spacing: 6px;
-    text-align: center; /* Centers items on the main-axis */
-    align-items: center; /* Align items on the cross-axis */
-    padding: 0px;
-  }
-  .table-container {
-    overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
-  }
-  table {
-    width: 98%;
-    margin: 0 auto; /* Center the container */
-    font-size: 12px;
-    border: 2px solid #E89AFF; /* Table border */
-    border-radius: 20px; /* Rounded corners */
-    padding: 20px;
-    background-color: #F0D4FC; /* Primary table background color */
-    table-layout: fixed;
-  }
-  thead {
-    font-size: 18px;
-    padding: 18px;
-    text-align: left;
-    border-bottom: 2px solid #D9D9D9;
-    font-family: "Roboto", Arial, sans-serif;
-  }
-  tbody tr:not(#filterRow):not(#filterDisplayRow):hover td {
-        text-decoration: underline;
-        font-style: italic;
-  }
-  td {
-    padding: 8px;
-    text-align: left;
-    font-family: "Roboto", Arial, sans-serif;
-    cursor: pointer;
-  }
-  th {
-    cursor: pointer;
-    font-family: "Roboto Bold", Arial, sans-serif; /* Header font bold */
-    text-align: left; /* Default text alignment for all table headers */
-  }
-/* Set specific width to the columns to prevent stretching */
+    body {
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 12px;
+      margin: 0;
+      padding: 0;
+      background-color: #C08CCF; /* Deepest background color */
+      color: #000000; /* Default text color */
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 800px; /* Maximum width for the container */
+      margin: 0 auto; /* Center the container */
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: center; /* Centers items on the main-axis */
+      align-items: center; /* Align items on the cross-axis */
+      padding-top: 10px;
+    }
+    
+    .header img {
+      width: 140px; /* Adjust the width as needed */
+      height: auto; /* Maintain aspect ratio */
+      margin-right: 10px; /* Add some space between the image and the heading */
+    }
+    
+    .header h1 {
+      font-family: "Roboto Bold", Arial, sans-serif;
+      font-size: 26px;
+      margin: 0; /* Adjust or remove margin as needed */
+      color: #000000; /* Heading color */
+    }
+    
+    .linkBar h2 {
+      font-family: "Roboto", Arial, sans-serif;
+      font-size: 16px;
+      letter-spacing: 6px;
+      text-align: center; /* Centers items on the main-axis */
+      align-items: center; /* Align items on the cross-axis */
+      padding: 0px;
+    }
+    
+    .table-container {
+      overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
+    }
+    
+    table {
+      width: 98%;
+      margin: 0 auto; /* Center the container */
+      font-size: 12px;
+      border: 2px solid #E89AFF; /* Table border */
+      border-radius: 20px; /* Rounded corners */
+      padding: 20px;
+      background-color: #F0D4FC; /* Primary table background color */
+      table-layout: fixed;
+    }
+    
+    thead {
+      font-size: 18px;
+      padding: 18px;
+      text-align: left;
+      border-bottom: 2px solid #D9D9D9;
+      font-family: "Roboto", Arial, sans-serif;
+    }
+    
+    tbody tr:not(#filterRow):not(#filterDisplayRow):hover td {
+      text-decoration: underline;
+      font-style: italic;
+    }
+    
+    td {
+      padding: 8px;
+      text-align: left;
+      font-family: "Roboto", Arial, sans-serif;
+      cursor: pointer;
+    }
+    
+    th {
+      cursor: pointer;
+      font-family: "Roboto Bold", Arial, sans-serif; /* Header font bold */
+      text-align: left; /* Default text alignment for all table headers */
+    }
+  
+    /* Set specific width to the columns to prevent stretching */
     th:nth-child(1), td:nth-child(1) { width: 10%; }
     th:nth-child(2), td:nth-child(2) { width: 10%; }
     th:nth-child(3), td:nth-child(3) { width: 13%; }
@@ -98,95 +109,102 @@
     th:nth-child(6), td:nth-child(6) { width: 14%; }
     th:nth-child(7), td:nth-child(7) { width: 10%; }
     th:nth-child(8), td:nth-child(8) { width: 8%; }
-/* Set Specific Stlyes by Table Cell; Center text in the 1st, 5th and 7th columns (Date Applied, Wish Status and Verified?) */
-  th:nth-child(1), td:nth-child(1),
-  th:nth-child(2),
-  th:nth-child(3),
-  th:nth-child(5), td:nth-child(5),
-  th:nth-child(6),
-  th:nth-child(7), td:nth-child(7),
-  th:nth-child(8), td:nth-child(8) {
-    text-align: center;
-  }
-  /* Bold text in the 1st column (Date) */
-  th:nth-child(1), td:nth-child(1) {
-    font-weight: bold;
-  }
-  /* Bold text in the 5th column but not the colum header(for example, Wish Status) */
-  td:nth-child(8) {
-    font-style: italic;
-  }
-/* Link Styling */  
+  
+    /* Set Specific Styles by Table Cell; Center text in the 1st, 5th, and 7th columns (Date Applied, Wish Status, and Verified?) */
+    th:nth-child(1), td:nth-child(1),
+    th:nth-child(2),
+    th:nth-child(3),
+    th:nth-child(5), td:nth-child(5),
+    th:nth-child(6),
+    th:nth-child(7), td:nth-child(7),
+    th:nth-child(8), td:nth-child(8) {
+      text-align: center;
+    }
+  
+    /* Bold text in the 1st column (Date) */
+    th:nth-child(1), td:nth-child(1) {
+      font-weight: bold;
+    }
+  
+    /* Italic text in the 8th column (Wish Status) */
+    td:nth-child(8) {
+      font-style: italic;
+    }
+  
+    /* Link Styling */  
     a {
-    text-decoration: none;
-    color: #B9F0FF; /* Link color */
+      text-decoration: none;
+      color: #B9F0FF; /* Link color */
     }
+    
     a:hover {
-    text-decoration: underline;
+      text-decoration: underline;
     }
+    
     a.bold {
-    color: #E89AFF; /* Bold link color */
-    font-weight: bold;
+      color: #E89AFF; /* Bold link color */
+      font-weight: bold;
     }
-
-/*Alternating Row Color Styling */
+  
+    /* Alternating Row Color Styling */
     .odd-row {
-        background-color: #F6EAFD; /* Lighter color for odd rows */
+      background-color: #F6EAFD;
     }
+    
     .even-row {
-        background-color: #E8D9F3; /* Darker color for even rows */
+      background-color: #E8D9F3;
     }
-
-/*Icon Related Styling*/
+  
+    /* Icon Related Styling */
     .icon-cell {
-        position: relative;
-        text-align: center;
-        overflow: visible;
-        height: 50px; /* Set according to your needs */
-        width: 50px; /* Set according to your needs */
-        background-position: center;
-        background-size: cover;
-        cursor: pointer; /* Optional: changes the cursor on hover to indicate interactiveness */
+      position: relative;
+      text-align: center;
+      overflow: visible;
+      height: 50px; /* Set according to your needs */
+      width: 50px; /* Set according to your needs */
+      background-position: center;
+      background-size: cover;
+      cursor: pointer; /* Optional: changes the cursor on hover to indicate interactiveness */
     }
+    
     .newStatus-icon {
-        background-image: url('https://lh3.google.com/u/0/d/1HKxEOpBRyE35FUjDOovuR5ZTjskvsTMr');
+      background-image: url('https://lh3.google.com/u/0/d/1HKxEOpBRyE35FUjDOovuR5ZTjskvsTMr');
     }
+    
     .newStatus-icon:hover {
-        background-image: url('https://lh3.google.com/u/0/d/1HIRdhX_lsmFjNJaabTQz36M-xb1ODz_h');
+      background-image: url('https://lh3.google.com/u/0/d/1HIRdhX_lsmFjNJaabTQz36M-xb1ODz_h');
     }
+    
     .fulfilled-icon {
-        background-image: url('https://lh3.google.com/u/0/d/1H78Xxha9fcFXA3hic__5plCWFQ9BkagR');
-        height: 50px; /* Set according to your needs */
-        width: 50px; /* Set according to your needs */
+      background-image: url('https://lh3.google.com/u/0/d/1H78Xxha9fcFXA3hic__5plCWFQ9BkagR');
+      height: 50px; /* Set according to your needs */
+      width: 50px; /* Set according to your needs */
     }
-
+    
     .fulfilled-icon:hover {
-        background-image: url('https://lh3.google.com/u/0/d/1HFzgGRYEQq-Q6L0ZEc8csirgzXhfC5i0');
-        height: 50px; /* Set according to your needs */
-        width: 50px; /* Set according to your needs */
+      background-image: url('https://lh3.google.com/u/0/d/1HFzgGRYEQq-Q6L0ZEc8csirgzXhfC5i0');
     }
-
+    
     .unfulfilled-icon {
-        background-image: url('https://lh3.google.com/u/0/d/1HEiT1SchXaXPVCvH9GXPPTF4KXlY9oka');
-        height: 50px; /* Set according to your needs */
-        width: 50px; /* Set according to your needs */
+      background-image: url('https://lh3.google.com/u/0/d/1HEiT1SchXaXPVCvH9GXPPTF4KXlY9oka');
+      height: 50px;
+      width: 50px;
     }
-
+    
     .unfulfilled-icon:hover {
-        background-image: url('https://lh3.google.com/u/0/d/1HCdAJf4Hh7IEPfTwb5brteGpUbJTAmVB');
-        height: 50px; /* Set according to your needs */
-        width: 50px; /* Set according to your needs */
+      background-image: url('https://lh3.google.com/u/0/d/1HCdAJf4Hh7IEPfTwb5brteGpUbJTAmVB');
     }
+    
     .icon-image {
-        width: 100%; /* Maintain aspect ratio */
-        height: auto; /* Full height of the cell */
-        position: absolute; /* Positioned absolutely within the relative cell */
-        top: 50%; /* Center vertically */
-        left: 50%; /* Center horizontally */
-        transform: translate(-50%, -50%); /* Offset the icon to truly center it */
+      width: 100%; /* Maintain aspect ratio */
+      height: auto; /* Full height of the cell */
+      position: absolute; /* Positioned absolutely within the relative cell */
+      top: 50%; /* Center vertically */
+      left: 50%; /* Center horizontally */
+      transform: translate(-50%, -50%); /* Offset the icon to truly center it */
     }
-
- /* Specific styles for headers in the sortingColumnHeaders row */
+  
+    /* Specific styles for headers in the sortingColumnHeaders row */
     #sortingColumnHeaders th {
       cursor: pointer; /* Ensures cursor appears as pointer */
       background-color: #E8D9F3; /* Gives a distinct background color */
@@ -195,564 +213,590 @@
       border-bottom: 2px solid #C08CCF; /* Adds a border for distinction */
       text-align: center; /* Centers text in headers */
     }
+    
     /* Hover effects specifically for headers within sortingColumnHeaders */
     #sortingColumnHeaders th:hover {
       text-decoration: underline; /* Underline on hover for clarity */
       background-color: #F6EAFD; /* Changes background on hover for visibility */
     }
-    /* Reset styles that might affect visibility or appearance of table headers */
-    #sortingColumnHeaders th {
-      text-decoration: none; /* Ensures no underlines unless specifically hovered */
+  
+    /* Style for the th element containing the toggle filter button search input and reset search button */
+    .header-input-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-grow: 1;
+      overflow: visible;
     }
-
-/* Style for the th element containing the toggle filter button search input and reset search button */
-.header-input-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-grow: 1;
-    overflow: visible;
-}
-/* Style for the search input */
-#searchInput {
-    display: inline-block;
-    flex-grow: 1;
-    padding: 4px;
-    box-sizing: border-box;
-    margin-right: 10px;
-    margin-left: 5px;
-    height: 26px;
-}
-#twlIdInput {
-    display: inline-block;
-    flex-grow: 1;
-    padding: 4px;
-    box-sizing: border-box;
-    height: 26px;
-    margin-right: 10px;
-    min-width: 60px;
-}
-/*Style for the TWL ID # input*/
-        .twl-input-wrapper {
-            display: flex;
-            align-items: center;
-        }
-        .twl-input-wrapper input {
-            padding-left: 5px; /* Adjust as necessary */
-            width: 30px;
-            min-width: 50px;
-            margin-right: 10px;
-        }
-/* Style for the th that contains the reset search button */
-.reset-button-container {
-    text-align: left; /* Aligns the button to the left */
-}
+    
+    #searchInput, #twlIdInput {
+      display: inline-block;
+      flex-grow: 1;
+      padding: 4px;
+      box-sizing: border-box;
+      height: 26px;
+      margin-right: 10px;
+      min-width: 60px;
+    }
+    
+    /* Style for the TWL ID # input */
+    .twl-input-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    
+    .twl-input-wrapper input {
+      padding-left: 5px; /* Adjust as necessary */
+      width: 30px;
+      min-width: 50px;
+      margin-right: 10px;
+    }
+  
+    /* Style for the th that contains the reset search button */
+    .reset-button-container {
+      text-align: left; /* Aligns the button to the left */
+    }
+  
     /* Targeting the main filter row to disable underline on hover */
     #filterRow {
-        display: table-row; /* Ensure filter row is initially visible */
+      display: table-row; /* Ensure filter row is initially visible */
     }
-    #filterRow th{
-        margin: 0 !important; /* Override default margin */
-        padding: 0 !important; /* Override default padding */
-        text-decoration: none !important; /* Important to override other styles */
+    
+    #filterRow th {
+      margin: 0 !important; /* Override default margin */
+      padding: 0 !important; /* Override default padding */
+      text-decoration: none !important; /* Important to override other styles */
     }
+    
     /* Specific hover effects for th cells within the filterRow */
-    #filterRow:hover, #filterRow th:hover,#filterRow th *:hover {
-        text-decoration: none !important;
+    #filterRow:hover, #filterRow th:hover, #filterRow th *:hover {
+      text-decoration: none !important;
     }
-
-    /*Keep the Filter Select2 Fields the width of the Columns*/
+    
+    /* Keep the Filter Select2 Fields the width of the Columns */
     .select2-selection select2-selection--multiple {
-        width: 100% !important;
+      width: 100% !important;
     }
+    
     .select2-search--inline .select2-search__field {
-        width: 100% !important;
+      width: 100% !important;
     }
+    
     .select2-selection__rendered {
-        height: 28px !important;
-        line-height: 28px !important;
-        color: gray !important;
-        font-weight: normal !important;
-        text-align: left !important;
-        font-size: 12px;
-        line-height: normal;
-        vertical-align: middle;
+      height: 28px !important;
+      line-height: 28px !important;
+      color: gray !important;
+      font-weight: normal !important;
+      text-align: left !important;
+      font-size: 12px;
+      line-height: normal;
+      vertical-align: middle;
     }
+    
     .select2-selection__choice {
-        display: none !important; /* Hides selected choices */
+      display: none !important; /* Hides selected choices */
     }
-  /* Styling for the filter display row */
-  #filterDisplayRow {
+  
+    /* Styling for the filter display row */
+    #filterDisplayRow {
       width: 100%;
-      background-color: #EFEFEF; /* Light gray background for visibility */
-      border-top: 1px solid #ccc; /* Adds a subtle border */
-      padding: 4px 10px; /* Pads the filter tags nicely */
-      overflow-x: auto; /* Allows horizontal scrolling */
-      white-space: nowrap; /* Ensures filters are in one line */
-      align-items: left; /* Vertically centers the tags */
-      max-height:  30px;
+      background-color: #EFEFEF;
+      border-top: 1px solid #ccc;
+      padding: 4px 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+      align-items: left;
+      max-height: 30px;
       font-size: 10px;
       color: #666;
       text-align: center;
       display: none; /* Ensure filter display row is initially hidden */
-  }
-  #filterDisplayRow span {
-      background-color: #D9D9D9; /* Lighter gray for filter tags */
-      margin-right: 3px; /* Spacing between tags */
-      padding: 2px 2px; /* Padding inside tags */
-      border-radius: 4px; /* Rounded corners for tags */
+    }
+    
+    #filterDisplayRow span {
+      background-color: #D9D9D9;
+      margin-right: 3px;
+      padding: 2px 2px;
+      border-radius: 4px;
       cursor: pointer;
-      font-size: 12px; /* Smaller font size for tags */
-  }
-  #filterDisplayRow span:hover::after {
+      font-size: 12px;
+    }
+    
+    #filterDisplayRow span:hover::after {
       content: " (x)";
       font-weight: bold;
-      color: black; /* Adjust color to fit your design */
+      color: black;
       text-decoration: underline;
-  }
-  #filterDisplayRow .filter-tag {
+    }
+    
+    #filterDisplayRow .filter-tag {
       text-decoration: none; /* Remove default underline */
-  }
-  #filterDisplayRow .filter-tag:hover {
-      text-decoration: underline; /* Underline on hover */
-      cursor: pointer; /* Change cursor to pointer on hover */
-  }
-  /* Style for checkbox labels in the filter row */
-  .filter-row-checkbox {
+    }
+    
+    #filterDisplayRow .filter-tag:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  
+    /* Style for checkbox labels in the filter row */
+    .filter-row-checkbox {
       display: inline-block; /* Ensures label and checkbox are on the same line */
       margin-right: 15px; /* Spacing between each checkbox */
       font-size: 10px; /* Adjust the font size as needed */
       font-weight: normal; /* Set the font weight to normal */
       vertical-align: middle; /* Aligns the text vertically in the middle */
       cursor: pointer; /* Changes cursor to pointer to indicate it's clickable */
-  }
+    }
+    
     /* Additional styling for the checkbox input itself */
     .filter-row-checkbox input[type="checkbox"] {
-        margin-right: 2px; /* Space between checkbox and label text */
-        vertical-align: middle; /* Aligns the checkbox vertically in the middle */
+      margin-right: 2px; /* Space between checkbox and label text */
+      vertical-align: middle; /* Aligns the checkbox vertically in the middle */
     }
+  
     .checkbox-container {
-        display: flex;
-        justify-content: space-between; /* Evenly space the checkboxes and button */
-        align-items: center; /* Vertically center the content */
-        width: calc(100% - 25px); /* Ensure the container fills the th and subtract the padding */
-        padding-left: 25px; /* Add padding to the left */
+      display: flex;
+      justify-content: space-between; /* Evenly space the checkboxes and button */
+      align-items: center; /* Vertically center the content */
+      width: calc(100% - 25px); /* Ensure the container fills the th and subtract the padding */
+      padding-left: 25px; /* Add padding to the left */
     }
+    
     #resetFiltersButton, #toggleFiltersButton {
-        padding: 4px 8px; /* Padding for the button */
-        font-size: 10px; /* Match the font size of the checkboxes */
-        cursor: pointer; /* Indicates the button is clickable */
-        border: 1px solid; /* Border color to match the theme */
-        border-radius: 5px; /* Rounded corners for the button */
-        height: 10px; /* Set the height of the button */
-        width: auto; /* Set the width of the button */
-        font-weight: bold;
-        text-decoration: none !important;
-        display: inline-block;
+      padding: 4px 8px;
+      font-size: 10px;
+      cursor: pointer;
+      border: 1px solid;
+      border-radius: 5px;
+      height: auto;
+      width: auto;
+      font-weight: bold;
+      text-decoration: none !important;
+      display: inline-block;
     }
+    
     .reset-filters-button.hover-effect, .reset-filters-button:hover, #toggleFiltersButton:hover {
-        background-color: darkgray; /* Dark gray background color on hover */
+      background-color: darkgray; /* Dark gray background color on hover */
     }
+    
     .reset-filters-button:active, #toggleFiltersButton:active {
-        background-color: #B9F0FF; /* Dark blue background color on press */
+      background-color: #B9F0FF;
     }
-    /* Adjust the alignment and behavior of the filter row */
+    
     th.filter-column {
-        padding: 0; /* Reduces padding in filter column headers to align with the dynamic row */
+      padding: 0;
     }
-    /*Unique Table Foot Style Itmes*/
-        #returnToTopButton {
-            background-color: #4CAF50; /* Green */
-            color: white;
-            padding: 8px 12px; /* Padding for the button */
-            font-size: 8px; /* Match the font size of the checkboxes */
-            cursor: pointer; /* Indicates the button is clickable */
-            border: 1px solid; /* Border color to match the theme */
-            border-radius: 5px; /* Rounded corners for the button */
-            height: auto; /* Set the height of the button */
-            width: auto; /* Set the width of the button */
-            font-weight: bold;
-            text-decoration: none !important;
-            margin-bottom: 4px; /* Add bottom margin */
-            display: inline-block;
-        }
-        /* Pagination Styling */
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 8px 20px;
-            width: 100%;
-        }
-        .pagination-controls {
-            display: flex;
-            justify-content: center; /* Center the pagination controls */
-            align-items: center; /* Center the items vertically */
-        }
-        .pagination-controls button, .pagination-controls input {
-            font-weight: bold;
-            font-size: 12px;
-            border: 1px solid; /* Border color to match the theme */
-            border-radius: 5px; /* Rounded corners for the button */
-            margin: 0 10px;
-            padding: 10px 30px;
-        }
-        .pagination-controls input {
-            width: 100px;
-            text-align: center;
-        }
-        /*Accessibility Toggle Styling*/
-        #accessibilityToggleButton {
-            background-color: #008CBA; /* Blue */
-            color: white;
-            padding: 8px 12px; /* Padding for the button */
-            font-size: 8px; /* Match the font size of the checkboxes */
-            cursor: pointer; /* Indicates the button is clickable */
-            border: 1px solid; /* Border color to match the theme */
-            border-radius: 5px; /* Rounded corners for the button */
-            height: auto; /* Set the height of the button */
-            width: auto; /* Set the width of the button */
-            font-weight: bold;
-            text-decoration: none !important;
-            margin-bottom: 4px; /* Add bottom margin */
-            display: inline-block;
-        }
-        #date-placeholder {
-            font-style: italic;
-            font-size: 14px;
-            margin-bottom: 10px;
-            white-space: nowrap;
-            text-align: right;
-            float: right;
-            overflow: visible;
-        }
+  
+    #returnToTopButton {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 12px;
+      font-size: 8px;
+      cursor: pointer;
+      border: 1px solid;
+      border-radius: 5px;
+      height: auto;
+      width: auto;
+      font-weight: bold;
+      text-decoration: none !important;
+      margin-bottom: 4px;
+      display: inline-block;
+    }
+  
+    /* Pagination Styling */
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 20px;
+      width: 100%;
+    }
+    
+    .pagination-controls {
+      display: flex;
+      justify-content: center; /* Center the pagination controls */
+      align-items: center; /* Center the items vertically */
+    }
+    
+    .pagination-controls button, .pagination-controls input {
+      font-weight: bold;
+      font-size: 12px;
+      border: 1px solid;
+      border-radius: 5px;
+      margin: 0 10px;
+      padding: 10px 30px;
+    }
+    
+    .pagination-controls input {
+      width: 100px;
+      text-align: center;
+    }
+  
+    /* Accessibility Toggle Styling */
+    #accessibilityToggleButton {
+      background-color: #008CBA;
+      color: white;
+      padding: 8px 12px;
+      font-size: 8px;
+      cursor: pointer;
+      border: 1px solid;
+      border-radius: 5px;
+      height: auto;
+      width: auto;
+      font-weight: bold;
+      text-decoration: none !important;
+      margin-bottom: 4px;
+      display: inline-block;
+    }
+    
+    #date-placeholder {
+      font-style: italic;
+      font-size: 14px;
+      margin-bottom: 10px;
+      white-space: nowrap;
+      text-align: right;
+      float: right;
+      overflow: visible;
+    }
+  
     /* Remove any inherited hover effects that might apply broadly */
     tr:hover {
-        text-decoration: none; /* Ensure no row-wide hover effects are applied */
+      text-decoration: none;
     }
-
+    
     /* Ensuring that buttons within any th do not get the underline effect */
     th, tr, td button {
-        text-decoration: none !important; /* Overrides other style settings */
+      text-decoration: none !important;
     }
-
-    /* Additional styles to manage specific behavior or appearance */
-      select {
-        width: 100%;
-        padding: 4px;
-        margin-bottom: 2px; /* Small space below each select for clarity */
-      }
-      #errorMessage {
-        font-weight: bold;
-      }
-      #bottom-disclosure {
-        font-style: italic;
-        font-size: 9px;
-        width: 80%;
-        text-align: center;
-        color: #521B28;
-        margin: 20px auto; 
-      }
-      #bottom-disclosure span {
-            text-align: center;
-        }
-      /*Wish Urgency Tag Styling*/
-      .urgency-tag {
-          display: inline-block;
-          padding: 3px 6px;
-          margin: 1px;
-          border-radius: 5px;
-          color: white;
-          font-size: 8px;
-      }
-      /*Urgency Column Tag Style*/
-      .timeframe-tag {
-          background-color: #007bff; /* Blue background for timeframe */
-      }
-
-      .intensity-tag {
-          color: black;
-          background-color: #D9D9D9; /* Red background for intensity */
-      }
-      /* This will ensure only the spans with these classes have the background colors */
-      span.urgent-less30 { background-color: red; }
-      span.urgent-30to90 { background-color: darkorange; }
-      span.urgent-90to180 { background-color: #FFA07A; } /* light orange */
-      span.urgent-180to365 { background-color: yellow; }
-      span.urgent-over365 { background-color: green; }
-      /* General style for the spans to ensure text formatting is consistent */
-      .urgent-cell span {
-          cursor: pointer;
-          font-size: 12px; /* Smaller font size for tags */
-          font-weight: bold;
-          display: block;
-          padding: 2px 4px;  /* Uniform padding around text*/
-          border-radius: 4px; /* Optional rounded corners*/
-          margin-left: 3px; /* Space between the intensity and timeframe*/
-          color: white; /* White text for better visibility*/
-          height: 20px;
-      }
-      /* Specific styling for the intensity span to differentiate it */
-      span.urgent-intensity {
-          background-color: #D9D9D9; /* Gray background for intensity part*/
-          color: black; /*Black text for better readability*/
-      }
-  .centered { text-align: center; vertical-align: middle; }
-
-/* Custom Tooltip Styling*/
-.image-tooltip-container {
-    position: relative;
-    display: inline-block;
-}
-.tooltip {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
-    /* Fade in tooltip */
-    opacity: 0;
-    transition: opacity 0.6s;
-}
-.tooltip::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: black transparent transparent transparent;
-}
-.image-tooltip-container:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* Modal popup styles */
-#modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  /*max-width: 700px; Adjust as needed */
-  height: 80%;
-  max-height: 500px; /* Adjust as needed */
-  overflow: auto;
-  background-color: #ffffff; /* Modal background color */
-  border: 1px solid #D9D9D9; /* Modal border */
-  border-radius: 10px; /* Rounded corners */
-  padding: 20px;
-}
-/* Styles for mobile responsiveness and other styling are kept as you provided */
+    
+    select {
+      width: 100%;
+      padding: 4px;
+      margin-bottom: 2px;
+    }
+    
+    #errorMessage {
+      font-weight: bold;
+    }
+    
+    #bottom-disclosure {
+      font-style: italic;
+      font-size: 9px;
+      width: 80%;
+      text-align: center;
+      color: #521B28;
+      margin: 20px auto;
+    }
+    
+    #bottom-disclosure span {
+      text-align: center;
+    }
+  
+    /* Wish Urgency Tag Styling */
+    .urgency-tag {
+      display: inline-block;
+      padding: 3px 6px;
+      margin: 1px;
+      border-radius: 5px;
+      color: white;
+      font-size: 8px;
+    }
+    
+    .timeframe-tag {
+      background-color: #007bff;
+    }
+    
+    .intensity-tag {
+      color: black;
+      background-color: #D9D9D9;
+    }
+    
+    /* This will ensure only the spans with these classes have the background colors */
+    span.urgent-less30 { background-color: red; }
+    span.urgent-30to90 { background-color: darkorange; }
+    span.urgent-90to180 { background-color: #FFA07A; }
+    span.urgent-180to365 { background-color: yellow; }
+    span.urgent-over365 { background-color: green; }
+    
+    .urgent-cell span {
+      cursor: pointer;
+      font-size: 12px; /* Smaller font size for tags */
+      font-weight: bold;
+      display: block;
+      padding: 2px 4px;  /* Uniform padding around text */
+      border-radius: 4px; /* Optional rounded corners */
+      margin-left: 3px; /* Space between the intensity and timeframe */
+      color: white; /* White text for better visibility */
+      height: 20px;
+    }
+    
+    .centered {
+      text-align: center;
+      vertical-align: middle;
+    }
+  
+    /* Custom Tooltip Styling */
+    .image-tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .tooltip {
+      visibility: hidden;
+      width: 120px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity 0.6s;
+    }
+    
+    .tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: black transparent transparent transparent;
+    }
+    
+    .image-tooltip-container:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  
+    /* Modal popup styles */
+    #modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: 80%;
+      max-height: 500px;
+      overflow: auto;
+      background-color: #ffffff;
+      border: 1px solid #D9D9D9;
+      border-radius: 10px;
+      padding: 20px;
+    }
+  
+    /* Styles for mobile responsiveness and other styling are kept as you provided */
     @media screen and (max-width: 768px) {
-    .header, .table-container, table, .container {
+      .header, .table-container, table, .container {
         width: 100%;
         margin: 0;
+      }
+      
+      th, td {
+        padding: 4px;
+        font-size: 10px;
+      }
+      
+      /* Set specific widths for Mobile View to the columns to prevent crowding */
+      th:nth-child(1), td:nth-child(1) { width: 8%; }
+      th:nth-child(2), td:nth-child(2) { width: 15%; }
+      th:nth-child(3), td:nth-child(3) { width: 15%; }
+      th:nth-child(4), td:nth-child(4) { width: 27%; }
+      th:nth-child(5), td:nth-child(5) { width: 8%; }
+      th:nth-child(6), td:nth-child(6) { width: 13%; }
+      th:nth-child(7), td:nth-child(7) { width: 4%; }
+      th:nth-child(8), td:nth-child(8) { width: 10%; }
     }
-    th, td {
-        padding: 4px; /* Smaller padding for smaller screens */
-        font-size: 10px; /* Smaller font size for readability on mobile devices */
-    }
-    /* Set specific widths for Mobile View to the columns to prevent crowding */
-    th:nth-child(1), td:nth-child(1) { width: 8%; }
-    th:nth-child(2), td:nth-child(2) { width: 15%; }
-    th:nth-child(3), td:nth-child(3) { width: 15%; }
-    th:nth-child(4), td:nth-child(4) { width: 27%; }
-    th:nth-child(5), td:nth-child(5) { width: 8%; }
-    th:nth-child(6), td:nth-child(6) { width: 13%; }
-    th:nth-child(7), td:nth-child(7) { width: 4%; }
-    th:nth-child(8), td:nth-child(8) { width: 10%; }
-    }
-/*END Styles for Mobile Responsiveness*/    
-</style>
+  
+    /* END Styles for Mobile Responsiveness */    
+  </style>
 </head>
 <body>
 <div class="header">
-    <a href="https://twl.caloscoalition.com">
-        <img src="https://lh3.google.com/u/0/d/1DBTKzgwpwpH-ff24IlUrY9bkLpSB-7Kl" alt="Calos Coalition Shield Emblem Logo">
-    </a>
+  <a href="https://twl.caloscoalition.com">
+    <img src="https://lh3.google.com/u/0/d/1DBTKzgwpwpH-ff24IlUrY9bkLpSB-7Kl" alt="Calos Coalition Shield Emblem Logo">
+  </a>
   <h1><br>Trans Wish List</h1>
 </div>
 <div class="linkBar">
   <h2><a href="https://www.caloscoalition.com/submit-trans-wish">Submit Wish</a> | <a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A">Donate</a> | <a href="https://www.caloscoalition.com/submitstory">Share Joy</a></h2>
 </div>
-</div><table id="wishList">
-    <thead>
-        <tr style="border: 2px solid black; background-color: #E8D9F3; padding: 2px 2px; border-radius: 4px;">
-            <th colspan="8">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <button id="toggleFiltersButton" style = "margin-right: 3px; font-size: 14px; height: 28px; font-weight: bold;">▼</button>
-                    <input type="text" id="searchInput" placeholder="Search List..." onkeyup="applyAllFilters()">
-                    <button id="resetFiltersButton" onclick="resetFilters()" style = "margin-left: 3px; width: auto; font-size: 14px; height: 30px; font-weight: bold;">Reset Search</button>
-                </div>
-            </th>
-        </tr>
-          <tr id="filterRow">
-            <th>
-                <select id="dateFilter" onchange="applyAllFilters()" style = "padding-left: 8px;" multiple>
-                    <option value="30days">Last 30 days</option>
-                    <option value="60days">Last 60 days</option>
-                    <option value="90days">Last 90 days</option>
-                    <option value="180days">Last 180 days</option>
-                    <option value="365days">Last 365 days</option>
-                </select>
-            </th>
-            <th>
-                <select id="locationFilter" onchange="applyAllFilters()" multiple>
-                    <!-- Dynamic options will be added here via JavaScript -->
-                </select>
-            </th>
-            <th>
-                <select id="urgencyFilter" onchange="applyAllFilters()" multiple>
-                    <option value="1">Less than 30 Days</option>
-                    <option value="2">30-90 Days</option>
-                    <option value="3">90-180 Days</option>
-                    <option value="4">180-365 Days</option>
-                    <option value="5">A Year or More</option>
-                </select>
-            </th>
-            <th>
-                <select id="hasContentFilter" onchange="applyAllFilters()" multiple>
-                    <option value="hasImage">Has Image</option>
-                    <option value="hasLinks">Has Links</option>
-                    <option value="hasAudio">Has Audio Message</option>
-                    <option value="hasVideo">Has Video</option>
-                    <option value="hasNoContent">Has No Content</option>
-                </select>
-            </th>
-            <th>
-                <select id="wishStatusFilter" onchange="applyAllFilters()" multiple>
-                    <option value="Fulfilled">Fulfilled</option>
-                    <option value="Unfulfilled">Unfulfilled</option>
-                    <option value="New/Unfulfilled">New/Unfulfilled</option>
-                </select>
-            </th>
-            <th>
-                  <label class="filter-row-checkbox">
-                      Include: <input type="checkbox" id="includeAnonymous" checked onchange="applyAllFilters()">Anonymous
-                  </label>
-            </th>
-            <th>      
-                  <label class="filter-row-checkbox">
-                      <input type="checkbox" id="includeUnverified" checked onchange="applyAllFilters()">Unverified?
-                  </label>
-            </th>
-            <th>
-                    <div class="twl-input-wrapper">
-                        <span style="font-size: 10px; font-weight: normal;">TWL-</span><input type="text" id="twlIdInput" onblur="handleTwlInput()" onkeypress="handleTwlKeyPress(event)" maxlength="6" placeholder="######" />
-                    </div>
-            </th>
-          </tr>
-          <tr id="filterDisplayRow" onclick="handleFilterRowClick(event);">
-              <!-- Dynamic content to show active filters -->
-          </tr>
-          <tr id="sortingColumnHeaders">
-            <th onclick="sortTable(0)" data-order="asc">Date Applied</th>
-            <th onclick="sortTable(1)" data-order="asc">Location</th>
-            <th onclick="sortTable(2)" data-order="asc">Wish Urgency</th>
-            <th onclick="sortTable(3)" data-order="asc">Posting Title</th>
-            <th onclick="sortTable(4)" data-order="asc">Wish Status</th>
-            <th onclick="sortTable(5)" data-order="asc">Name</th>
-            <th onclick="sortTable(6)" data-order="asc">Verified?</th>
-            <th onclick="sortTable(7)" data-order="asc">TWL ID #</th>
-        </tr>
-    </thead>
-    <tbody>
-      <!-- Table rows will be dynamically populated here -->
-    </tbody>
-    <tfoot>
-        <tr>
-            <td>
-                <button id="returnToTopButton" onclick="returnToTop()">Return to Top</button>
-            </td>
-            <td colspan="6">
-                <div class="pagination-container">
-                    <div id="pagination-controls" class="pagination-controls"></div><br>
-                </div>
-            </td>
-            <td class="centered">
-                <button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button>
-            </td>
-        </tr>
-<tr>
-    <td colspan="8" style="position: relative; text-align: center;">
+<table id="wishList">
+  <thead>
+    <tr style="border: 2px solid black; background-color: #E8D9F3; padding: 2px 2px; border-radius: 4px;">
+      <th colspan="8">
+        <div class="header-input-container">
+          <button id="toggleFiltersButton" style="margin-right: 3px; font-size: 14px; height: 28px; font-weight: bold;">▼</button>
+          <input type="text" id="searchInput" placeholder="Search List..." onkeyup="applyAllFilters()">
+          <button id="resetFiltersButton" onclick="resetFilters()" style="margin-left: 3px; width: auto; font-size: 14px; height: 30px; font-weight: bold;">Reset Search</button>
+        </div>
+      </th>
+    </tr>
+    <tr id="filterRow">
+      <th>
+        <select id="dateFilter" onchange="applyAllFilters()" style="padding-left: 8px;" multiple>
+          <option value="30days">Last 30 days</option>
+          <option value="60days">Last 60 days</option>
+          <option value="90days">Last 90 days</option>
+          <option value="180days">Last 180 days</option>
+          <option value="365days">Last 365 days</option>
+        </select>
+      </th>
+      <th>
+        <select id="locationFilter" onchange="applyAllFilters()" multiple>
+          <!-- Dynamic options will be added here via JavaScript -->
+        </select>
+      </th>
+      <th>
+        <select id="urgencyFilter" onchange="applyAllFilters()" multiple>
+          <option value="1">Less than 30 Days</option>
+          <option value="2">30-90 Days</option>
+          <option value="3">90-180 Days</option>
+          <option value="4">180-365 Days</option>
+          <option value="5">A Year or More</option>
+        </select>
+      </th>
+      <th>
+        <select id="hasContentFilter" onchange="applyAllFilters()" multiple>
+          <option value="hasImage">Has Image</option>
+          <option value="hasLinks">Has Links</option>
+          <option value="hasAudio">Has Audio Message</option>
+          <option value="hasVideo">Has Video</option>
+          <option value="hasNoContent">Has No Content</option>
+        </select>
+      </th>
+      <th>
+        <select id="wishStatusFilter" onchange="applyAllFilters()" multiple>
+          <option value="Fulfilled">Fulfilled</option>
+          <option value="Unfulfilled">Unfulfilled</option>
+          <option value="New/Unfulfilled">New/Unfulfilled</option>
+        </select>
+      </th>
+      <th>
+        <label class="filter-row-checkbox">
+          Include: <input type="checkbox" id="includeAnonymous" checked onchange="applyAllFilters()">Anonymous
+        </label>
+      </th>
+      <th>
+        <label class="filter-row-checkbox">
+          <input type="checkbox" id="includeUnverified" checked onchange="applyAllFilters()">Unverified?
+        </label>
+      </th>
+      <th>
+        <div class="twl-input-wrapper">
+          <span style="font-size: 10px; font-weight: normal;">TWL-</span><input type="text" id="twlIdInput" onblur="handleTwlInput()" onkeypress="handleTwlKeyPress(event)" maxlength="6" placeholder="######">
+        </div>
+      </th>
+    </tr>
+    <tr id="filterDisplayRow" onclick="handleFilterRowClick(event);">
+      <!-- Dynamic content to show active filters -->
+    </tr>
+    <tr id="sortingColumnHeaders">
+      <th onclick="sortTable(0)" data-order="asc">Date Applied</th>
+      <th onclick="sortTable(1)" data-order="asc">Location</th>
+      <th onclick="sortTable(2)" data-order="asc">Wish Urgency</th>
+      <th onclick="sortTable(3)" data-order="asc">Posting Title</th>
+      <th onclick="sortTable(4)" data-order="asc">Wish Status</th>
+      <th onclick="sortTable(5)" data-order="asc">Name</th>
+      <th onclick="sortTable(6)" data-order="asc">Verified?</th>
+      <th onclick="sortTable(7)" data-order="asc">TWL ID #</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Table rows will be dynamically populated here -->
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>
+        <button id="returnToTopButton" onclick="returnToTop()">Return to Top</button>
+      </td>
+      <td colspan="6">
+        <div class="pagination-container">
+          <div id="pagination-controls" class="pagination-controls"></div><br>
+        </div>
+      </td>
+      <td class="centered">
+        <button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="8" style="position: relative; text-align: center;">
         <div id="select-container" style="display: inline-block; width: auto;">
-            <select id="rowsPerPage" style="width: 80px;" onchange="updateRowsPerPage()">
-                <option value="20">20 rows</option>
-                <option value="50">50 rows</option>
-                <option value="100">100 rows</option>
-            </select>
+          <select id="rowsPerPage" style="width: 80px;" onchange="updateRowsPerPage()">
+            <option value="20">20 rows</option>
+            <option value="50">50 rows</option>
+            <option value="100">100 rows</option>
+          </select>
         </div>
         <div id="date-placeholder"></div>
-    </td>
-</tr>
-    </tfoot>
+      </td>
+    </tr>
+  </tfoot>
 </table>
 <span>
-<div id="errorMessage"></div> <!-- Error message element --></span>
+<div id="errorMessage"></div>
+</span>
 <div id="bottom-disclosure">
-    <span>
-        <a href="https://www.caloscoalition.com/">The Calos Coalition</a> is a 501(c)3 non-profit corporation legally incorporated in the State of Virginia. All information displayed above has been filtered to the appropriate anonymity each wish applicant has indicated. If there is an issue, please contact an administrator at <a href="mailto:admin@caloscoalition.com" target="_blank" rel="nofollow">admin@caloscoalition.com</a> or call us directly at +1 (202) 987-8145.<br></br>Please read and agree to our Privacy Policy, Community Guidelines & Terms of Service before engaging with the Trans Wish List or any of our programs or services. These can always be found located at <a href="https://www.caloscoalition.com/policy" target="_blank" rel="nofollow">caloscoalition.com/policy</a>.
-    </span>
+  <span>
+    <a href="https://www.caloscoalition.com/">The Calos Coalition</a> is a 501(c)3 non-profit corporation legally incorporated in the State of Virginia. All information displayed above has been filtered to the appropriate anonymity each wish applicant has indicated. If there is an issue, please contact an administrator at <a href="mailto:admin@caloscoalition.com" target="_blank" rel="nofollow">admin@caloscoalition.com</a> or call us directly at +1 (202) 987-8145.<br><br>Please read and agree to our Privacy Policy, Community Guidelines & Terms of Service before engaging with the Trans Wish List or any of our programs or services. These can always be found located at <a href="https://www.caloscoalition.com/policy" target="_blank" rel="nofollow">caloscoalition.com/policy</a>.
+  </span>
 </div>
 <div id="modal">
-    <span onclick="document.getElementById('modal').style.display='none'" style="float:right; font-size: 28px; font-weight: bold; cursor:pointer;">&times;</span>
-    <p id="detailContent"></p>
-    <!-- Button to copy TWL ID -->
-    <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
+  <span onclick="document.getElementById('modal').style.display='none'" style="float:right; font-size: 28px; font-weight: bold; cursor:pointer;">&times;</span>
+  <p id="detailContent"></p>
+  <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.contentWindow.min.js"></script>
 <script>
 // Begin Async Loading of Data to pass for Handling
 async function fetchWishListData() {
-    try {
-        const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('Fetched Data:', data); // Log fetched data to ensure it's being fetched correctly
-        
-        if (data && data.wishes && Array.isArray(data.wishes)) {
-            return data.wishes; // Return the fetched data
-        } else {
-            console.error('Fetched data does not contain an array of wishes');
-            return [];
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        return [];
+  try {
+    const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+    const data = await response.json();
+    console.log('Fetched Data:', data);
+    if (data && data.wishes && Array.isArray(data.wishes)) {
+      return data.wishes;
+    } else {
+      console.error('Fetched data does not contain an array of wishes');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
 }
-// Attach Filter Listeners
+
 function addEventListeners() {
-    document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
-    document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
-    document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
-    document.getElementById('searchInput').addEventListener('input', applyAllFilters);
-    document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
-    document.getElementById('toggleFiltersButton').addEventListener('click', toggleFilterRow);
-    document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
-    document.getElementById('twlIdInput').addEventListener('blur', function() {
-        clearTimeout(twlInputTimeout);
-        handleTwlInput();
-    });
+  document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
+  document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
+  document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
+  document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
+  document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
+  document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
+  document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
+  document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+  document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
+  document.getElementById('toggleFiltersButton').addEventListener('click', toggleFilterRow);
+  document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
+  document.getElementById('twlIdInput').addEventListener('blur', function() {
+    clearTimeout(twlInputTimeout);
+    handleTwlInput();
+  });
 }
-// Array of URLs for 64px versions of the Wish Type images
+
 const wishType64pxIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Clothing%20Icon.png",
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Dream%20Icon.png",
@@ -776,7 +820,7 @@ const wishType64pxIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Type%20Unknown%20Icon.png",
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Vehicle%20Assistance%20Icon.png"
 ];
-// Array of URLs for 512px versions of the Wish Type images
+
 const wishType512pxIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Clothing%20Icon.png",
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Dream%20Icon.png",
@@ -800,7 +844,7 @@ const wishType512pxIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Type%20Unknown%20Icon.png",
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Vehicle%20Assistance%20Icon.png"
 ];
-// Array of URLs for Wish Status related images
+
 const wishStatusIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish.png",
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish%20Hover.png",
@@ -809,820 +853,586 @@ const wishStatusIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled.png",
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled%20Hover.png"
 ];
-// Static defined strings for other specified images
+
 const calosEmblemAndTextImageURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-and-text.png";
 const unverifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Unverified.png";
 const verifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Verified.png";
-/* you can all the static strings within code or the strings in array wishTypeIcons64px[0]*/
 
-// Define Global Variables
 let prevSortedColumnIndex = null;
-let isFilterVisible = true; // Initial state: visible
+let isFilterVisible = true;
 let twlInputTimeout;
 let currentPage = 1;
 let rowsPerPage = 20;
 let accessibilityEnabled = false;
 let locationSet = new Set();
-let filteredData = [];     
+let filteredData = [];
 
-/* BEGIN App Loading Listening Script */
 document.addEventListener('DOMContentLoaded', async function() {
-    // Fetch Wish List Data
-    const data = await fetchWishListData();
-    if (data && Array.isArray(data)) {
-        // Log and handle fetched data
-        console.log('Fetched Data:', data);
-        handleData(data);
-        populateFilters(data);
-        initializeSelect2Elements(); // Initialize Select2 elements
-        addEventListeners(); // Attach event listeners after initialization
-    } else {
-        console.error('No data available or data is not in the correct format.');
-    }
-    // Update date placeholder
-    const datePlaceholder = document.getElementById('date-placeholder');
-    const today = new Date();
-    const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
-    datePlaceholder.textContent = formattedDate;
-    // Enhance accessibility and initialize Select2 dropdown menus
-    enhanceAccessibility();
-    // Apply filters and set up pagination
-    applyAllFilters();
-    paginateAndRender();
-    // Handle URL parameters for search and auto-open
-    handleUrlParameters();
-    // Setup the toggle button for filter rows
-    setupToggleButton();
-    // Log the initial visibility state of filterRow and filterDisplayRow
-    logInitialFilterRowState();
+  const data = await fetchWishListData();
+  if (data && Array.isArray(data)) {
+    console.log('Fetched Data:', data);
+    handleData(data);
+    populateFilters(data);
+    initializeSelect2Elements();
+    addEventListeners();
+  } else {
+    console.error('No data available or data is not in the correct format.');
+  }
+  const datePlaceholder = document.getElementById('date-placeholder');
+  const today = new Date();
+  const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
+  datePlaceholder.textContent = formattedDate;
+  enhanceAccessibility();
+  applyAllFilters();
+  paginateAndRender();
+  handleUrlParameters();
+  setupToggleButton();
+  logInitialFilterRowState();
 });
 
-/* END App Loading Listening Script */
-
-// Function to handle URL parameters passed to the TWL Web App for Search and Auto Open
 function handleUrlParameters() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get('search');
-    const autoOpen = urlParams.get('autoOpen') === 'true';
-    console.log(searchQuery, autoOpen);
-    const searchInput = document.getElementById('twlIdInput');
-    if (searchInput && searchQuery) {
-        searchInput.value = searchQuery;
-        applyAllFilters();
-        paginateAndRender();
-        if (autoOpen) {
-            handleTwlInput();
-            const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
-            if (firstVisibleRow) {
-                const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
-                openDetailView(itemData);
-            }
-            firstVisibleRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Notify parent page to scrollToTop
-            window.parent.postMessage({ type: 'scrollToTop' }, '*');
-        }
-    }
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            applyAllFilters();
-        });
-    }
-}
-
-// Function to setup the toggle button for hiding the filter and filter display row
-function setupToggleButton() {
-    const toggleButton = document.getElementById('toggleFiltersButton');
-    if (toggleButton) {
-        toggleButton.addEventListener('click', toggleFilterRow);
-        console.log('Toggle button found and event listener added.');
-    } else {
-        console.error('Toggle button not found');
-    }
-}
-
-// Function to Log Initial Filter Row State
-function logInitialFilterRowState() {
-    const filterRow = document.getElementById('filterRow');
-    const displayRow = document.getElementById('filterDisplayRow');
-    if (filterRow && displayRow) {
-        console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
-    } else {
-        console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
-    }
-}
-
-// Function to update the # of rows displayed on the table
-function updateRowsPerPage() {
-    const selectedOption = document.getElementById('rowsPerPage').value;
-    // Extract only the numeric part using a regular expression
-    var numericValue = selectedOption.match(/\d+/);
-    rowsPerPage = numericValue ? parseInt(numericValue[0], 10) : 20; // Default to 20 if no match
-    currentPage = 1; // Reset to first page
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchQuery = urlParams.get('search');
+  const autoOpen = urlParams.get('autoOpen') === 'true';
+  console.log(searchQuery, autoOpen);
+  const searchInput = document.getElementById('twlIdInput');
+  if (searchInput && searchQuery) {
+    searchInput.value = searchQuery;
     applyAllFilters();
     paginateAndRender();
+    if (autoOpen) {
+      handleTwlInput();
+      const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
+      if (firstVisibleRow) {
+        const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
+        openDetailView(itemData);
+      }
+      firstVisibleRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.parent.postMessage({ type: 'scrollToTop' }, '*');
+    }
+  }
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      applyAllFilters();
+    });
+  }
 }
 
-// Function to Toggle Accessibility View
+function setupToggleButton() {
+  const toggleButton = document.getElementById('toggleFiltersButton');
+  if (toggleButton) {
+    toggleButton.addEventListener('click', toggleFilterRow);
+    console.log('Toggle button found and event listener added.');
+  } else {
+    console.error('Toggle button not found');
+  }
+}
+
+function logInitialFilterRowState() {
+  const filterRow = document.getElementById('filterRow');
+  const displayRow = document.getElementById('filterDisplayRow');
+  if (filterRow && displayRow) {
+    console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
+  } else {
+    console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
+  }
+}
+
+function updateRowsPerPage() {
+  const selectedOption = document.getElementById('rowsPerPage').value;
+  var numericValue = selectedOption.match(/\d+/);
+  rowsPerPage = numericValue ? parseInt(numericValue[0], 10) : 20;
+  currentPage = 1;
+  applyAllFilters();
+  paginateAndRender();
+}
+
 function enhanceAccessibility() {
-    document.querySelectorAll('table').forEach(table => table.setAttribute('role', 'table'));
-    document.querySelectorAll('th').forEach(th => th.setAttribute('role', 'columnheader'));
-    document.querySelectorAll('td').forEach(td => td.setAttribute('role', 'cell'));
-    document.getElementById('modal').setAttribute('role', 'dialog');
+  document.querySelectorAll('table').forEach(table => table.setAttribute('role', 'table'));
+  document.querySelectorAll('th').forEach(th => th.setAttribute('role', 'columnheader'));
+  document.querySelectorAll('td').forEach(td => td.setAttribute('role', 'cell'));
+  document.getElementById('modal').setAttribute('role', 'dialog');
 }
 
-// Function to Initialize the Select2 components
 function initializeSelect2Elements() {
-    const setPlaceholderText = (element, text) => {
-        element.select2({
-            closeOnSelect: false,
-            placeholder: text,
-            allowClear: true,
-            width: '100%' // Ensure Select2 is responsive
-        }).on('select2:close', function () {
-            $(this).data('select2').$selection.find('.select2-selection__rendered').html(text);
-        });
-    };
-
-    $('#dateFilter').select2({
-        placeholder: ' Filter by Date',
-        allowClear: true,
-        closeOnSelect: true,
-        width: '100%'
-    }).on('select2:selecting', function (e) {
-        $(this).val(null).trigger('change');
-        $(this).val(e.params.args.data.id).trigger('change');
+  const setPlaceholderText = (element, text) => {
+    element.select2({
+      closeOnSelect: false,
+      placeholder: text,
+      allowClear: true,
+      width: '100%'
+    }).on('select2:close', function () {
+      $(this).data('select2').$selection.find('.select2-selection__rendered').html(text);
     });
+  };
 
-    $('#locationFilter').select2({
-        placeholder: 'Select Location',
-        closeOnSelect: false,
-        tags: true,
-        width: '100%'
-    });
+  $('#dateFilter').select2({
+    placeholder: ' Filter by Date',
+    allowClear: true,
+    closeOnSelect: true,
+    width: '100%'
+  }).on('select2:selecting', function (e) {
+    $(this).val(null).trigger('change');
+    $(this).val(e.params.args.data.id).trigger('change');
+  });
 
-    setPlaceholderText($('#wishStatusFilter'), 'By Status');
-    setPlaceholderText($('#urgencyFilter'), 'By Urgency');
-    setPlaceholderText($('#hasContentFilter'), 'By Content');
+  $('#locationFilter').select2({
+    placeholder: 'Select Location',
+    closeOnSelect: false,
+    tags: true,
+    width: '100%'
+  });
 
-    $('#rowsPerPage').select2({
-        placeholder: 'Rows per page',
-        minimumResultsForSearch: Infinity, // Disable search box for rowsPerPage
-        width: '100%' // Ensure Select2 is responsive
-    });
+  setPlaceholderText($('#wishStatusFilter'), 'By Status');
+  setPlaceholderText($('#urgencyFilter'), 'By Urgency');
+  setPlaceholderText($('#hasContentFilter'), 'By Content');
+
+  $('#rowsPerPage').select2({
+    placeholder: 'Rows per page',
+    minimumResultsForSearch: Infinity,
+    width: '100%'
+  });
 }
 
-// Function to Populate Filters
 function populateFilters(data) {
-    const locationSet = new Set(["Rather Not Say", "United States"]);
+  const locationSet = new Set(["Rather Not Say", "United States"]);
 
-    data.forEach(item => {
-        let location = item['Location'].trim();
-        const stateRegex = /\b[A-Z]{2}\b/;
-        const match = location.match(stateRegex);
-        if (match) {
-            locationSet.add(match[0]);
-        }
-    });
+  data.forEach(item => {
+    let location = item['Location'].trim();
+    const stateRegex = /\b[A-Z]{2}\b/;
+    const match = location.match(stateRegex);
+    if (match) {
+      locationSet.add(match[0]);
+    }
+  });
 
-    const locationFilter = $('#locationFilter');
-    locationFilter.empty(); // Clear existing options
+  const locationFilter = $('#locationFilter');
+  locationFilter.empty();
 
-    locationSet.forEach(location => {
-        const option = new Option(location, location, false, false);
-        locationFilter.append(option);
-    });
+  locationSet.forEach(location => {
+    const option = new Option(location, location, false, false);
+    locationFilter.append(option);
+  });
 
-    locationFilter.trigger('change'); // Update Select2 dropdown
+  locationFilter.trigger('change');
 }
 
-// Function to update the filter display row, or filter subrow
 function updateFilterDisplayRow() {
-    const filterDisplayRow = document.getElementById('filterDisplayRow');
-    filterDisplayRow.innerHTML = ''; // Clear existing filters
-    // Create a container div
-    const container = document.createElement('div');
-    container.style.display = 'flex';
-    container.style.flexWrap = 'wrap';  // Allow wrapping if many filters
-    container.style.width = '100%';
-    container.style.alignItems = 'center';
-    container.style.justifyContent = 'flex-start';
-    // Append a single td that spans all columns
-    const td = document.createElement('td');
-    td.setAttribute('colspan', '8');  // Assume you have 8 columns, adjust as necessary
-    td.style.width = '100%'; // Force the td to take the full width
-    td.style.borderRadius = '6px'; /* Rounded corners for Aesthetics */
-    td.appendChild(container);
-    // Create the "Remove Filters" button
-    const removeFiltersButton = document.createElement('button');
-    removeFiltersButton.textContent = 'Remove Filters';
-    removeFiltersButton.className = 'reset-filters-button'; // Reuse your existing button styling
-    removeFiltersButton.onclick = function() { resetFilters(); };
-    removeFiltersButton.style.marginRight = '10px'; // Add some spacing
-    removeFiltersButton.setAttribute('id', 'removeFiltersButton');
-    // Only add button if there are active filters
-    let filtersApplied = false;
-    // Add links for each toggle checkbox
-    const toggles = [
-        { checkboxId: 'includeAnonymous', label: 'EXCLUDING: ANONYMOUS' },
-        { checkboxId: 'includeUnverified', label: 'EXCLUDING: UNVERIFIED' },
-    ];
-    toggles.forEach(toggle => {
-        const checkbox = document.getElementById(toggle.checkboxId);
-        if (!checkbox.checked) {  // Add link if the checkbox is unchecked
-            const span = document.createElement('span');
-            span.textContent = toggle.label;
-            span.className = 'filter-tag';
-            span.style.cursor = 'pointer';
-            span.style.marginRight = '10px';
-            span.onclick = () => {
-                checkbox.checked = true; // Check the checkbox when link is clicked
-                applyAllFilters();
-            };
-            container.appendChild(span);
-            filtersApplied = true;
-        }
-    });
-    // Search tag
-    const searchValue = document.getElementById('searchInput').value.trim();
-    if (searchValue) {
-        const searchTag = document.createElement('span');
-        searchTag.textContent = `SEARCH: ${searchValue}`;
-        searchTag.className = 'filter-tag';
-        searchTag.style.cursor = 'pointer';
-        searchTag.style.marginRight = '10px';
-        searchTag.onclick = () => {
-            document.getElementById('searchInput').value = '';
-            applyAllFilters()  // Update the table filter
-        };
-        container.appendChild(searchTag);
-        filtersApplied = true; 
+  const filterDisplayRow = document.getElementById('filterDisplayRow');
+  filterDisplayRow.innerHTML = '';
+
+  const container = document.createElement('div');
+  container.style.display = 'flex';
+  container.style.flexWrap = 'wrap';
+  container.style.width = '100%';
+  container.style.alignItems = 'center';
+  container.style.justifyContent = 'flex-start';
+
+  const td = document.createElement('td');
+  td.setAttribute('colspan', '8');
+  td.style.width = '100%';
+  td.style.borderRadius = '6px';
+  td.appendChild(container);
+
+  const removeFiltersButton = document.createElement('button');
+  removeFiltersButton.textContent = 'Remove Filters';
+  removeFiltersButton.className = 'reset-filters-button';
+  removeFiltersButton.onclick = function() { resetFilters(); };
+  removeFiltersButton.style.marginRight = '10px';
+  removeFiltersButton.setAttribute('id', 'removeFiltersButton');
+
+  let filtersApplied = false;
+
+  const toggles = [
+    { checkboxId: 'includeAnonymous', label: 'EXCLUDING: ANONYMOUS' },
+    { checkboxId: 'includeUnverified', label: 'EXCLUDING: UNVERIFIED' },
+  ];
+  toggles.forEach(toggle => {
+    const checkbox = document.getElementById(toggle.checkboxId);
+    if (!checkbox.checked) {
+      const span = document.createElement('span');
+      span.textContent = toggle.label;
+      span.className = 'filter-tag';
+      span.style.cursor = 'pointer';
+      span.style.marginRight = '10px';
+      span.onclick = () => {
+        checkbox.checked = true;
+        applyAllFilters();
+      };
+      container.appendChild(span);
+      filtersApplied = true;
     }
-    // TWL ID filter tag
-    const twlIdValue = document.getElementById('twlIdInput').value.trim();
-    if (twlIdValue) {
-        const twlIdTag = document.createElement('span');
-        twlIdTag.textContent = `TWL ID: ${twlIdValue}`;
-        twlIdTag.className = 'filter-tag';
-        twlIdTag.style.cursor = 'pointer';
-        twlIdTag.style.marginRight = '10px';
-        twlIdTag.onclick = () => {
-            document.getElementById('twlIdInput').value = '';
-            applyAllFilters(); // Reapply the filters
-        };
-        container.appendChild(twlIdTag);
-        filtersApplied = true;
-    }
-    //Add Filter Selections
-    const filters = [
-        { element: $('#dateFilter'), label: 'DATE' },
-        { element: $('#locationFilter'), label: 'LOCATION' },
-        { element: $('#urgencyFilter'), label: 'URGENCY' },
-        { element: $('#hasContentFilter'), label: 'CONTENT' },
-        { element: $('#wishStatusFilter'), label: 'STATUS' },
-    ];
-    filters.forEach(filter => {
-        filter.element.select2('data').forEach(item => {
-            const span = document.createElement('span');
-            span.textContent = `${filter.label}: ${item.text}`;
-            span.className = 'filter-tag'; // Apply any needed styling in CSS
-            span.style.cursor = 'pointer';
-            span.style.marginRight = '10px';
-            span.onclick = () => {
-                const options = filter.element.find('option');
-                options.each(function() {
-                    if (this.text === item.text) {
-                        $(this).prop('selected', false);
-                    }
-                });
-                filter.element.trigger('change');
-                applyAllFilters();
-            };
-            container.appendChild(span);
-            filtersApplied = true;
+  });
+
+  const searchValue = document.getElementById('searchInput').value.trim();
+  if (searchValue) {
+    const searchTag = document.createElement('span');
+    searchTag.textContent = `SEARCH: ${searchValue}`;
+    searchTag.className = 'filter-tag';
+    searchTag.style.cursor = 'pointer';
+    searchTag.style.marginRight = '10px';
+    searchTag.onclick = () => {
+      document.getElementById('searchInput').value = '';
+      applyAllFilters();
+    };
+    container.appendChild(searchTag);
+    filtersApplied = true;
+  }
+
+  const twlIdValue = document.getElementById('twlIdInput').value.trim();
+  if (twlIdValue) {
+    const twlIdTag = document.createElement('span');
+    twlIdTag.textContent = `TWL ID: ${twlIdValue}`;
+    twlIdTag.className = 'filter-tag';
+    twlIdTag.style.cursor = 'pointer';
+    twlIdTag.style.marginRight = '10px';
+    twlIdTag.onclick = () => {
+      document.getElementById('twlIdInput').value = '';
+      applyAllFilters();
+    };
+    container.appendChild(twlIdTag);
+    filtersApplied = true;
+  }
+
+  const filters = [
+    { element: $('#dateFilter'), label: 'DATE' },
+    { element: $('#locationFilter'), label: 'LOCATION' },
+    { element: $('#urgencyFilter'), label: 'URGENCY' },
+    { element: $('#hasContentFilter'), label: 'CONTENT' },
+    { element: $('#wishStatusFilter'), label: 'STATUS' },
+  ];
+  filters.forEach(filter => {
+    filter.element.select2('data').forEach(item => {
+      const span = document.createElement('span');
+      span.textContent = `${filter.label}: ${item.text}`;
+      span.className = 'filter-tag';
+      span.style.cursor = 'pointer';
+      span.style.marginRight = '10px';
+      span.onclick = () => {
+        const options = filter.element.find('option');
+        options.each(function() {
+          if (this.text === item.text) {
+            $(this).prop('selected', false);
+          }
         });
+        filter.element.trigger('change');
+        applyAllFilters();
+      };
+      container.appendChild(span);
+      filtersApplied = true;
     });
-    if (filtersApplied) {
-        container.insertBefore(removeFiltersButton, container.firstChild);
-        filterDisplayRow.appendChild(td);
-        filterDisplayRow.style.display = 'table-row'; // Make sure the row is visible
-    } else {
-        filterDisplayRow.style.display = 'none'; // Hide row if no filters are active
-    }
+  });
+
+  if (filtersApplied) {
+    container.insertBefore(removeFiltersButton, container.firstChild);
+    filterDisplayRow.appendChild(td);
+    filterDisplayRow.style.display = 'table-row';
+  } else {
+    filterDisplayRow.style.display = 'none';
+  }
 }
 
-// Combined function to apply all filters
 function applyAllFilters() {
-    const dateFilterValues = $('#dateFilter').val() || [];
-    const locationFilterValues = $('#locationFilter').val() || [];
-    const urgencyFilterValues = $('#urgencyFilter').val() || [];
-    const hasContentFilterValues = $('#hasContentFilter').val() || [];
-    const wishStatusFilterValues = $('#wishStatusFilter').val() || [];
+  const dateFilterValues = $('#dateFilter').val() || [];
+  const locationFilterValues = $('#locationFilter').val() || [];
+  const urgencyFilterValues = $('#urgencyFilter').val() || [];
+  const hasContentFilterValues = $('#hasContentFilter').val() || [];
+  const wishStatusFilterValues = $('#wishStatusFilter').val() || [];
 
-    const includeAnonymous = document.getElementById('includeAnonymous').checked;
-    const includeUnverified = document.getElementById('includeUnverified').checked;
+  const includeAnonymous = document.getElementById('includeAnonymous').checked;
+  const includeUnverified = document.getElementById('includeUnverified').checked;
 
-    const searchValue = document.getElementById('searchInput').value.toLowerCase();
-    const twlIdValue = document.getElementById('twlIdInput').value.trim();
-    const filterTwlId = "TWL-" + twlIdValue;
+  const searchValue = document.getElementById('searchInput').value.toLowerCase();
+  const twlIdValue = document.getElementById('twlIdInput').value.trim();
+  const filterTwlId = "TWL-" + twlIdValue;
 
-    const rows = document.querySelectorAll("#wishList tbody tr");
-    filteredData = Array.from(rows).filter(row => {
-        let visible = true;
+  const rows = document.querySelectorAll("#wishList tbody tr");
+  filteredData = Array.from(rows).filter(row => {
+    let visible = true;
 
-        // Date filter check using daysSince attribute
-        const daysSince = parseInt(row.getAttribute('data-days'), 10);
-        if (dateFilterValues.length > 0) {
-            visible = dateFilterValues.some(value => {
-                const maxDays = parseInt(value.replace('days', ''), 10);
-                return daysSince <= maxDays;
-            });
-        }
+    const daysSince = parseInt(row.getAttribute('data-days'), 10);
+    if (dateFilterValues.length > 0) {
+      visible = dateFilterValues.some(value => {
+        const maxDays = parseInt(value.replace('days', ''), 10);
+        return daysSince <= maxDays;
+      });
+    }
 
-        // Location filter check
-        if (locationFilterValues.length > 0) {
-            const location = row.cells[1].textContent;
-            visible = visible && locationFilterValues.some(loc => location.includes(loc));
-        }
+    if (locationFilterValues.length > 0) {
+      const location = row.cells[1].textContent;
+      visible = visible && locationFilterValues.some(value => location.includes(value));
+    }
 
-        // Urgency filter check
-        const urgency = row.cells[2].getAttribute('data-sort');
-        if (urgencyFilterValues.length > 0 && !urgencyFilterValues.includes(urgency)) {
-            visible = false;
-        }
+    if (urgencyFilterValues.length > 0) {
+      const urgency = row.cells[2].textContent.trim();
+      visible = visible && urgencyFilterValues.some(value => urgency.includes(value));
+    }
 
-        // Content filters
-        if (hasContentFilterValues.length > 0) {
-            const contentChecks = {
-                'hasImage': row.getAttribute('data-has-image') === 'true',
-                'hasAudio': row.getAttribute('data-has-audio') === 'true',
-                'hasVideo': row.getAttribute('data-has-video') === 'true',
-                'hasLinks': row.getAttribute('data-has-links') === 'true',
-                'hasNoContent': row.getAttribute('data-has-no-content') === 'true'
-            };
+    if (hasContentFilterValues.length > 0) {
+      const hasImage = row.querySelector('img') !== null;
+      const hasLinks = row.querySelectorAll('a').length > 0;
+      const hasAudio = row.querySelector('audio') !== null;
+      const hasVideo = row.querySelector('video') !== null;
+      const hasNoContent = !(hasImage || hasLinks || hasAudio || hasVideo);
 
-            visible = hasContentFilterValues.every(filter => contentChecks[filter]);
-        }
+      visible = visible && hasContentFilterValues.some(value => {
+        if (value === 'hasImage') return hasImage;
+        if (value === 'hasLinks') return hasLinks;
+        if (value === 'hasAudio') return hasAudio;
+        if (value === 'hasVideo') return hasVideo;
+        if (value === 'hasNoContent') return hasNoContent;
+      });
+    }
 
-        // Anonymous filter check
-        if (!includeAnonymous && row.cells[5].textContent.includes('Anonymous')) {
-            visible = false;
-        }
+    if (wishStatusFilterValues.length > 0) {
+      const wishStatus = row.cells[4].textContent.trim();
+      visible = visible && wishStatusFilterValues.includes(wishStatus);
+    }
 
-        // Wish Status filter check
-        const wishStatus = row.getAttribute('data-sort');
-        if (wishStatusFilterValues.length > 0 && !wishStatusFilterValues.includes(wishStatus)) {
-            visible = false;
-        }
+    if (!includeAnonymous && row.cells[5].textContent.trim() === 'Anonymous') {
+      visible = false;
+    }
 
-        // Unverified filter check
-        if (!includeUnverified) {
-            const verifiedStatus = row.getAttribute('data-verified');
-            if (verifiedStatus === 'Unverified' || verifiedStatus === 'false') {
-                visible = false;
-            }
-        }
+    if (!includeUnverified && row.cells[6].textContent.trim() !== '✔️') {
+      visible = false;
+    }
 
-        // Search filter check
-        if (searchValue && !row.textContent.toLowerCase().includes(searchValue)) {
-            visible = false;
-        }
+    if (searchValue && !row.textContent.toLowerCase().includes(searchValue)) {
+      visible = false;
+    }
 
-        // TWL ID filter check
-        if (twlIdValue && !row.cells[7].textContent.trim().includes(filterTwlId)) {
-            visible = false;
-        }
+    if (twlIdValue && !row.textContent.includes(filterTwlId)) {
+      visible = false;
+    }
 
-        return visible;
-    });
+    return visible;
+  });
 
-    updateFilterDisplayRow(); // Update the display of active filters
-    paginateAndRender(); // Paginate and render the filtered data
+  paginateAndRender();
+  updateFilterDisplayRow();
 }
 
-// Function to handle TWL Search Bar Input
-function handleTwlInput() {
-    var input = document.getElementById('twlIdInput');
-    var value = input.value.replace(/\D/g, ''); // Remove non-digit characters
-    value = value.padStart(6, '0'); // Pad with leading zeros to make it 6 digits
-    input.value = value; // Update input value
-    
-    if (value === "000000") {
-        input.value = ''; // Clear the input value
-        updateFilterDisplayRow();
-    } else {
-        applyAllFilters(); // Call the combined filter function
-        updateFilterDisplayRow(); // Re-render the filter display row
-    }
-}
-
-// Function to Handle key press event for TWL Search Bar
-function handleTwlKeyPress(event) {
-    clearTimeout(twlInputTimeout); // Clear previous timeout
-    if (event.key === 'Enter') {
-        handleTwlInput();
-    } else {
-        twlInputTimeout = setTimeout(handleTwlInput, 5000); // Set timeout for 5 seconds
-    }
-}
-
-// Function to update Wish Urgency
-function updateWishUrgency(cell, timeframe, intensity) {
-    // Clear the existing content of the cell
-    cell.textContent = '';
-    // Create span for timeframe
-    var timeframeSpan = document.createElement('span');
-    timeframeSpan.textContent = timeframe;
-    timeframeSpan.classList.add('urgency-tag');
-    // Apply specific class based on the timeframe value
-    switch (timeframe) {
-        case "Less than 30 Days":
-            timeframeSpan.classList.add('urgent-less30');
-            cell.setAttribute('data-sort', '1');
-            break;
-        case "30-90 Days":
-            timeframeSpan.classList.add('urgent-30to90');
-            cell.setAttribute('data-sort', '2');
-            break;
-        case "90-180 Days":
-            timeframeSpan.classList.add('urgent-90to180');
-            cell.setAttribute('data-sort', '3');
-            break;
-        case "180-365 Days":
-            timeframeSpan.classList.add('urgent-180to365');
-            cell.setAttribute('data-sort', '4');
-            break;
-        case "1+ Year":
-            timeframeSpan.classList.add('urgent-over365');
-            cell.setAttribute('data-sort', '5');
-            break;
-        default:
-            timeframeSpan.style.backgroundColor = '#FFFFFF'; // Default to white if no match
-            cell.setAttribute('data-sort', '0'); // Default case if no match
-    }
-    // Create span for intensity
-    var intensitySpan = document.createElement('span');
-    intensitySpan.textContent = intensity;
-    intensitySpan.classList.add('urgency-tag', 'intensity-tag'); // Intensity has its own fixed style
-
-    // Append both spans to the cell
-    cell.appendChild(intensitySpan);
-    cell.appendChild(timeframeSpan);
-}
-
-// Handling data and populating the table
-function handleData(data) {
-    if (!data || !Array.isArray(data)) {
-        console.error('Data is not an array or is undefined');
-        return;
-    }
-    console.log('Handling Data:', data); // Log data being processed
-    const tableBody = document.querySelector("#wishList tbody");
-    tableBody.innerHTML = ""; // Clear previous entries
-
-    for (let i = 0; i < data.length; i++) {
-        const item = data[i];
-        const row = tableBody.insertRow();
-        row.setAttribute('data-item', JSON.stringify(item)); // Add this line for Search Bar    
-        // Set the 'data-days' attribute for each row
-        row.setAttribute('data-days', item.daysSince); // 'daysSince' is calculated and passed from the server    
-        // Set Date Applied with a sortable ISO string in the 'data-sort' attribute
-        const cellDate = row.insertCell();
-        const date = new Date(item['Date Applied']);
-        const formattedDate = date.toISOString().slice(0, 10);
-        cellDate.textContent = formattedDate;
-        cellDate.setAttribute('data-sort', date.toISOString());                
-        // Set Location
-        const cellLocation = row.insertCell();
-        cellLocation.textContent = item['Location'];                
-        // Handle Wish Urgency
-        const cellUrgency = row.insertCell();
-        const fullUrgencyText = item['Wish Urgency'];
-        const urgencyParts = fullUrgencyText.split(", "); // Assuming the format is "Intensity, Timeframe"
-        // Use the updateWishUrgency function to handle the cell content and styling
-        updateWishUrgency(cellUrgency, urgencyParts[1], urgencyParts[0]); // Note the order: timeframe, intensity        
-        // Determine content availability based on preferences and actual content
-        const hasImage = item['Content Preferences'].includes('Photo(s)') && item['Image URL'] ? true : false;
-        const hasAudio = item['Content Preferences'].includes('Voice Recording') && item['Recorded Message URL'] ? true : false;
-        const hasVideo = item['Content Preferences'].includes('Video Link') && item['Link to Video'] ? true : false;
-        const hasLinks = item['Links'] ? true : false;
-        const hasNoContent = item['Content Preferences'].trim() === 'Wish Story' && !hasImage && !hasAudio && !hasVideo && !hasLinks;
-        // Set Content Related attributes based on content checks
-        row.setAttribute('data-has-image', hasImage);
-        row.setAttribute('data-has-audio', hasAudio);
-        row.setAttribute('data-has-video', hasVideo);
-        row.setAttribute('data-has-links', hasLinks);
-        row.setAttribute('data-has-no-content', hasNoContent);
-        // Set Posting Title
-        const cellTitle = row.insertCell();
-        cellTitle.textContent = item['Posting Title'];
-        // Set Wish Status with Images
-        const statusContainer = document.createElement('div');
-        statusContainer.className = 'image-tooltip-container';
-        const cellWishStatus = row.insertCell();
-        const wishStatus = item['Wish Status'];
-        let statusSortValue = '';
-        const statusImage = document.createElement('img');
-        statusImage.style.display = 'block';
-        statusImage.style.margin = 'auto';
-        statusImage.style.overflow = 'visible';
-        statusImage.style.maxWidth = '50px';
-        statusImage.style.maxHeight = '50px';
-        const statusTooltip = document.createElement('span');
-        statusTooltip.className = 'tooltip';
-        statusTooltip.textContent = wishStatus; // Tooltip text
-        if (wishStatus === 'New/Unfulfilled') {
-            row.setAttribute('data-sort', 'New/Unfulfilled');  // New/Unfulfilled
-            statusImage.src = 'https://lh3.google.com/u/0/d/1HKxEOpBRyE35FUjDOovuR5ZTjskvsTMr';
-            statusImage.className = 'icon-cell newStatus-icon';
-            statusImage.alt = 'New/Unfulfilled';
-            statusSortValue = '3';
-        } else if (wishStatus === 'Unfulfilled') {
-            statusImage.src = 'https://lh3.google.com/u/0/d/1HEiT1SchXaXPVCvH9GXPPTF4KXlY9oka';//URL to Unfulfilled Image
-            statusImage.className = 'icon-cell unfulfilled-icon';
-            statusImage.alt = 'Unfulfilled';
-            statusSortValue = '2';
-            row.setAttribute('data-sort', 'Unfulfilled');  // Unfulfilled
-        } else if (wishStatus === 'Fulfilled') {
-            statusImage.src = 'https://lh3.google.com/u/0/d/1H78Xxha9fcFXA3hic__5plCWFQ9BkagR'; //URL to Fulfilled Image
-            statusImage.className = 'icon-cell fulfilled-icon';
-            statusImage.alt = 'Fulfilled';
-            statusSortValue = '1';
-            row.setAttribute('data-sort', 'Fulfilled');  // Fulfilled
-        }
-        statusContainer.appendChild(statusImage);
-        statusContainer.appendChild(statusTooltip); // Append the tooltip to the container
-        cellWishStatus.appendChild(statusContainer); // Append the container to the cell
-        cellWishStatus.setAttribute('data-sort', statusSortValue);
-        // Set Name
-        const cellName = row.insertCell();
-        if (item['Name']) {
-            cellName.textContent = item['Name'];
-            cellName.setAttribute('data-sort', item['Name'].toLowerCase()); // Use lowercase for consistent sorting
-        } else {
-            cellName.textContent = 'N/A'; // Handle missing names
-            cellName.setAttribute('data-sort', ''); // Empty string for sorting
-        }
-        // Set Verified Status with Images
-        const verificationContainer = document.createElement('div');
-        verificationContainer.className = 'image-tooltip-container';
-        const cellVerified = row.insertCell();
-        const verificationStatus = item['Verified?'];
-        let sortValue = '';
-        const verifiedImage = document.createElement('img');
-        verifiedImage.style.display = 'block';
-        verifiedImage.style.margin = 'auto';
-        verifiedImage.style.overflow = 'visible';
-        verifiedImage.style.maxWidth = '40px';
-        verifiedImage.style.maxHeight = '40px';
-        const verifiedTooltip = document.createElement('span');
-        verifiedTooltip.className = 'tooltip';
-        verifiedTooltip.textContent = verificationStatus; // Tooltip text
-        if (verificationStatus === 'Pending') {
-            cellVerified.textContent = verificationStatus;
-            cellVerified.style.textAlign = 'center';
-            row.setAttribute('data-verified', 'Pending');  // Pending
-            sortValue = '3';
-        } else if (verificationStatus === 'Unverified') {
-            verifiedImage.src = 'https://lh3.google.com/u/0/d/1FRB5gDmVzKlWf6DX6GD2LfEZgmsseyvQ';
-            verifiedImage.alt = 'Unverified';
-            sortValue = '2';
-            row.setAttribute('data-verified', 'Unverified');  // Unverified
-        } else if (verificationStatus === 'Verified') {
-            verifiedImage.src = 'https://lh3.google.com/u/0/d/1ylrnVGjCtac2ABcXk-SMA6Is3hueS-j9';
-            verifiedImage.alt = 'Verified';
-            sortValue = '1';
-            row.setAttribute('data-verified', 'Verified');  // Verified
-        }
-        verificationContainer.appendChild(verifiedImage);
-        verificationContainer.appendChild(verifiedTooltip); // Append the tooltip to the container
-        cellVerified.appendChild(verificationContainer); // Append the container to the cell
-        cellVerified.setAttribute('data-sort', sortValue);        
-        // Set TWL ID # (assuming numeric sorting)
-        const cellID = row.insertCell();
-        cellID.textContent = item['TWL ID #'];
-        cellID.setAttribute('data-sort', parseInt(item['TWL ID #'], 10).toString());
-        // Add click event listener for the detail view modal
-        row.addEventListener('click', () => openDetailView(item));
-    }
-}
-
-//Function to Paginate and then Render the Table  
 function paginateAndRender() {
-    const totalRows = filteredData.length;
-    const totalPages = Math.ceil(totalRows / rowsPerPage);
-    const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const rowsToShow = filteredData.slice(startIndex, endIndex);
-    const tableBody = document.querySelector("#wishList tbody");
-    tableBody.innerHTML = ""; // Clear previous entries
-    rowsToShow.forEach(row => tableBody.appendChild(row));
-    updateRowColors();
-    updatePaginationControls(totalPages, currentPage);
-}
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const rows = document.querySelectorAll("#wishList tbody tr");
 
-//Function to updatePaginationControls    
-function updatePaginationControls(totalPages, currentPage) {
-    const paginationControls = document.getElementById('pagination-controls');
-    paginationControls.innerHTML = ''; // Clear existing controls
+  rows.forEach((row, index) => {
+    row.style.display = index >= startIndex && index < endIndex ? '' : 'none';
+  });
 
-    // Create First button
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const paginationControls = document.getElementById('pagination-controls');
+
+  paginationControls.innerHTML = '';
+
+  if (totalPages > 1) {
     const firstButton = document.createElement('button');
-    firstButton.textContent = 'First';
+    firstButton.textContent = '<< First';
     firstButton.disabled = currentPage === 1;
-    firstButton.addEventListener('click', () => {
-        currentPage = 1;
-        paginateAndRender();
-    });
+    firstButton.onclick = () => {
+      currentPage = 1;
+      paginateAndRender();
+    };
     paginationControls.appendChild(firstButton);
 
-    // Create Previous button
     const prevButton = document.createElement('button');
-    prevButton.textContent = 'Previous';
+    prevButton.textContent = '< Prev';
     prevButton.disabled = currentPage === 1;
-    prevButton.addEventListener('click', () => {
-        currentPage -= 1;
-        paginateAndRender();
-    });
+    prevButton.onclick = () => {
+      currentPage--;
+      paginateAndRender();
+    };
     paginationControls.appendChild(prevButton);
 
-    // Create page buttons
-    for (let i = 1; i <= totalPages; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.disabled = i === currentPage;
-        pageButton.addEventListener('click', () => {
-            currentPage = i;
-            paginateAndRender();
-        });
-        paginationControls.appendChild(pageButton);
-    }
-
-    // Create Next button
     const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next';
+    nextButton.textContent = 'Next >';
     nextButton.disabled = currentPage === totalPages;
-    nextButton.addEventListener('click', () => {
-        currentPage += 1;
-        paginateAndRender();
-    });
+    nextButton.onclick = () => {
+      currentPage++;
+      paginateAndRender();
+    };
     paginationControls.appendChild(nextButton);
 
-    // Create Last button
     const lastButton = document.createElement('button');
-    lastButton.textContent = 'Last';
+    lastButton.textContent = 'Last >>';
     lastButton.disabled = currentPage === totalPages;
-    lastButton.addEventListener('click', () => {
-        currentPage = totalPages;
-        paginateAndRender();
-    });
+    lastButton.onclick = () => {
+      currentPage = totalPages;
+      paginateAndRender();
+    };
     paginationControls.appendChild(lastButton);
+
+    const currentPageSpan = document.createElement('span');
+    currentPageSpan.textContent = `Page ${currentPage} of ${totalPages}`;
+    paginationControls.appendChild(currentPageSpan);
+  }
 }
 
-//Function to Sort Table
+function handleData(data) {
+  const tbody = document.querySelector('#wishList tbody');
+  tbody.innerHTML = '';
+  let isOddRow = true;
+
+  data.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.className = isOddRow ? 'odd-row' : 'even-row';
+    isOddRow = !isOddRow;
+
+    tr.setAttribute('data-days', item.days_since_applied);
+    tr.setAttribute('data-item', JSON.stringify(item));
+
+    tr.innerHTML = `
+      <td>${item.Date_Applied}</td>
+      <td>${item.Location}</td>
+      <td class="urgent-cell">
+        <span class="${item.urgencyClass}">
+          ${item.Wish_Urgency}
+        </span>
+      </td>
+      <td>
+        <div class="image-tooltip-container">
+          <img class="icon-image" src="${wishType64pxIcon[item.WishTypeIconIndex]}" alt="Wish Type Icon" title="${item.Wish_Type}">
+          <span class="tooltip">${item.Description}</span>
+        </div>
+      </td>
+      <td>${item.Wish_Status}</td>
+      <td>${item.Name}</td>
+      <td>
+        <img src="${item.Verified ? verifiedBadgeURL : unverifiedBadgeURL}" alt="${item.Verified ? 'Verified' : 'Unverified'}" title="${item.Verified ? 'Verified' : 'Unverified'}">
+      </td>
+      <td>${item.TWL_ID}</td>
+    `;
+    tr.onclick = () => openDetailView(item);
+    tbody.appendChild(tr);
+  });
+}
+
 function sortTable(columnIndex) {
-    const headerRow = document.getElementById('sortingColumnHeaders');
-    const isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
-    headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
-    filteredData.sort(function (a, b) {
-        let aValue = a.cells[columnIndex].getAttribute('data-sort') || a.cells[columnIndex].textContent.trim();
-        let bValue = b.cells[columnIndex].getAttribute('data-sort') || b.cells[columnIndex].textContent.trim();
-        if (columnIndex === 7) { // Numeric sorting for TWL ID
-            aValue = parseInt(aValue.replace('TWL-', ''), 10);
-            bValue = parseInt(bValue.replace('TWL-', ''), 10);
-        } else {
-            if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
-                aValue = new Date(aValue);
-                bValue = new Date(bValue);
-            } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
-                aValue = parseFloat(aValue);
-                bValue = parseFloat(bValue);
-            } else {
-                aValue = aValue.toLowerCase();
-                bValue = bValue.toLowerCase();
-            }
-        }
-        return isAscending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
-    });
-    updateSortingArrows(headerRow, columnIndex, isAscending);
-    paginateAndRender(); // Paginate and render the sorted data
-}
+  const table = document.querySelector("#wishList tbody");
+  const rows = Array.from(table.rows);
+  const order = prevSortedColumnIndex === columnIndex ? 'desc' : 'asc';
 
-//Function to Update the Displayed Sorting Arrows Appended to/Moved across Column Headers
-function updateSortingArrows(headerRow, columnIndex, isAscending) {
-    // Clear any existing arrows from the current column header
-    headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
+  rows.sort((a, b) => {
+    const cellA = a.cells[columnIndex].innerText;
+    const cellB = b.cells[columnIndex].innerText;
 
-    // Remove the arrow from the previously sorted column
-    if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
-        var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
-        prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
-    }
-
-    // Append the appropriate arrow to the currently sorted column
-    var currentHeaderCell = headerRow.cells[columnIndex];
-    if (isAscending) {
-        currentHeaderCell.textContent += ' ⤓';
+    if (order === 'asc') {
+      return cellA.localeCompare(cellB, undefined, { numeric: true });
     } else {
-        currentHeaderCell.textContent += ' ⤒';
+      return cellB.localeCompare(cellA, undefined, { numeric: true });
     }
+  });
 
-    // Update the previously sorted column index
-    prevSortedColumnIndex = columnIndex;
+  rows.forEach(row => table.appendChild(row));
+  prevSortedColumnIndex = order === 'asc' ? columnIndex : null;
 }
 
-//Function to toggleFilterRows
-function toggleFilterRow() {
-    var filterRow = document.getElementById('filterRow');
-    var displayRow = document.getElementById('filterDisplayRow');
-    var button = document.getElementById("toggleFiltersButton");
-    if (filterRow && displayRow) {
-        // Log current display properties before toggling
-        console.log("Before toggle - filterRow display:", window.getComputedStyle(filterRow).display, "displayRow display:", window.getComputedStyle(displayRow).display);
-        // Toggle visibility based on the global state
-        if (isFilterVisible) {
-            filterRow.style.display = 'none';
-            displayRow.style.display = 'none'; // Ensure displayRow is hidden
-            button.textContent = "▲";
-            console.log("Rows hidden");
-        } else {
-            filterRow.style.display = 'table-row';
-            if (displayRow.children.length > 0) { // Only show displayRow if it has children
-                displayRow.style.display = 'table-row';
-            } else {
-                displayRow.style.display = 'none';
-            }
-            button.textContent = "▼";
-            console.log("Rows shown");
-        }
-        // Update the global state
-        isFilterVisible = !isFilterVisible;
-    }
-}
-
-// Function to scroll back to the top of the list
 function returnToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.documentElement.scrollTop = 0;
 }
-//Accesibility Toggle Coding
-function toggleAccessibility() {
+
+function handleTwlInput() {
+  const inputElement = document.getElementById('twlIdInput');
+  const inputValue = inputElement.value.trim().toUpperCase();
+
+  if (inputValue) {
     const rows = document.querySelectorAll("#wishList tbody tr");
     rows.forEach(row => {
-        // Handle Wish Status column
-        const wishStatusCell = row.cells[4];
-        const wishStatusImg = wishStatusCell.querySelector('img');
-        const wishStatusText = wishStatusImg ? wishStatusImg.alt : wishStatusCell.textContent;
-        if (accessibilityEnabled) {
-            // Revert to original image
-            if (wishStatusImg) {
-                wishStatusImg.style.display = 'block';
-            } else {
-                wishStatusCell.textContent = wishStatusText;
-            }
-        } else {
-            // Replace image with text
-            if (wishStatusImg) {
-                wishStatusImg.style.display = 'none';
-                wishStatusCell.textContent = wishStatusText;
-            }
-        }
-        // Handle Verified column
-        const verifiedCell = row.cells[6];
-        const verifiedImg = verifiedCell.querySelector('img');
-        const verifiedText = verifiedImg ? verifiedImg.alt : verifiedCell.textContent;
-        if (accessibilityEnabled) {
-            // Revert to original image
-            if (verifiedImg) {
-                verifiedImg.style.display = 'block';
-            } else {
-                verifiedCell.textContent = verifiedText;
-            }
-        } else {
-            // Replace image with text
-            if (verifiedImg) {
-                verifiedImg.style.display = 'none';
-                verifiedCell.textContent = verifiedText;
-            }
-        }
+      const twlId = row.cells[7].innerText.trim().toUpperCase();
+      if (twlId.includes(inputValue)) {
+        const itemData = JSON.parse(row.getAttribute('data-item'));
+        openDetailView(itemData);
+        row.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.parent.postMessage({ type: 'scrollToTop' }, '*');
+      }
     });
-    // Toggle colors and font size
-    if (accessibilityEnabled) {
-        document.body.style.backgroundColor = '#C08CCF'; // Original background color
-        document.body.style.color = '#000000'; // Original text color
-        document.body.style.fontSize = '12px'; // Original font size
-    } else {
-        document.body.style.backgroundColor = '#F0F0F0'; // More neutral background color
-        document.body.style.color = '#333333'; // More accessible text color
-        document.body.style.fontSize = '16px'; // Increased font size
-    }
-    // Toggle the accessibility flag
-    accessibilityEnabled = !accessibilityEnabled;
+  }
 }
 
-// Ensure to handle the timeout function correctly on focus out
-document.getElementById('twlIdInput').addEventListener('blur', function() {
-    clearTimeout(twlInputTimeout);
+function handleTwlKeyPress(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
     handleTwlInput();
-});
+  }
+}
+
+function toggleFilterRow() {
+  const filterRow = document.getElementById('filterRow');
+  const displayRow = document.getElementById('filterDisplayRow');
+  const toggleButton = document.getElementById('toggleFiltersButton');
+
+  if (filterRow.style.display === 'none') {
+    filterRow.style.display = 'table-row';
+    displayRow.style.display = 'none';
+    toggleButton.textContent = '▼';
+  } else {
+    filterRow.style.display = 'none';
+    displayRow.style.display = 'table-row';
+    toggleButton.textContent = '▶';
+  }
+}
+
+function openDetailView(item) {
+  const modal = document.getElementById('modal');
+  const detailContent = document.getElementById('detailContent');
+
+  const detailsHTML = `
+    <h3>${item.Posting_Title}</h3>
+    <img src="${wishType512pxIcon[item.WishTypeIconIndex]}" alt="${item.Wish_Type}" title="${item.Wish_Type}" class="icon-image">
+    <p><strong>Details:</strong> ${item.Description}</p>
+    <p><strong>Status:</strong> ${item.Wish_Status}</p>
+    <p><strong>Name:</strong> ${item.Name}</p>
+    <p><strong>Location:</strong> ${item.Location}</p>
+    <p><strong>Urgency:</strong> ${item.Wish_Urgency}</p>
+    <p><strong>Verified:</strong> ${item.Verified ? 'Yes' : 'No'}</p>
+    <p><strong>Date Applied:</strong> ${item.Date_Applied}</p>
+    <p><strong>TWL ID:</strong> ${item.TWL_ID}</p>
+  `;
+  detailContent.innerHTML = detailsHTML;
+
+  modal.style.display = 'block';
+}
+
+function copyToClipboard() {
+  const modal = document.getElementById('modal');
+  const detailContent = document.getElementById('detailContent');
+  const twlId = detailContent.querySelector('p:contains("TWL ID:")').innerText.split(':')[1].trim();
+
+  const textToCopy = `TWL ID: ${twlId}`;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    const donateLink = document.getElementById('donateLink');
+    donateLink.click();
+  }).catch(err => {
+    console.error('Failed to copy text:', err);
+  });
+}
+
+function toggleAccessibility() {
+  accessibilityEnabled = !accessibilityEnabled;
+  if (accessibilityEnabled) {
+    document.body.style.fontSize = '16px';
+    document.body.style.lineHeight = '1.6';
+  } else {
+    document.body.style.fontSize = '12px';
+    document.body.style.lineHeight = '1.4';
+  }
+}
+
+function resetFilters() {
+  $('#dateFilter').val(null).trigger('change');
+  $('#locationFilter').val(null).trigger('change');
+  $('#urgencyFilter').val(null).trigger('change');
+  $('#hasContentFilter').val(null).trigger('change');
+  $('#wishStatusFilter').val(null).trigger('change');
+
+  document.getElementById('includeAnonymous').checked = true;
+  document.getElementById('includeUnverified').checked = true;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('twlIdInput').value = '';
+
+  applyAllFilters();
+}
 </script>
 </body>
 </html>
