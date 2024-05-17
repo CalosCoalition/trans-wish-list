@@ -368,7 +368,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px;
+            padding: 20px;
             width: 100%;
         }
         .pagination-controls {
@@ -378,7 +378,7 @@
         }
         .pagination-controls button, .pagination-controls input {
             margin: 0 5px;
-            padding: 5px 10px;
+            padding: 20px 10px;
         }
         .pagination-controls input {
             width: 50px;
@@ -428,9 +428,10 @@
       }
       #bottom-disclosure {
         font-style: italic;
-        font-size: 6px;
+        font-size: 8px;
         text-align: center;
         color: #521B28;
+        margin: 20px auto; 
       }
       #bottom-disclosure span {
             text-align: center;
@@ -652,7 +653,7 @@
     <tfoot>
         <tr>
             <td>
-                <button id="returnToTopButton" style ="padding-top: 8px;" onclick="returnToTop()">Return to Top</button>
+                <button id="returnToTopButton" onclick="returnToTop()">Return to Top</button>
             </td>
             <td colspan="6">
                 <div class="pagination-container">
@@ -660,7 +661,7 @@
                 </div>
             </td>
             <td>
-                <button id="accessibilityToggleButton" style ="padding-top: 8px;" onclick="toggleAccessibility()">Toggle Accessibility</button>
+                <button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button>
             </td>
         </tr>
         <tr>
