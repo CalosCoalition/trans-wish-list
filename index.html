@@ -971,6 +971,7 @@ function initializeSelect2Elements() {
     });
 }
 
+// Function to Populate Filters
 function populateFilters(data) {
     const locationSet = new Set(["Rather Not Say", "United States"]);
 
@@ -994,27 +995,211 @@ function populateFilters(data) {
     locationFilter.trigger('change'); // Update Select2 dropdown
 }
 
-// Function to Initialize Location Filters
-function initializeLocationFilter() {
-    const locationFilter = $('#locationFilter');
-    const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "AS", "DC", "FM", "GU", "MH", "MP", "PW", "PR", "VI"];
-    states.forEach(state => {
-        locationFilter.append(new Option(state, state));
+// Function to update the filter display row, or filter subrow
+function updateFilterDisplayRow() {
+    const filterDisplayRow = document.getElementById('filterDisplayRow');
+    filterDisplayRow.innerHTML = ''; // Clear existing filters
+    // Create a container div
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.flexWrap = 'wrap';  // Allow wrapping if many filters
+    container.style.width = '100%';
+    container.style.alignItems = 'center';
+    container.style.justifyContent = 'flex-start';
+    // Append a single td that spans all columns
+    const td = document.createElement('td');
+    td.setAttribute('colspan', '8');  // Assume you have 8 columns, adjust as necessary
+    td.style.width = '100%'; // Force the td to take the full width
+    td.style.borderRadius = '6px'; /* Rounded corners for Aesthetics */
+    td.appendChild(container);
+    // Create the "Remove Filters" button
+    const removeFiltersButton = document.createElement('button');
+    removeFiltersButton.textContent = 'Remove Filters';
+    removeFiltersButton.className = 'reset-filters-button'; // Reuse your existing button styling
+    removeFiltersButton.onclick = function() { resetFilters(); };
+    removeFiltersButton.style.marginRight = '10px'; // Add some spacing
+    removeFiltersButton.setAttribute('id', 'removeFiltersButton');
+    // Only add button if there are active filters
+    let filtersApplied = false;
+    // Add links for each toggle checkbox
+    const toggles = [
+        { checkboxId: 'includeAnonymous', label: 'EXCLUDING: ANONYMOUS' },
+        { checkboxId: 'includeUnverified', label: 'EXCLUDING: UNVERIFIED' },
+    ];
+    toggles.forEach(toggle => {
+        const checkbox = document.getElementById(toggle.checkboxId);
+        if (!checkbox.checked) {  // Add link if the checkbox is unchecked
+            const span = document.createElement('span');
+            span.textContent = toggle.label;
+            span.className = 'filter-tag';
+            span.style.cursor = 'pointer';
+            span.style.marginRight = '10px';
+            span.onclick = () => {
+                checkbox.checked = true; // Check the checkbox when link is clicked
+                applyAllFilters();
+            };
+            container.appendChild(span);
+            filtersApplied = true;
+        }
     });
-    locationFilter.select2({ placeholder: 'By Location', closeOnSelect: false, tags: true});
+    // Search tag
+    const searchValue = document.getElementById('searchInput').value.trim();
+    if (searchValue) {
+        const searchTag = document.createElement('span');
+        searchTag.textContent = `SEARCH: ${searchValue}`;
+        searchTag.className = 'filter-tag';
+        searchTag.style.cursor = 'pointer';
+        searchTag.style.marginRight = '10px';
+        searchTag.onclick = () => {
+            document.getElementById('searchInput').value = '';
+            applyAllFilters()  // Update the table filter
+        };
+        container.appendChild(searchTag);
+        filtersApplied = true; 
+    }
+    // TWL ID filter tag
+    const twlIdValue = document.getElementById('twlIdInput').value.trim();
+    if (twlIdValue) {
+        const twlIdTag = document.createElement('span');
+        twlIdTag.textContent = `TWL ID: ${twlIdValue}`;
+        twlIdTag.className = 'filter-tag';
+        twlIdTag.style.cursor = 'pointer';
+        twlIdTag.style.marginRight = '10px';
+        twlIdTag.onclick = () => {
+            document.getElementById('twlIdInput').value = '';
+            applyAllFilters(); // Reapply the filters
+        };
+        container.appendChild(twlIdTag);
+        filtersApplied = true;
+    }
+    //Add Filter Selections
+    const filters = [
+        { element: $('#dateFilter'), label: 'DATE' },
+        { element: $('#locationFilter'), label: 'LOCATION' },
+        { element: $('#urgencyFilter'), label: 'URGENCY' },
+        { element: $('#hasContentFilter'), label: 'CONTENT' },
+        { element: $('#wishStatusFilter'), label: 'STATUS' },
+    ];
+    filters.forEach(filter => {
+        filter.element.select2('data').forEach(item => {
+            const span = document.createElement('span');
+            span.textContent = `${filter.label}: ${item.text}`;
+            span.className = 'filter-tag'; // Apply any needed styling in CSS
+            span.style.cursor = 'pointer';
+            span.style.marginRight = '10px';
+            span.onclick = () => {
+                const options = filter.element.find('option');
+                options.each(function() {
+                    if (this.text === item.text) {
+                        $(this).prop('selected', false);
+                    }
+                });
+                filter.element.trigger('change');
+                applyAllFilters();
+            };
+            container.appendChild(span);
+            filtersApplied = true;
+        });
+    });
+    if (filtersApplied) {
+        container.insertBefore(removeFiltersButton, container.firstChild);
+        filterDisplayRow.appendChild(td);
+        filterDisplayRow.style.display = 'table-row'; // Make sure the row is visible
+    } else {
+        filterDisplayRow.style.display = 'none'; // Hide row if no filters are active
+    }
 }
 
-// Function to apply Location Filters
-function applyLocationFilter() {
-    const selectedState = $('#locationFilter').val();
+// Combined function to apply all filters
+function applyAllFilters() {
+    const dateFilterValues = $('#dateFilter').val() || [];
+    const locationFilterValues = $('#locationFilter').val() || [];
+    const urgencyFilterValues = $('#urgencyFilter').val() || [];
+    const hasContentFilterValues = $('#hasContentFilter').val() || [];
+    const wishStatusFilterValues = $('#wishStatusFilter').val() || [];
+
+    const includeAnonymous = document.getElementById('includeAnonymous').checked;
+    const includeUnverified = document.getElementById('includeUnverified').checked;
+
+    const searchValue = document.getElementById('searchInput').value.toLowerCase();
+    const twlIdValue = document.getElementById('twlIdInput').value.trim();
+    const filterTwlId = "TWL-" + twlIdValue;
+
     const rows = document.querySelectorAll("#wishList tbody tr");
-    rows.forEach(row => {
-        const locationText = row.cells[1].textContent; // Assuming location is in the second cell
-        row.style.display = locationText.includes(selectedState) ? "" : "none";
+    filteredData = Array.from(rows).filter(row => {
+        let visible = true;
+
+        // Date filter check using daysSince attribute
+        const daysSince = parseInt(row.getAttribute('data-days'), 10);
+        if (dateFilterValues.length > 0) {
+            visible = dateFilterValues.some(value => {
+                const maxDays = parseInt(value.replace('days', ''), 10);
+                return daysSince <= maxDays;
+            });
+        }
+
+        // Location filter check
+        if (locationFilterValues.length > 0) {
+            const location = row.cells[1].textContent;
+            visible = visible && locationFilterValues.some(loc => location.includes(loc));
+        }
+
+        // Urgency filter check
+        const urgency = row.cells[2].getAttribute('data-sort');
+        if (urgencyFilterValues.length > 0 && !urgencyFilterValues.includes(urgency)) {
+            visible = false;
+        }
+
+        // Content filters
+        if (hasContentFilterValues.length > 0) {
+            const contentChecks = {
+                'hasImage': row.getAttribute('data-has-image') === 'true',
+                'hasAudio': row.getAttribute('data-has-audio') === 'true',
+                'hasVideo': row.getAttribute('data-has-video') === 'true',
+                'hasLinks': row.getAttribute('data-has-links') === 'true',
+                'hasNoContent': row.getAttribute('data-has-no-content') === 'true'
+            };
+
+            visible = hasContentFilterValues.every(filter => contentChecks[filter]);
+        }
+
+        // Anonymous filter check
+        if (!includeAnonymous && row.cells[5].textContent.includes('Anonymous')) {
+            visible = false;
+        }
+
+        // Wish Status filter check
+        const wishStatus = row.getAttribute('data-sort');
+        if (wishStatusFilterValues.length > 0 && !wishStatusFilterValues.includes(wishStatus)) {
+            visible = false;
+        }
+
+        // Unverified filter check
+        if (!includeUnverified) {
+            const verifiedStatus = row.getAttribute('data-verified');
+            if (verifiedStatus === 'Unverified' || verifiedStatus === 'false') {
+                visible = false;
+            }
+        }
+
+        // Search filter check
+        if (searchValue && !row.textContent.toLowerCase().includes(searchValue)) {
+            visible = false;
+        }
+
+        // TWL ID filter check
+        if (twlIdValue && !row.cells[7].textContent.trim().includes(filterTwlId)) {
+            visible = false;
+        }
+
+        return visible;
     });
+
+    updateFilterDisplayRow(); // Update the display of active filters
+    paginateAndRender(); // Paginate and render the filtered data
 }
 
-// Function for handling TWL Search Bar Input
+// Function to handle TWL Search Bar Input
 function handleTwlInput() {
     var input = document.getElementById('twlIdInput');
     var value = input.value.replace(/\D/g, ''); // Remove non-digit characters
@@ -1083,6 +1268,7 @@ function updateWishUrgency(cell, timeframe, intensity) {
     cell.appendChild(intensitySpan);
     cell.appendChild(timeframeSpan);
 }
+
 // Handling data and populating the table
 function handleData(data) {
     if (!data || !Array.isArray(data)) {
@@ -1219,535 +1405,224 @@ function handleData(data) {
         row.addEventListener('click', () => openDetailView(item));
     }
 }
-//Function to open Modal Views/Wish Views
-    function openDetailView(item) {
-        var content = `
-            <p><strong>Name:</strong> ${item['Name']}</p>
-            <p><strong>Location:</strong> ${item['Location']}</p>
-            <p><strong>Wish Urgency:</strong> ${item['Wish Urgency']}</p>
-            <p><strong>Posting Title:</strong> ${item['Posting Title']}</p>
-            <p><strong>Wish Status:</strong> ${item['Wish Status']}</p>
-            <p><strong>Verified:</strong> ${item['Verified?']}</p>
-            <p><strong>Date Submitted:</strong> ${new Date(item['Date Applied']).toLocaleDateString()}</p>
-            <p><strong>TWL ID:</strong> ${item['TWL ID #']}
-        `;
-    // Conditionally add content based on preferences
-        if (item['Content Preferences']['Wish Story']) {
-            content += `<p><strong>Wish Story:</strong> ${item['Trans Wish List Description Text']}</p>`;
-        }
-        if (item['Content Preferences']['Voice Recording'] && item['Recorded Message URL']) {
-            content += `<audio controls><source src="${item['Recorded Message URL']}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
-        }
-        if (item['Content Preferences']['Photo(s)'] && item['Image URL']) {
-            content += `<img src="${item['Image URL']}" alt="Wish Image" style="max-width:100%;">`;
-        }
-        if (item['Content Preferences']['Video Link'] && item['Link to Video']) {
-            content += `<p><a href="${item['Link to Video']}" target="_blank">View Linked Video</a></p>`;
-        }
-        if (item['Content Preferences']['Documents']) {
-            content += `<p>Accompanying Documents have been submited and stored confidentially.</p>`;
-        }
-        document.getElementById('detailContent').innerHTML = content;
-        window.currentWishID = item['TWL ID #'];
-        document.getElementById('modal').style.display = 'block';
-    }
-// Function to copy TWL ID to clipboard and ask user if they want to proceed to the donation page
-    function copyToClipboard() {
-        navigator.clipboard.writeText(window.currentWishID).then(() => {
-        // Ask user if they want to go to the donation page
-            if (confirm('TWL ID copied to clipboard. Would you like to go to the donation page now?')) {
-                window.open('https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A', '_blank'); //update if Donate URL CHANGES
-            }
-        }, () => {
-            alert('Failed to copy TWL ID. Please try again.');
-        });
-    }
+
 //Function to Paginate and then Render the Table  
-    function paginateAndRender() {
-        const totalRows = filteredData.length;
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-        const startIndex = (currentPage - 1) * rowsPerPage;
-        const endIndex = startIndex + rowsPerPage;
-        const rowsToShow = filteredData.slice(startIndex, endIndex);
-        const tableBody = document.querySelector("#wishList tbody");
-        tableBody.innerHTML = ""; // Clear previous entries
-        rowsToShow.forEach(row => tableBody.appendChild(row));
-        updateRowColors();
-        updatePaginationControls(totalPages, currentPage);
-    }
+function paginateAndRender() {
+    const totalRows = filteredData.length;
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const rowsToShow = filteredData.slice(startIndex, endIndex);
+    const tableBody = document.querySelector("#wishList tbody");
+    tableBody.innerHTML = ""; // Clear previous entries
+    rowsToShow.forEach(row => tableBody.appendChild(row));
+    updateRowColors();
+    updatePaginationControls(totalPages, currentPage);
+}
+
 //Function to updatePaginationControls    
-    function updatePaginationControls(totalPages, currentPage) {
-        const paginationControls = document.getElementById('pagination-controls');
-        paginationControls.innerHTML = ''; // Clear existing controls
+function updatePaginationControls(totalPages, currentPage) {
+    const paginationControls = document.getElementById('pagination-controls');
+    paginationControls.innerHTML = ''; // Clear existing controls
 
-        // Create First button
-        const firstButton = document.createElement('button');
-        firstButton.textContent = 'First';
-        firstButton.disabled = currentPage === 1;
-        firstButton.addEventListener('click', () => {
-            currentPage = 1;
-            paginateAndRender();
-        });
-        paginationControls.appendChild(firstButton);
-
-        // Create Previous button
-        const prevButton = document.createElement('button');
-        prevButton.textContent = 'Previous';
-        prevButton.disabled = currentPage === 1;
-        prevButton.addEventListener('click', () => {
-            currentPage -= 1;
-            paginateAndRender();
-        });
-        paginationControls.appendChild(prevButton);
-
-        // Create page buttons
-        for (let i = 1; i <= totalPages; i++) {
-            const pageButton = document.createElement('button');
-            pageButton.textContent = i;
-            pageButton.disabled = i === currentPage;
-            pageButton.addEventListener('click', () => {
-                currentPage = i;
-                paginateAndRender();
-            });
-            paginationControls.appendChild(pageButton);
-        }
-
-        // Create Next button
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next';
-        nextButton.disabled = currentPage === totalPages;
-        nextButton.addEventListener('click', () => {
-            currentPage += 1;
-            paginateAndRender();
-        });
-        paginationControls.appendChild(nextButton);
-
-        // Create Last button
-        const lastButton = document.createElement('button');
-        lastButton.textContent = 'Last';
-        lastButton.disabled = currentPage === totalPages;
-        lastButton.addEventListener('click', () => {
-            currentPage = totalPages;
-            paginateAndRender();
-        });
-        paginationControls.appendChild(lastButton);
-    }
-//Function to Sort Table
-    function sortTable(columnIndex) {
-        const headerRow = document.getElementById('sortingColumnHeaders');
-        const isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
-        headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
-        filteredData.sort(function (a, b) {
-            let aValue = a.cells[columnIndex].getAttribute('data-sort') || a.cells[columnIndex].textContent.trim();
-            let bValue = b.cells[columnIndex].getAttribute('data-sort') || b.cells[columnIndex].textContent.trim();
-            if (columnIndex === 7) { // Numeric sorting for TWL ID
-                aValue = parseInt(aValue.replace('TWL-', ''), 10);
-                bValue = parseInt(bValue.replace('TWL-', ''), 10);
-            } else {
-                if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
-                    aValue = new Date(aValue);
-                    bValue = new Date(bValue);
-                } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
-                    aValue = parseFloat(aValue);
-                    bValue = parseFloat(bValue);
-                } else {
-                    aValue = aValue.toLowerCase();
-                    bValue = bValue.toLowerCase();
-                }
-            }
-            return isAscending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
-        });
-        updateSortingArrows(headerRow, columnIndex, isAscending);
-        paginateAndRender(); // Paginate and render the sorted data
-    }
-//Function to Update the Displayed Sorting Arrows Appended to/Moved across Column Headers
-    function updateSortingArrows(headerRow, columnIndex, isAscending) {
-        // Clear any existing arrows from the current column header
-        headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
-
-        // Remove the arrow from the previously sorted column
-        if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
-            var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
-            prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
-        }
-
-        // Append the appropriate arrow to the currently sorted column
-        var currentHeaderCell = headerRow.cells[columnIndex];
-        if (isAscending) {
-            currentHeaderCell.textContent += ' ⤓';
-        } else {
-            currentHeaderCell.textContent += ' ⤒';
-        }
-
-        // Update the previously sorted column index
-        prevSortedColumnIndex = columnIndex;
-    }   
-// Combined function to apply all filters
-    function applyAllFilters() {
-        const dateFilterValues = $('#dateFilter').val() || [];
-        const locationFilterValues = $('#locationFilter').val() || [];
-        const urgencyFilterValues = $('#urgencyFilter').val() || [];
-        const hasContentFilterValues = $('#hasContentFilter').val() || [];
-        const wishStatusFilterValues = $('#wishStatusFilter').val() || [];
-
-        const includeAnonymous = document.getElementById('includeAnonymous').checked;
-        const includeUnverified = document.getElementById('includeUnverified').checked;
-
-        const searchValue = document.getElementById('searchInput').value.toLowerCase();
-        const twlIdValue = document.getElementById('twlIdInput').value.trim();
-        const filterTwlId = "TWL-" + twlIdValue;
-
-        const rows = document.querySelectorAll("#wishList tbody tr");
-        filteredData = Array.from(rows).filter(row => {
-            let visible = true;
-
-        // Date filter check using daysSince attribute
-            const daysSince = parseInt(row.getAttribute('data-days'), 10);
-            if (dateFilterValues.length > 0) {
-                visible = dateFilterValues.some(value => {
-                    const maxDays = parseInt(value.replace('days', ''), 10);
-                    return daysSince <= maxDays;
-                });
-            }
-
-        // Location filter check
-            if (locationFilterValues.length > 0) {
-                const location = row.cells[1].textContent;
-                visible = visible && locationFilterValues.some(loc => location.includes(loc));
-            }
-
-        // Urgency filter check
-            const urgency = row.cells[2].getAttribute('data-sort');
-            if (urgencyFilterValues.length > 0 && !urgencyFilterValues.includes(urgency)) {
-                visible = false;
-            }
-
-        // Content filters
-            if (hasContentFilterValues.length > 0) {
-                const contentChecks = {
-                    'hasImage': row.getAttribute('data-has-image') === 'true',
-                    'hasAudio': row.getAttribute('data-has-audio') === 'true',
-                    'hasVideo': row.getAttribute('data-has-video') === 'true',
-                    'hasLinks': row.getAttribute('data-has-links') === 'true',
-                    'hasNoContent': row.getAttribute('data-has-no-content') === 'true'
-                };
-
-                visible = hasContentFilterValues.every(filter => contentChecks[filter]);
-            }
-
-        // Anonymous filter check
-            if (!includeAnonymous && row.cells[5].textContent.includes('Anonymous')) {
-                visible = false;
-            }
-
-        // Wish Status filter check
-            const wishStatus = row.getAttribute('data-sort');
-            if (wishStatusFilterValues.length > 0 && !wishStatusFilterValues.includes(wishStatus)) {
-                visible = false;
-            }
-
-        // Unverified filter check
-            if (!includeUnverified) {
-                const verifiedStatus = row.getAttribute('data-verified');
-                if (verifiedStatus === 'Unverified' || verifiedStatus === 'false') {
-                    visible = false;
-                }
-            }
-
-        // Search filter check
-            if (searchValue && !row.textContent.toLowerCase().includes(searchValue)) {
-                visible = false;
-            }
-
-        // TWL ID filter check
-            if (twlIdValue && !row.cells[7].textContent.trim().includes(filterTwlId)) {
-                visible = false;
-            }
-
-            return visible;
-        });
-
-        updateFilterDisplayRow(); // Update the display of active filters
-        paginateAndRender(); // Paginate and render the filtered data
-    }
-//Function to update the filter display row, or filter subrow
-    function updateFilterDisplayRow() {
-        const filterDisplayRow = document.getElementById('filterDisplayRow');
-        filterDisplayRow.innerHTML = ''; // Clear existing filters
-    // Create a container div
-        const container = document.createElement('div');
-        container.style.display = 'flex';
-        container.style.flexWrap = 'wrap';  // Allow wrapping if many filters
-        container.style.width = '100%';
-        container.style.alignItems = 'center';
-        container.style.justifyContent = 'flex-start';
-    // Append a single td that spans all columns
-        const td = document.createElement('td');
-        td.setAttribute('colspan', '8',);  // Assume you have 8 columns, adjust as necessary
-        td.style.width = '100%'; // Force the td to take the full width
-        td.style.borderRadius = '6px'; /* Rounded corners for Aesthetics */
-        td.appendChild(container);
-    // Create the "Remove Filters" button
-        const removeFiltersButton = document.createElement('button');
-        removeFiltersButton.textContent = 'Remove Filters';
-        removeFiltersButton.className = 'reset-filters-button'; // Reuse your existing button styling
-        removeFiltersButton.onclick = function() { resetFilters(); };
-        removeFiltersButton.style.marginRight = '10px'; // Add some spacing
-        removeFiltersButton.setAttribute('id', 'removeFiltersButton');
-    // Only add button if there are active filters
-        let filtersApplied = false;
-    // Add links for each toggle checkbox
-        const toggles = [
-            { checkboxId: 'includeAnonymous', label: 'EXCLUDING: ANONYMOUS' },
-            { checkboxId: 'includeUnverified', label: 'EXCLUDING: UNVERIFIED' },
-        ];
-        toggles.forEach(toggle => {
-            const checkbox = document.getElementById(toggle.checkboxId);
-            if (!checkbox.checked) {  // Add link if the checkbox is unchecked
-                const span = document.createElement('span');
-                span.textContent = toggle.label;
-                span.className = 'filter-tag';
-                span.style.cursor = 'pointer';
-                span.style.marginRight = '10px';
-                span.onclick = () => {
-                    checkbox.checked = true; // Check the checkbox when link is clicked
-                    applyAllFilters();
-                };
-                container.appendChild(span);
-                filtersApplied = true;
-            }
-        });
-    // Search tag
-        const searchValue = document.getElementById('searchInput').value.trim();
-        if (searchValue) {
-            const searchTag = document.createElement('span');
-            searchTag.textContent = `SEARCH: ${searchValue}`;
-            searchTag.className = 'filter-tag';
-            searchTag.style.cursor = 'pointer';
-            searchTag.style.marginRight = '10px';
-            searchTag.onclick = () => {
-                document.getElementById('searchInput').value = '';
-                applyAllFilters()  // Update the table filter
-            };
-            container.appendChild(searchTag);
-            filtersApplied = true; 
-        }
-    // TWL ID filter tag
-        const twlIdValue = document.getElementById('twlIdInput').value.trim();
-        if (twlIdValue) {
-            const twlIdTag = document.createElement('span');
-            twlIdTag.textContent = `TWL ID: ${twlIdValue}`;
-            twlIdTag.className = 'filter-tag';
-            twlIdTag.style.cursor = 'pointer';
-            twlIdTag.style.marginRight = '10px';
-            twlIdTag.onclick = () => {
-                document.getElementById('twlIdInput').value = '';
-                applyAllFilters(); // Reapply the filters
-            };
-            container.appendChild(twlIdTag);
-            filtersApplied = true;
-        }
-    //Add Filter Selections
-        const filters = [
-            { element: $('#dateFilter'), label: 'DATE' },
-            { element: $('#locationFilter'), label: 'LOCATION' },
-            { element: $('#urgencyFilter'), label: 'URGENCY' },
-            { element: $('#hasContentFilter'), label: 'CONTENT' },
-            { element: $('#wishStatusFilter'), label: 'STATUS' },
-        ];
-        filters.forEach(filter => {
-            filter.element.select2('data').forEach(item => {
-                const span = document.createElement('span');
-                span.textContent = `${filter.label}: ${item.text}`;
-                span.className = 'filter-tag'; // Apply any needed styling in CSS
-                span.style.cursor = 'pointer';
-                span.style.marginRight = '10px';
-                span.onclick = () => {
-                    const options = filter.element.find('option');
-                    options.each(function() {
-                        if (this.text === item.text) {
-                            $(this).prop('selected', false);
-                        }
-                    });
-                    filter.element.trigger('change');
-                    applyAllFilters();
-                };
-                container.appendChild(span);
-                filtersApplied = true;
-            });
-        });
-    if (filtersApplied) {
-        container.insertBefore(removeFiltersButton, container.firstChild);
-        filterDisplayRow.appendChild(td);
-        filterDisplayRow.style.display = 'table-row'; // Make sure the row is visible
-    } else {
-        filterDisplayRow.style.display = 'none'; // Hide row if no filters are active
-    }
-    }
-//Function to reset table filters
-    function resetFilters() {
-    // Clear all select inputs
-        const selects = document.querySelectorAll('#filterRow select');
-        selects.forEach(select => {
-            $(select).val(null).trigger('change');
-        });
-    // Reset checkboxes to default checked state
-        document.querySelectorAll('#filterRow input[type="checkbox"]').forEach(checkbox => {
-            checkbox.checked = true;
-        });
-    // Clear the search input and TWL ID input
-        document.getElementById('searchInput').value = '';
-        document.getElementById('twlIdInput').value = '';
-    // Reset rows per page
-        rowsPerPage = 20; // Or the default value you need
+    // Create First button
+    const firstButton = document.createElement('button');
+    firstButton.textContent = 'First';
+    firstButton.disabled = currentPage === 1;
+    firstButton.addEventListener('click', () => {
         currentPage = 1;
-    //Apply All Filters and then Paginate, BAHBEH
-        applyAllFilters();
         paginateAndRender();
-    }
-//Function to update the alternating color scheme on the rows
-    function updateRowColors() {
-        const visibleRows = document.querySelectorAll("#wishList tbody tr:not([style*='display: none'])");
-        visibleRows.forEach((row, index) => {
-        // Remove all possible color classes
-            row.classList.remove('odd-row', 'even-row');  // Assuming 'odd-row' and 'even-row' are your color classes
-        // Add color class based on whether the index is even or odd
-            if (index % 2 === 0) {
-                row.classList.add('even-row');
-            } else {
-                row.classList.add('odd-row');
-            }
-        });
-    }
-//Function to handle the event of clicking on the filter display row background and removing all filters
-    function handleFilterRowClick(event) {
-        const button = document.getElementById('removeFiltersButton');
-    // Check if the clicked element is not one of the filter removal links (span tags)
-        if (!event.target.closest('span')) {
-        // Simulate hover effect
-            button.classList.add('hover-effect');
-            setTimeout(() => {
-                button.classList.remove('hover-effect');
-            }, 200); // This timeout removes the hover effect shortly after it's applied
+    });
+    paginationControls.appendChild(firstButton);
 
-        // Simulate click effect
-            button.classList.add('active');
-            setTimeout(() => {
-                button.classList.remove('active');
-            }, 150); // This timeout removes the active effect, making it seem like a quick press
-        // Finally trigger the button's default action
-            button.click();
-        }
-    }
-//Function to trigger the remove tfilters button effect
-    function triggerButtonEffect() {
-        const button = document.getElementById('removeFiltersButton');
-        button.classList.add('active');
-        setTimeout(() => button.classList.remove('active'), 200); // Remove the class after 200ms
-    }
-//Function to Copy the WISH ID of the modal view open and prompt to goto donation page
-    function copyWishIdAndAsk(wishId) {
-        // Copy TWL ID to clipboard
-        navigator.clipboard.writeText(wishId).then(() => {
-        // Ask user if they want to proceed to the donation page
-            if (confirm("Trans Wish List ID #:" + wishId +" was copied to your clipboard. Do you want to proceed to the donation page? Please paste the Trans Wish List ID # in comments at checkout when donating if you want to earmark your donation.")) {
-                window.open('https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A', '_blank');
-            }
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
+    // Create Previous button
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Previous';
+    prevButton.disabled = currentPage === 1;
+    prevButton.addEventListener('click', () => {
+        currentPage -= 1;
+        paginateAndRender();
+    });
+    paginationControls.appendChild(prevButton);
+
+    // Create page buttons
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.disabled = i === currentPage;
+        pageButton.addEventListener('click', () => {
+            currentPage = i;
+            paginateAndRender();
         });
+        paginationControls.appendChild(pageButton);
     }
-//Function to toggleFilterRows
-    function toggleFilterRow() {
-        var filterRow = document.getElementById('filterRow');
-        var displayRow = document.getElementById('filterDisplayRow');
-        var button = document.getElementById("toggleFiltersButton");
-        if (filterRow && displayRow) {
-        // Log current display properties before toggling
-            console.log("Before toggle - filterRow display:", window.getComputedStyle(filterRow).display, "displayRow display:", window.getComputedStyle(displayRow).display);
-        // Toggle visibility based on the global state
-            if (isFilterVisible) {
-                filterRow.style.display = 'none';
-                displayRow.style.display = 'none'; // Ensure displayRow is hidden
-                button.textContent = "▲";
-                console.log("Rows hidden");
-            } else {
-                filterRow.style.display = 'table-row';
-                if (displayRow.children.length > 0) { // Only show displayRow if it has children
-                    displayRow.style.display = 'table-row';
-                } else {
-                    displayRow.style.display = 'none';
-                }
-                button.textContent = "▼";
-                console.log("Rows shown");
-            }
-        // Update the global state
-            isFilterVisible = !isFilterVisible;
-        }
-    }
-    // Ensure to handle the timeout function correctly on focus out
-        document.getElementById('twlIdInput').addEventListener('blur', function() {
-            clearTimeout(twlInputTimeout);
-            handleTwlInput();
-        });
-// Function to scroll back to the top of the list
-    function returnToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-//Accesibility Toggle Coding
-    function toggleAccessibility() {
-        const rows = document.querySelectorAll("#wishList tbody tr");
-        rows.forEach(row => {
-        // Handle Wish Status column
-            const wishStatusCell = row.cells[4];
-            const wishStatusImg = wishStatusCell.querySelector('img');
-            const wishStatusText = wishStatusImg ? wishStatusImg.alt : wishStatusCell.textContent;
-            if (accessibilityEnabled) {
-            // Revert to original image
-                if (wishStatusImg) {
-                    wishStatusImg.style.display = 'block';
-                } else {
-                    wishStatusCell.textContent = wishStatusText;
-                }
-            } else {
-            // Replace image with text
-                if (wishStatusImg) {
-                    wishStatusImg.style.display = 'none';
-                    wishStatusCell.textContent = wishStatusText;
-                }
-            }
-        // Handle Verified column
-            const verifiedCell = row.cells[6];
-            const verifiedImg = verifiedCell.querySelector('img');
-            const verifiedText = verifiedImg ? verifiedImg.alt : verifiedCell.textContent;
-            if (accessibilityEnabled) {
-                // Revert to original image
-                if (verifiedImg) {
-                    verifiedImg.style.display = 'block';
-                } else {
-                    verifiedCell.textContent = verifiedText;
-                }
-            } else {
-            // Replace image with text
-                if (verifiedImg) {
-                    verifiedImg.style.display = 'none';
-                    verifiedCell.textContent = verifiedText;
-                }
-            }
-        });
-    // Toggle colors and font size
-        if (accessibilityEnabled) {
-            document.body.style.backgroundColor = '#C08CCF'; // Original background color
-            document.body.style.color = '#000000'; // Original text color
-            document.body.style.fontSize = '12px'; // Original font size
+
+    // Create Next button
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.addEventListener('click', () => {
+        currentPage += 1;
+        paginateAndRender();
+    });
+    paginationControls.appendChild(nextButton);
+
+    // Create Last button
+    const lastButton = document.createElement('button');
+    lastButton.textContent = 'Last';
+    lastButton.disabled = currentPage === totalPages;
+    lastButton.addEventListener('click', () => {
+        currentPage = totalPages;
+        paginateAndRender();
+    });
+    paginationControls.appendChild(lastButton);
+}
+
+//Function to Sort Table
+function sortTable(columnIndex) {
+    const headerRow = document.getElementById('sortingColumnHeaders');
+    const isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
+    headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
+    filteredData.sort(function (a, b) {
+        let aValue = a.cells[columnIndex].getAttribute('data-sort') || a.cells[columnIndex].textContent.trim();
+        let bValue = b.cells[columnIndex].getAttribute('data-sort') || b.cells[columnIndex].textContent.trim();
+        if (columnIndex === 7) { // Numeric sorting for TWL ID
+            aValue = parseInt(aValue.replace('TWL-', ''), 10);
+            bValue = parseInt(bValue.replace('TWL-', ''), 10);
         } else {
-            document.body.style.backgroundColor = '#F0F0F0'; // More neutral background color
-            document.body.style.color = '#333333'; // More accessible text color
-            document.body.style.fontSize = '16px'; // Increased font size
-         }
-    // Toggle the accessibility flag
-            accessibilityEnabled = !accessibilityEnabled;
+            if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
+                aValue = new Date(aValue);
+                bValue = new Date(bValue);
+            } else if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
+                aValue = parseFloat(aValue);
+                bValue = parseFloat(bValue);
+            } else {
+                aValue = aValue.toLowerCase();
+                bValue = bValue.toLowerCase();
+            }
+        }
+        return isAscending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
+    });
+    updateSortingArrows(headerRow, columnIndex, isAscending);
+    paginateAndRender(); // Paginate and render the sorted data
+}
+
+//Function to Update the Displayed Sorting Arrows Appended to/Moved across Column Headers
+function updateSortingArrows(headerRow, columnIndex, isAscending) {
+    // Clear any existing arrows from the current column header
+    headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
+
+    // Remove the arrow from the previously sorted column
+    if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
+        var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
+        prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
     }
+
+    // Append the appropriate arrow to the currently sorted column
+    var currentHeaderCell = headerRow.cells[columnIndex];
+    if (isAscending) {
+        currentHeaderCell.textContent += ' ⤓';
+    } else {
+        currentHeaderCell.textContent += ' ⤒';
+    }
+
+    // Update the previously sorted column index
+    prevSortedColumnIndex = columnIndex;
+}
+
+//Function to toggleFilterRows
+function toggleFilterRow() {
+    var filterRow = document.getElementById('filterRow');
+    var displayRow = document.getElementById('filterDisplayRow');
+    var button = document.getElementById("toggleFiltersButton");
+    if (filterRow && displayRow) {
+        // Log current display properties before toggling
+        console.log("Before toggle - filterRow display:", window.getComputedStyle(filterRow).display, "displayRow display:", window.getComputedStyle(displayRow).display);
+        // Toggle visibility based on the global state
+        if (isFilterVisible) {
+            filterRow.style.display = 'none';
+            displayRow.style.display = 'none'; // Ensure displayRow is hidden
+            button.textContent = "▲";
+            console.log("Rows hidden");
+        } else {
+            filterRow.style.display = 'table-row';
+            if (displayRow.children.length > 0) { // Only show displayRow if it has children
+                displayRow.style.display = 'table-row';
+            } else {
+                displayRow.style.display = 'none';
+            }
+            button.textContent = "▼";
+            console.log("Rows shown");
+        }
+        // Update the global state
+        isFilterVisible = !isFilterVisible;
+    }
+}
+
+// Function to scroll back to the top of the list
+function returnToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+//Accesibility Toggle Coding
+function toggleAccessibility() {
+    const rows = document.querySelectorAll("#wishList tbody tr");
+    rows.forEach(row => {
+        // Handle Wish Status column
+        const wishStatusCell = row.cells[4];
+        const wishStatusImg = wishStatusCell.querySelector('img');
+        const wishStatusText = wishStatusImg ? wishStatusImg.alt : wishStatusCell.textContent;
+        if (accessibilityEnabled) {
+            // Revert to original image
+            if (wishStatusImg) {
+                wishStatusImg.style.display = 'block';
+            } else {
+                wishStatusCell.textContent = wishStatusText;
+            }
+        } else {
+            // Replace image with text
+            if (wishStatusImg) {
+                wishStatusImg.style.display = 'none';
+                wishStatusCell.textContent = wishStatusText;
+            }
+        }
+        // Handle Verified column
+        const verifiedCell = row.cells[6];
+        const verifiedImg = verifiedCell.querySelector('img');
+        const verifiedText = verifiedImg ? verifiedImg.alt : verifiedCell.textContent;
+        if (accessibilityEnabled) {
+            // Revert to original image
+            if (verifiedImg) {
+                verifiedImg.style.display = 'block';
+            } else {
+                verifiedCell.textContent = verifiedText;
+            }
+        } else {
+            // Replace image with text
+            if (verifiedImg) {
+                verifiedImg.style.display = 'none';
+                verifiedCell.textContent = verifiedText;
+            }
+        }
+    });
+    // Toggle colors and font size
+    if (accessibilityEnabled) {
+        document.body.style.backgroundColor = '#C08CCF'; // Original background color
+        document.body.style.color = '#000000'; // Original text color
+        document.body.style.fontSize = '12px'; // Original font size
+    } else {
+        document.body.style.backgroundColor = '#F0F0F0'; // More neutral background color
+        document.body.style.color = '#333333'; // More accessible text color
+        document.body.style.fontSize = '16px'; // Increased font size
+    }
+    // Toggle the accessibility flag
+    accessibilityEnabled = !accessibilityEnabled;
+}
+
+// Ensure to handle the timeout function correctly on focus out
+document.getElementById('twlIdInput').addEventListener('blur', function() {
+    clearTimeout(twlInputTimeout);
+    handleTwlInput();
+});
 </script>
 </body>
 </html>
