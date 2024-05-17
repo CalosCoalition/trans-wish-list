@@ -1601,9 +1601,13 @@ function handleData(data) {
     // Toggle sorting order
     headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
-    filteredData.sort((a, b) => {
-        let aValue = a[columnIndex] || a[columnIndex]?.innerText.trim();
-        let bValue = b[columnIndex] || b[columnIndex]?.innerText.trim();
+    // Get all rows from the table body
+    const rowsArray = Array.from(tableBody.querySelectorAll("tr"));
+
+    // Sort rows based on the column index
+    rowsArray.sort((a, b) => {
+        let aValue = a.cells[columnIndex]?.innerText.trim() || "";
+        let bValue = b.cells[columnIndex]?.innerText.trim() || "";
 
         if (!isNaN(Date.parse(aValue)) && !isNaN(Date.parse(bValue))) {
             // Handle date sorting
@@ -1615,8 +1619,8 @@ function handleData(data) {
             bValue = parseFloat(bValue);
         } else {
             // Handle textual comparison
-            aValue = aValue?.toLowerCase() || ""; // Add null/undefined check
-            bValue = bValue?.toLowerCase() || ""; // Add null/undefined check
+            aValue = aValue.toLowerCase();
+            bValue = bValue.toLowerCase();
         }
 
         if (isAscending) {
@@ -1627,25 +1631,17 @@ function handleData(data) {
     });
 
     // Clear existing rows in the table body
-    table.innerHTML = '';
+    tableBody.innerHTML = '';
 
     // Re-append sorted rows to the table body
-    filteredData.forEach(rowData => {
-        let row = document.createElement('tr');
-        Object.values(rowData).forEach(cellData => {
-            var cell = document.createElement('td');
-            cell.innerText = cellData;
-            row.appendChild(cell);
-        });
-        table.appendChild(row);
-    });
+    rowsArray.forEach(row => tableBody.appendChild(row));
 
     // Update row colors if needed
     updateRowColors();
 
     // Remove the arrow from the previously sorted column
     if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
-        var prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
+        const prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
         if (prevHeaderCell) {
             prevHeaderCell.textContent = prevHeaderCell.textContent.replace(/[⤓⤒]/g, '');
         }
@@ -1784,19 +1780,19 @@ function resetFilters() {
           applyAllFilters(); // Reapply filters to update view
       }
       function updateRowColors() {
-        const visibleRows = document.querySelectorAll("#wishList tbody tr:not([style*='display: none'])");
-        visibleRows.forEach((row, index) => {
-            // Remove all possible color classes
-            row.classList.remove('odd-row', 'even-row');  // Assuming 'odd-row' and 'even-row' are your color classes
+    const visibleRows = document.querySelectorAll("#wishList tbody tr");
+    visibleRows.forEach((row, index) => {
+        // Remove all possible color classes
+        row.classList.remove('odd-row', 'even-row');  // Assuming 'odd-row' and 'even-row' are your color classes
 
-            // Add color class based on whether the index is even or odd
-            if (index % 2 === 0) {
-                row.classList.add('even-row');
-            } else {
-                row.classList.add('odd-row');
-            }
-        });
-    }
+        // Add color class based on whether the index is even or odd
+        if (index % 2 === 0) {
+            row.classList.add('even-row');
+        } else {
+            row.classList.add('odd-row');
+        }
+    });
+}
       function handleFilterRowClick(event) {
         const button = document.getElementById('removeFiltersButton');
         // Check if the clicked element is not one of the filter removal links (span tags)
