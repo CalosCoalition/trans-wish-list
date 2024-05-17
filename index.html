@@ -11,6 +11,8 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <!-- Include Google API script -->
 <script src="https://apis.google.com/js/api.js"></script>
+<!-- Include iframe-resizer library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.min.js"></script>
 <style>
   body {
     font-family: "Roboto", Arial, sans-serif;
@@ -754,26 +756,10 @@ async function fetchWishListData() {
         // Log the initial visibility state of filterRow and filterDisplayRow
         logInitialFilterRowState();
 
-        // Event listener to set iframe height for embedded adaptability
-        window.addEventListener('load', function() {
-            adjustIframeHeight();
-        });
     }).catch(error => {
         console.error('Error fetching Wish List Data:', error);
     });
 });
-// Listen for height request messages from the parent page
-window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'requestHeight') {
-        adjustIframeHeight();
-    }
-});
-//Used to Pass Parameters for embedded iframes
-function adjustIframeHeight() {
-    const loadHeight = document.documentElement.scrollHeight + 50;
-    console.log('Sending message from HTML Script: height =', loadHeight);
-    window.parent.postMessage({ type: 'resize', height: loadHeight }, '*');
-}
 function handleUrlParameters() {
     const urlParams = new URLSearchParams(window.location.search);
     const searchQuery = urlParams.get('search');
@@ -831,7 +817,6 @@ function updateRowsPerPage() {
     currentPage = 1; // Reset to first page
     applyAllFilters();
     paginateTable(rowsPerPage, currentPage);
-    adjustIframeHeight();
 }
     function enhanceAccessibility() {
         document.querySelectorAll('table').forEach(table => table.setAttribute('role', 'table'));
@@ -1166,14 +1151,7 @@ function updateRowsPerPage() {
                 // Add click event listener for the detail view modal
                 row.addEventListener('click', () => openDetailView(item));
             }
-            // Adjust iframe height after data is loaded and displayed
-            adjustIframeHeight();
         }
-        window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'requestHeight') {
-                adjustIframeHeight();
-            }
-        });
 
     function openDetailView(item) {
         var content = `
@@ -1560,9 +1538,6 @@ function updateRowsPerPage() {
         document.getElementById('searchInput').value = ''; // Clear the search input
         document.getElementById('twlIdInput').value = ''; // Clear the TWL ID input
         applyAllFilters(); // Reapply filters to update view
-
-        // After Reseting Filters, Update the iframe height
-        adjustIframeHeight();
     }
 
     function updateRowColors() {
