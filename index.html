@@ -713,7 +713,7 @@
     <p><button onclick="copyToClipboard()">Copy TWL ID # and Open Donation Tab</button><a href="https://checkout.square.site/merchant/MLQN0GFW4Y33R/checkout/6E7PPSWJS7UTTQLTCU5GAW2A" target="_blank" id="donateLink"> Donate</a></p>
 </div>
 <script>
-//Begin Asynic Loading of Data to pass for Handling
+// Begin Async Loading of Data to pass for Handling
 async function fetchWishListData() {
     try {
         const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
@@ -734,6 +734,7 @@ async function fetchWishListData() {
         return [];
     }
 }
+
 // Attach Filter Listeners
 function addEventListeners() {
     document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
@@ -752,6 +753,7 @@ function addEventListeners() {
         handleTwlInput();
     });
 }
+
 // Define Global Variables
 let prevSortedColumnIndex = null;
 let isFilterVisible = true; // Initial state: visible
@@ -761,43 +763,42 @@ let rowsPerPage = 20;
 let accessibilityEnabled = false;
 let locationSet = new Set();
 let filteredData = [];     
-/*BEGIN App Loading Listening Script*/
-document.addEventListener('DOMContentLoaded', function() {
+
+/* BEGIN App Loading Listening Script */
+document.addEventListener('DOMContentLoaded', async function() {
     // Fetch Wish List Data
-    fetchWishListData().then((data) => {
+    const data = await fetchWishListData();
+    if (data && Array.isArray(data)) {
         // Log and handle fetched data
         console.log('Fetched Data:', data);
-        // Ensure data is an array
-        if (data && Array.isArray(data)) {
-            handleData(data);
-            populateFilters(data);
-            initializeSelect2Elements(); // Initialize Select2 elements
-            addEventListeners(); // Attach event listeners after initialization
-        } else {
-            console.error('No data available or data is not in the correct format.');
-        }
-        // Update date placeholder
-        const datePlaceholder = document.getElementById('date-placeholder');
-        const today = new Date();
-        const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
-        datePlaceholder.textContent = formattedDate;
-        // Enhance accessibility and initialize Select2 dropdown menus
-        enhanceAccessibility();
-        // Apply filters and set up pagination
-        applyAllFilters();
-        paginateAndRender();
-        // Handle URL parameters for search and auto-open
-        handleUrlParameters();
-        // Setup the toggle button for filter rows
-        setupToggleButton();
-        // Log the initial visibility state of filterRow and filterDisplayRow
-        logInitialFilterRowState();
-    }).catch(error => {
-        console.error('Error fetching Wish List Data:', error);
-    });
+        handleData(data);
+        populateFilters(data);
+        initializeSelect2Elements(); // Initialize Select2 elements
+        addEventListeners(); // Attach event listeners after initialization
+    } else {
+        console.error('No data available or data is not in the correct format.');
+    }
+    // Update date placeholder
+    const datePlaceholder = document.getElementById('date-placeholder');
+    const today = new Date();
+    const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
+    datePlaceholder.textContent = formattedDate;
+    // Enhance accessibility and initialize Select2 dropdown menus
+    enhanceAccessibility();
+    // Apply filters and set up pagination
+    applyAllFilters();
+    paginateAndRender();
+    // Handle URL parameters for search and auto-open
+    handleUrlParameters();
+    // Setup the toggle button for filter rows
+    setupToggleButton();
+    // Log the initial visibility state of filterRow and filterDisplayRow
+    logInitialFilterRowState();
 });
-/*END App Loading Listening Script*/
-//Function to handle URL paramters passed to the TWL Web App for Search and Auto Open
+
+/* END App Loading Listening Script */
+
+// Function to handle URL parameters passed to the TWL Web App for Search and Auto Open
 function handleUrlParameters() {
     const urlParams = new URLSearchParams(window.location.search);
     const searchQuery = urlParams.get('search');
@@ -826,7 +827,8 @@ function handleUrlParameters() {
         });
     }
 }
-//Function to setup the toggle button for hiding the filter and filter display row
+
+// Function to setup the toggle button for hiding the filter and filter display row
 function setupToggleButton() {
     const toggleButton = document.getElementById('toggleFiltersButton');
     if (toggleButton) {
@@ -836,7 +838,8 @@ function setupToggleButton() {
         console.error('Toggle button not found');
     }
 }
-//Function to Log Initial Filter Row State
+
+// Function to Log Initial Filter Row State
 function logInitialFilterRowState() {
     const filterRow = document.getElementById('filterRow');
     const displayRow = document.getElementById('filterDisplayRow');
@@ -846,7 +849,8 @@ function logInitialFilterRowState() {
         console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
     }
 }
-//Function to update the # of rows displayed on the table
+
+// Function to update the # of rows displayed on the table
 function updateRowsPerPage() {
     const selectedOption = document.getElementById('rowsPerPage').value;
     // Extract only the numeric part using a regular expression
@@ -856,16 +860,17 @@ function updateRowsPerPage() {
     applyAllFilters();
     paginateAndRender();
 }
-//Function to Toggle Accessibility View
+
+// Function to Toggle Accessibility View
 function enhanceAccessibility() {
     document.querySelectorAll('table').forEach(table => table.setAttribute('role', 'table'));
     document.querySelectorAll('th').forEach(th => th.setAttribute('role', 'columnheader'));
     document.querySelectorAll('td').forEach(td => td.setAttribute('role', 'cell'));
     document.getElementById('modal').setAttribute('role', 'dialog');
 }
-//Function to INITIALIZE the Select2 components
-    function initializeSelect2() {
-    // Define a helper function to set initial and reset placeholder text for multiple selections
+
+// Function to Initialize the Select2 components
+function initializeSelect2Elements() {
     const setPlaceholderText = (element, text) => {
         element.select2({
             closeOnSelect: false,
@@ -876,7 +881,7 @@ function enhanceAccessibility() {
             $(this).data('select2').$selection.find('.select2-selection__rendered').html(text);
         });
     };
-// Initialize dateFilter for single selection and ensure only one selection is active at a time
+
     $('#dateFilter').select2({
         placeholder: ' Filter by Date',
         allowClear: true,
@@ -886,18 +891,18 @@ function enhanceAccessibility() {
         $(this).val(null).trigger('change');
         $(this).val(e.params.args.data.id).trigger('change');
     });
-//Location Filter
+
     $('#locationFilter').select2({
-        placeholder: 'By Location',
+        placeholder: 'Select Location',
         closeOnSelect: false,
         tags: true,
         width: '100%'
     });
-// Apply the helper function with specific placeholders for each multiple selection filter
+
     setPlaceholderText($('#wishStatusFilter'), 'By Status');
     setPlaceholderText($('#urgencyFilter'), 'By Urgency');
     setPlaceholderText($('#hasContentFilter'), 'By Content');
-// Initialize rowsPerPage with Select2
+
     $('#rowsPerPage').select2({
         placeholder: 'Rows per page',
         minimumResultsForSearch: Infinity, // Disable search box for rowsPerPage
@@ -927,7 +932,8 @@ function populateFilters(data) {
 
     locationFilter.trigger('change'); // Update Select2 dropdown
 }
-//Function to Initialize Location Filters
+
+// Function to Initialize Location Filters
 function initializeLocationFilter() {
     const locationFilter = $('#locationFilter');
     const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "AS", "DC", "FM", "GU", "MH", "MP", "PW", "PR", "VI"];
@@ -936,7 +942,8 @@ function initializeLocationFilter() {
     });
     locationFilter.select2({ placeholder: 'By Location', closeOnSelect: false, tags: true});
 }
-//Function to apply Location Filters
+
+// Function to apply Location Filters
 function applyLocationFilter() {
     const selectedState = $('#locationFilter').val();
     const rows = document.querySelectorAll("#wishList tbody tr");
@@ -945,6 +952,7 @@ function applyLocationFilter() {
         row.style.display = locationText.includes(selectedState) ? "" : "none";
     });
 }
+
 // Function for handling TWL Search Bar Input
 function handleTwlInput() {
     var input = document.getElementById('twlIdInput');
@@ -960,7 +968,8 @@ function handleTwlInput() {
         updateFilterDisplayRow(); // Re-render the filter display row
     }
 }
-//Function to Handle key press event for TWL Search Bar
+
+// Function to Handle key press event for TWL Search Bar
 function handleTwlKeyPress(event) {
     clearTimeout(twlInputTimeout); // Clear previous timeout
     if (event.key === 'Enter') {
