@@ -756,29 +756,24 @@ async function fetchWishListData() {
 
         // Event listener to set iframe height for embedded adaptability
         window.addEventListener('load', function() {
-            const height = document.documentElement.scrollHeight;
-            console.log('Sending message from Google Script on load: height =', height);
-            window.parent.postMessage({ type: 'resize', height: height }, '*');
+            adjustIframeHeight();
         });
     }).catch(error => {
         console.error('Error fetching Wish List Data:', error);
     });
 });
-
-async function fetchWishListData() {
-    try {
-        const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        return data.wishes; // Assuming the fetched data has a 'wishes' property which is an array
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        return null;
+// Listen for height request messages from the parent page
+window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'requestHeight') {
+        adjustIframeHeight();
     }
+});
+//Used to Pass Parameters for embedded iframes
+function adjustIframeHeight() {
+    const loadHeight = document.documentElement.scrollHeight;
+    console.log('Sending message from HTML Script: height =', height);
+    window.parent.postMessage({ type: 'resize', height: loadHeight }, '*');
 }
-
 function handleUrlParameters() {
     const urlParams = new URLSearchParams(window.location.search);
     const searchQuery = urlParams.get('search');
@@ -839,9 +834,7 @@ function updateRowsPerPage() {
 
     // Wait half a second before setting the height and sending the message to the parent
     setTimeout(() => {
-        var height = document.documentElement.scrollHeight;
-        console.log('Sending message from Google Script: height =', height);
-        window.parent.postMessage({ type: 'resize', height: height }, '*');
+        adjustIframeHeight();
     }, 500); // 500 milliseconds = half a second
 }
     function enhanceAccessibility() {
@@ -1178,13 +1171,11 @@ function updateRowsPerPage() {
                 row.addEventListener('click', () => openDetailView(item));
             }
             // Adjust iframe height after data is loaded and displayed
-            const loadHeight = document.documentElement.scrollHeight;
-            window.parent.postMessage({ type: 'resize', height: loadHeight }, '*');
+            adjustIframeHeight();
         }
         window.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'requestHeight') {
-                const loadHeight = document.documentElement.scrollHeight;
-                window.parent.postMessage({ type: 'resize', height: loadHeight }, '*');
+                adjustIframeHeight();
             }
         });
 
@@ -1575,8 +1566,7 @@ function updateRowsPerPage() {
         applyAllFilters(); // Reapply filters to update view
 
         // After Reseting Filters, Update the iframe height
-        const height = document.documentElement.scrollHeight;
-        window.parent.postMessage({ type: 'resize', height: height }, '*');
+        adjustIframeHeight();
     }
 
     function updateRowColors() {
