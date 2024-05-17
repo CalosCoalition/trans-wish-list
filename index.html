@@ -936,6 +936,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     datePlaceholder.textContent = formattedDate;
 
     addEventListeners();
+    enhanceAccessibility();
     initializeSelect2Elements();
     setupToggleButton();
     handleUrlParameters();
@@ -954,7 +955,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   } catch (error) {
     console.error('Error fetching wish list data:', error);
   }
-  enhanceAccessibility();
 });
 
 function handleUrlParameters() {
@@ -1060,7 +1060,22 @@ function initializeSelect2Elements() {
     width: '100%'
   });
 }
-
+function initializeLocationFilter() {
+        const locationFilter = $('#locationFilter');
+        const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "AS", "DC", "FM", "GU", "MH", "MP", "PW", "PR", "VI"];
+        states.forEach(state => {
+            locationFilter.append(new Option(state, state));
+        });
+        locationFilter.select2({ placeholder: 'By Location', closeOnSelect: false, tags: true});
+    }
+function applyLocationFilter() {
+        const selectedState = $('#locationFilter').val();
+        const rows = document.querySelectorAll("#wishList tbody tr");
+        rows.forEach(row => {
+            const locationText = row.cells[1].textContent; // Assuming location is in the second cell
+            row.style.display = locationText.includes(selectedState) ? "" : "none";
+        });
+    }    
 function populateFilters(data) {
   const locationSet = new Set(["Rather Not Say", "United States"]);
 
@@ -1399,46 +1414,61 @@ function returnToTop() {
   document.documentElement.scrollTop = 0;
 }
 
-function handleTwlInput() {
-  const inputElement = document.getElementById('twlIdInput');
-  const inputValue = inputElement.value.trim().toUpperCase();
+// Function for handling TWL Search Bar Input
+    function handleTwlInput() {
+        var input = document.getElementById('twlIdInput');
+        var value = input.value.replace(/\D/g, ''); // Remove non-digit characters
+        value = value.padStart(6, '0'); // Pad with leading zeros to make it 6 digits
+        input.value = value; // Update input value
+        
+        if (value === "000000") {
+            input.value = ''; // Clear the input value
+            updateFilterDisplayRow();
+        } else {
+            applyAllFilters(); // Call the combined filter function
+            updateFilterDisplayRow(); // Re-render the filter display row
+        }
+    }
 
-  if (inputValue) {
-    const rows = document.querySelectorAll("#wishList tbody tr");
-    rows.forEach(row => {
-      const twlId = row.cells[7].innerText.trim().toUpperCase();
-      if (twlId.includes(inputValue)) {
-        const itemData = JSON.parse(row.getAttribute('data-item'));
-        openDetailView(itemData);
-        row.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        window.parent.postMessage({ type: 'scrollToTop' }, '*');
-      }
-    });
-  }
-}
+// Handle key press event
+        function handleTwlKeyPress(event) {
+            clearTimeout(twlInputTimeout); // Clear previous timeout
+            if (event.key === 'Enter') {
+                handleTwlInput();
+            } else {
+                twlInputTimeout = setTimeout(handleTwlInput, 5000); // Set timeout for 5 seconds
+            }
+        }
 
-function handleTwlKeyPress(event) {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    handleTwlInput();
-  }
-}
+        function toggleFilterRow() {
+            var filterRow = document.getElementById('filterRow');
+            var displayRow = document.getElementById('filterDisplayRow');
+            var button = document.getElementById("toggleFiltersButton");
 
-function toggleFilterRow() {
-  const filterRow = document.getElementById('filterRow');
-  const displayRow = document.getElementById('filterDisplayRow');
-  const toggleButton = document.getElementById('toggleFiltersButton');
+            if (filterRow && displayRow) {
+                // Log current display properties before toggling
+                console.log("Before toggle - filterRow display:", window.getComputedStyle(filterRow).display, "displayRow display:", window.getComputedStyle(displayRow).display);
 
-  if (filterRow.style.display === 'none') {
-    filterRow.style.display = 'table-row';
-    displayRow.style.display = 'none';
-    toggleButton.textContent = '▼';
-  } else {
-    filterRow.style.display = 'none';
-    displayRow.style.display = 'table-row';
-    toggleButton.textContent = '▶';
-  }
-}
+                // Toggle visibility based on the global state
+                if (isFilterVisible) {
+                    filterRow.style.display = 'none';
+                    displayRow.style.display = 'none'; // Ensure displayRow is hidden
+                    button.textContent = "▲";
+                    console.log("Rows hidden");
+                } else {
+                    filterRow.style.display = 'table-row';
+                    if (displayRow.children.length > 0) { // Only show displayRow if it has children
+                        displayRow.style.display = 'table-row';
+                    } else {
+                        displayRow.style.display = 'none';
+                    }
+                    button.textContent = "▼";
+                    console.log("Rows shown");
+                }
+                // Update the global state
+                isFilterVisible = !isFilterVisible;
+            }
+        }
 
 function openDetailView(item) {
   const modal = document.getElementById('modal');
