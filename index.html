@@ -1589,9 +1589,9 @@ function handleData(data) {
             paginationControls.appendChild(lastButton);
         }
         function sortTable(columnIndex) {
-    const table = document.querySelector("#wishList tbody");
-    const headerRow = document.querySelector("#wishList thead tr"); // Adjust if needed based on your actual header row
-    const isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
+            var table = document.querySelector("#wishList tbody");
+    var headerRow = document.querySelector("#wishList thead tr"); // Adjust if needed based on your actual header row
+    var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
 
     // Clear any existing arrows from the current column header
     headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
