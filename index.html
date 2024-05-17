@@ -714,53 +714,53 @@
 </div>
 <script>
 //Begin Asynic Loading of Data to pass for Handling
-    async function fetchWishListData() {
-        try {
-            const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            console.log('Fetched Data:', data); // Log fetched data to ensure it's being fetched correctly
-            
-            if (data && data.wishes && Array.isArray(data.wishes)) {
-                return data.wishes; // Return the fetched data
-            } else {
-                console.error('Fetched data does not contain an array of wishes');
-                return [];
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
+async function fetchWishListData() {
+    try {
+        const response = await fetch('https://us-central1-trans-wish-list.cloudfunctions.net/getPublicWishListData');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Fetched Data:', data); // Log fetched data to ensure it's being fetched correctly
+        
+        if (data && data.wishes && Array.isArray(data.wishes)) {
+            return data.wishes; // Return the fetched data
+        } else {
+            console.error('Fetched data does not contain an array of wishes');
             return [];
         }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
     }
+}
 // Attach Filter Listeners
-    function addEventListeners() {
-        document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
-        document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
-        document.getElementById('searchInput').addEventListener('input', applyAllFilters);
-        document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
-        document.getElementById('toggleFiltersButton').addEventListener('click', toggleFilterRow);
-        document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
-        document.getElementById('twlIdInput').addEventListener('blur', function() {
-            clearTimeout(twlInputTimeout);
-            handleTwlInput();
-        });
-    }
+function addEventListeners() {
+    document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('locationFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('urgencyFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('hasContentFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('wishStatusFilter').addEventListener('change', applyAllFilters);
+    document.getElementById('includeAnonymous').addEventListener('change', applyAllFilters);
+    document.getElementById('includeUnverified').addEventListener('change', applyAllFilters);
+    document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+    document.getElementById('rowsPerPage').addEventListener('change', updateRowsPerPage);
+    document.getElementById('toggleFiltersButton').addEventListener('click', toggleFilterRow);
+    document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
+    document.getElementById('twlIdInput').addEventListener('blur', function() {
+        clearTimeout(twlInputTimeout);
+        handleTwlInput();
+    });
+}
 // Define Global Variables
-    let prevSortedColumnIndex = null;
-    let isFilterVisible = true; // Initial state: visible
-    let twlInputTimeout;
-    let currentPage = 1;
-    let rowsPerPage = 20;
-    let accessibilityEnabled = false;
-    let locationSet = new Set();
-    let filteredData = [];     
+let prevSortedColumnIndex = null;
+let isFilterVisible = true; // Initial state: visible
+let twlInputTimeout;
+let currentPage = 1;
+let rowsPerPage = 20;
+let accessibilityEnabled = false;
+let locationSet = new Set();
+let filteredData = [];     
 /*BEGIN App Loading Listening Script*/
 document.addEventListener('DOMContentLoaded', function() {
     // Fetch Wish List Data
@@ -771,7 +771,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data && Array.isArray(data)) {
             handleData(data);
             populateFilters(data);
-            initializeSelect2();
+            initializeSelect2Elements(); // Initialize Select2 elements
+            addEventListeners(); // Attach event listeners after initialization
         } else {
             console.error('No data available or data is not in the correct format.');
         }
@@ -785,12 +786,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Apply filters and set up pagination
         applyAllFilters();
         paginateAndRender();
-        // Add event listener for rowsPerPage dropdown
-        document.getElementById("rowsPerPage").addEventListener("change", function() {
-            updateRowsPerPage();
-        });
-        // Attach the event listener to the filterDisplayRow
-        document.getElementById('filterDisplayRow').addEventListener('click', handleFilterRowClick);
         // Handle URL parameters for search and auto-open
         handleUrlParameters();
         // Setup the toggle button for filter rows
@@ -803,202 +798,186 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 /*END App Loading Listening Script*/
 //Function to handle URL paramters passed to the TWL Web App for Search and Auto Open
-    function handleUrlParameters() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchQuery = urlParams.get('search');
-        const autoOpen = urlParams.get('autoOpen') === 'true';
-        console.log(searchQuery, autoOpen);
-        const searchInput = document.getElementById('twlIdInput');
-        if (searchInput && searchQuery) {
-            searchInput.value = searchQuery;
-            applyAllFilters();
-            paginateAndRender();
-            if (autoOpen) {
-                handleTwlInput();
-                const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
-                if (firstVisibleRow) {
-                    const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
-                    openDetailView(itemData);
-                }
-                firstVisibleRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Notify parent page to scrollToTop
-                window.parent.postMessage({ type: 'scrollToTop' }, '*');
-            }
-        }
-        if (searchInput) {
-            searchInput.addEventListener('input', function() {
-                applyAllFilters();
-            });
-        }
-    }
-//Function to setup the toggle button for hiding the filter and filter display row
-    function setupToggleButton() {
-        const toggleButton = document.getElementById('toggleFiltersButton');
-        if (toggleButton) {
-            toggleButton.addEventListener('click', toggleFilterRow);
-            console.log('Toggle button found and event listener added.');
-        } else {
-            console.error('Toggle button not found');
-        }
-    }
-//Function to Log Initial Filter Row State
-    function logInitialFilterRowState() {
-        const filterRow = document.getElementById('filterRow');
-        const displayRow = document.getElementById('filterDisplayRow');
-        if (filterRow && displayRow) {
-            console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
-        } else {
-            console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
-        }
-    }
-//Function to update the # of rows displayed on the table
-    function updateRowsPerPage() {
-        const selectedOption = document.getElementById('rowsPerPage').value;
-    // Extract only the numeric part using a regular expression
-        var numericValue = selectedOption.match(/\d+/);
-        rowsPerPage = numericValue ? parseInt(numericValue[0], 10) : 20; // Default to 20 if no match
-        currentPage = 1; // Reset to first page
+function handleUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+    const autoOpen = urlParams.get('autoOpen') === 'true';
+    console.log(searchQuery, autoOpen);
+    const searchInput = document.getElementById('twlIdInput');
+    if (searchInput && searchQuery) {
+        searchInput.value = searchQuery;
         applyAllFilters();
         paginateAndRender();
+        if (autoOpen) {
+            handleTwlInput();
+            const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
+            if (firstVisibleRow) {
+                const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
+                openDetailView(itemData);
+            }
+            firstVisibleRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Notify parent page to scrollToTop
+            window.parent.postMessage({ type: 'scrollToTop' }, '*');
+        }
     }
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            applyAllFilters();
+        });
+    }
+}
+//Function to setup the toggle button for hiding the filter and filter display row
+function setupToggleButton() {
+    const toggleButton = document.getElementById('toggleFiltersButton');
+    if (toggleButton) {
+        toggleButton.addEventListener('click', toggleFilterRow);
+        console.log('Toggle button found and event listener added.');
+    } else {
+        console.error('Toggle button not found');
+    }
+}
+//Function to Log Initial Filter Row State
+function logInitialFilterRowState() {
+    const filterRow = document.getElementById('filterRow');
+    const displayRow = document.getElementById('filterDisplayRow');
+    if (filterRow && displayRow) {
+        console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
+    } else {
+        console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
+    }
+}
+//Function to update the # of rows displayed on the table
+function updateRowsPerPage() {
+    const selectedOption = document.getElementById('rowsPerPage').value;
+    // Extract only the numeric part using a regular expression
+    var numericValue = selectedOption.match(/\d+/);
+    rowsPerPage = numericValue ? parseInt(numericValue[0], 10) : 20; // Default to 20 if no match
+    currentPage = 1; // Reset to first page
+    applyAllFilters();
+    paginateAndRender();
+}
 //Function to Toggle Accessibility View
-    function enhanceAccessibility() {
-        document.querySelectorAll('table').forEach(table => table.setAttribute('role', 'table'));
-        document.querySelectorAll('th').forEach(th => th.setAttribute('role', 'columnheader'));
-        document.querySelectorAll('td').forEach(td => td.setAttribute('role', 'cell'));
-        document.getElementById('modal').setAttribute('role', 'dialog');
-    }
+function enhanceAccessibility() {
+    document.querySelectorAll('table').forEach(table => table.setAttribute('role', 'table'));
+    document.querySelectorAll('th').forEach(th => th.setAttribute('role', 'columnheader'));
+    document.querySelectorAll('td').forEach(td => td.setAttribute('role', 'cell'));
+    document.getElementById('modal').setAttribute('role', 'dialog');
+}
 //Function to INITIALIZE the Select2 components
     function initializeSelect2() {
     // Define a helper function to set initial and reset placeholder text for multiple selections
-        const setPlaceholderText = (element, text) => {
-            element.select2({
-                closeOnSelect: false,
-                placeholder: text,
-                allowClear: true,
-                width: '100%' // Ensure Select2 is responsive
-            }).on('select2:close', function () {
-                $(this).data('select2').$selection.find('.select2-selection__rendered').html(text);
-            });
-        };
-    // Initialize dateFilter for single selection and ensure only one selection is active at a time
-                $('#dateFilter').select2({
-            placeholder: ' Filter by Date',
-            allowClear: true,
-            closeOnSelect: true,
-            width: '100%'
-        }).on('select2:selecting', function (e) {
-        // Deselect all currently selected items
-            $(this).val(null).trigger('change');
-        // Ensure only the new item is selected
-            $(this).val(e.params.args.data.id).trigger('change');
-        });
-    //Location Filter
-        $('#locationFilter').select2({
-            placeholder: 'Select Location',
+    const setPlaceholderText = (element, text) => {
+        element.select2({
             closeOnSelect: false,
-            tags: true,
-            width: '100%'
-        });
-    // Apply the helper function with specific placeholders for each multiple selection filter
-        setPlaceholderText($('#wishStatusFilter'), 'By Status');
-        setPlaceholderText($('#locationFilter'), 'By Location');
-        setPlaceholderText($('#urgencyFilter'), 'By Urgency');
-        setPlaceholderText($('#hasContentFilter'), 'By Content');   
-    // Initialize rowsPerPage with Select2
-        $('#rowsPerPage').select2({
-            placeholder: 'Rows per page',
-            minimumResultsForSearch: Infinity, // Disable search box for rowsPerPage
+            placeholder: text,
+            allowClear: true,
             width: '100%' // Ensure Select2 is responsive
+        }).on('select2:close', function () {
+            $(this).data('select2').$selection.find('.select2-selection__rendered').html(text);
         });
-    }
+    };
+// Initialize dateFilter for single selection and ensure only one selection is active at a time
+    $('#dateFilter').select2({
+        placeholder: ' Filter by Date',
+        allowClear: true,
+        closeOnSelect: true,
+        width: '100%'
+    }).on('select2:selecting', function (e) {
+        $(this).val(null).trigger('change');
+        $(this).val(e.params.args.data.id).trigger('change');
+    });
+//Location Filter
+    $('#locationFilter').select2({
+        placeholder: 'By Location',
+        closeOnSelect: false,
+        tags: true,
+        width: '100%'
+    });
+// Apply the helper function with specific placeholders for each multiple selection filter
+    setPlaceholderText($('#wishStatusFilter'), 'By Status');
+    setPlaceholderText($('#urgencyFilter'), 'By Urgency');
+    setPlaceholderText($('#hasContentFilter'), 'By Content');
+// Initialize rowsPerPage with Select2
+    $('#rowsPerPage').select2({
+        placeholder: 'Rows per page',
+        minimumResultsForSearch: Infinity, // Disable search box for rowsPerPage
+        width: '100%' // Ensure Select2 is responsive
+    });
+}
 
-            function populateFilters(data) {
-            const locationSet = new Set(["Rather Not Say", "United States"]);
+function populateFilters(data) {
+    const locationSet = new Set(["Rather Not Say", "United States"]);
 
-            data.forEach(item => {
-                let location = item['Location'].trim();
-                const stateRegex = /\b[A-Z]{2}\b/;
-                const match = location.match(stateRegex);
-                if (match) {
-                    locationSet.add(match[0]);
-                }
-            });
-
-            const locationFilter = $('#locationFilter');
-            locationFilter.empty(); // Clear existing options
-
-            locationSet.forEach(location => {
-                const option = new Option(location, location, false, false);
-                locationFilter.append(option);
-            });
-
-            locationFilter.trigger('change'); // Update Select2 dropdown
+    data.forEach(item => {
+        let location = item['Location'].trim();
+        const stateRegex = /\b[A-Z]{2}\b/;
+        const match = location.match(stateRegex);
+        if (match) {
+            locationSet.add(match[0]);
         }
+    });
+
+    const locationFilter = $('#locationFilter');
+    locationFilter.empty(); // Clear existing options
+
+    locationSet.forEach(location => {
+        const option = new Option(location, location, false, false);
+        locationFilter.append(option);
+    });
+
+    locationFilter.trigger('change'); // Update Select2 dropdown
+}
 //Function to Initialize Location Filters
-    function initializeLocationFilter() {
-        const locationFilter = $('#locationFilter');
-        const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "AS", "DC", "FM", "GU", "MH", "MP", "PW", "PR", "VI"];
-        states.forEach(state => {
-            locationFilter.append(new Option(state, state));
-        });
-        locationFilter.select2({ placeholder: 'By Location', closeOnSelect: false, tags: true});
-    }
+function initializeLocationFilter() {
+    const locationFilter = $('#locationFilter');
+    const states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "AS", "DC", "FM", "GU", "MH", "MP", "PW", "PR", "VI"];
+    states.forEach(state => {
+        locationFilter.append(new Option(state, state));
+    });
+    locationFilter.select2({ placeholder: 'By Location', closeOnSelect: false, tags: true});
+}
 //Function to apply Location Filters
-    function applyLocationFilter() {
-        const selectedState = $('#locationFilter').val();
-        const rows = document.querySelectorAll("#wishList tbody tr");
-        rows.forEach(row => {
-            const locationText = row.cells[1].textContent; // Assuming location is in the second cell
-            row.style.display = locationText.includes(selectedState) ? "" : "none";
-        });
-    }
+function applyLocationFilter() {
+    const selectedState = $('#locationFilter').val();
+    const rows = document.querySelectorAll("#wishList tbody tr");
+    rows.forEach(row => {
+        const locationText = row.cells[1].textContent; // Assuming location is in the second cell
+        row.style.display = locationText.includes(selectedState) ? "" : "none";
+    });
+}
 // Function for handling TWL Search Bar Input
-    function handleTwlInput() {
-        var input = document.getElementById('twlIdInput');
-        var value = input.value.replace(/\D/g, ''); // Remove non-digit characters
-        value = value.padStart(6, '0'); // Pad with leading zeros to make it 6 digits
-        input.value = value; // Update input value
-        
-        if (value === "000000") {
-            input.value = ''; // Clear the input value
-            updateFilterDisplayRow();
-        } else {
-            applyAllFilters(); // Call the combined filter function
-            updateFilterDisplayRow(); // Re-render the filter display row
-        }
+function handleTwlInput() {
+    var input = document.getElementById('twlIdInput');
+    var value = input.value.replace(/\D/g, ''); // Remove non-digit characters
+    value = value.padStart(6, '0'); // Pad with leading zeros to make it 6 digits
+    input.value = value; // Update input value
+    
+    if (value === "000000") {
+        input.value = ''; // Clear the input value
+        updateFilterDisplayRow();
+    } else {
+        applyAllFilters(); // Call the combined filter function
+        updateFilterDisplayRow(); // Re-render the filter display row
     }
+}
 //Function to Handle key press event for TWL Search Bar
-    function handleTwlKeyPress(event) {
-        clearTimeout(twlInputTimeout); // Clear previous timeout
-        if (event.key === 'Enter') {
-            handleTwlInput();
-        } else {
-            twlInputTimeout = setTimeout(handleTwlInput, 5000); // Set timeout for 5 seconds
-        }
+function handleTwlKeyPress(event) {
+    clearTimeout(twlInputTimeout); // Clear previous timeout
+    if (event.key === 'Enter') {
+        handleTwlInput();
+    } else {
+        twlInputTimeout = setTimeout(handleTwlInput, 5000); // Set timeout for 5 seconds
     }
+}
 
-        const locationFilter = document.getElementById('locationFilter');
-
-    // Convert the Set to an array and iterate over it using a for loop
-        const locationArray = Array.from(locationSet);
-        for (let i = 0; i < locationArray.length; i++) {
-            const location = locationArray[i];
-            const option = document.createElement('option');
-            option.value = location;
-            option.textContent = location;
-            locationFilter.appendChild(option);
-        }
-// Re-initialize Select2 for locationFilter to apply the changes
-    $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
-//Function to update Wish Urgency    
-    function updateWishUrgency(cell, timeframe, intensity) {
+// Function to update Wish Urgency
+function updateWishUrgency(cell, timeframe, intensity) {
     // Clear the existing content of the cell
-        cell.textContent = '';
+    cell.textContent = '';
     // Create span for timeframe
-        var timeframeSpan = document.createElement('span');
-        timeframeSpan.textContent = timeframe;
-        timeframeSpan.classList.add('urgency-tag');
+    var timeframeSpan = document.createElement('span');
+    timeframeSpan.textContent = timeframe;
+    timeframeSpan.classList.add('urgency-tag');
     // Apply specific class based on the timeframe value
     switch (timeframe) {
         case "Less than 30 Days":
@@ -1026,14 +1005,14 @@ document.addEventListener('DOMContentLoaded', function() {
             cell.setAttribute('data-sort', '0'); // Default case if no match
     }
     // Create span for intensity
-        var intensitySpan = document.createElement('span');
-        intensitySpan.textContent = intensity;
-        intensitySpan.classList.add('urgency-tag', 'intensity-tag'); // Intensity has its own fixed style
+    var intensitySpan = document.createElement('span');
+    intensitySpan.textContent = intensity;
+    intensitySpan.classList.add('urgency-tag', 'intensity-tag'); // Intensity has its own fixed style
 
     // Append both spans to the cell
-        cell.appendChild(intensitySpan);
-        cell.appendChild(timeframeSpan);
-    }
+    cell.appendChild(intensitySpan);
+    cell.appendChild(timeframeSpan);
+}
 // Handling data and populating the table
     function handleData(data) {
         if (!data || !Array.isArray(data)) {
