@@ -796,6 +796,9 @@ function handleUrlParameters() {
                 const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
                 openDetailView(itemData);
             }
+            firstVisibleRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Notify parent page to scrollToTop
+            window.parent.postMessage({ type: 'scrollToTop' }, '*');
         }
     }
     if (searchInput) {
@@ -825,19 +828,22 @@ function logInitialFilterRowState() {
     }
 }
 
-    function updateRowsPerPage() {
-          const selectedOption = document.getElementById('rowsPerPage').value;
-          // Extract only the numeric part using a regular expression
-          var numericValue = selectedOption.match(/\d+/);
-          rowsPerPage = numericValue ? parseInt(numericValue[0], 10) : 20; // Default to 20 if no match
-          currentPage = 1; // Reset to first page
-          applyAllFilters();
-          paginateTable(rowsPerPage, currentPage);
-          // Send the new height to the parent
-          var height = document.documentElement.scrollHeight;
-          console.log('Sending message from Google Script: height =', height);
-          window.parent.postMessage({ type: 'resize', height: height }, '*');
-    }
+function updateRowsPerPage() {
+    const selectedOption = document.getElementById('rowsPerPage').value;
+    // Extract only the numeric part using a regular expression
+    var numericValue = selectedOption.match(/\d+/);
+    rowsPerPage = numericValue ? parseInt(numericValue[0], 10) : 20; // Default to 20 if no match
+    currentPage = 1; // Reset to first page
+    applyAllFilters();
+    paginateTable(rowsPerPage, currentPage);
+
+    // Wait half a second before setting the height and sending the message to the parent
+    setTimeout(() => {
+        var height = document.documentElement.scrollHeight;
+        console.log('Sending message from Google Script: height =', height);
+        window.parent.postMessage({ type: 'resize', height: height }, '*');
+    }, 500); // 500 milliseconds = half a second
+}
     function enhanceAccessibility() {
         document.querySelectorAll('table').forEach(table => table.setAttribute('role', 'table'));
         document.querySelectorAll('th').forEach(th => th.setAttribute('role', 'columnheader'));
