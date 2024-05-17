@@ -1592,6 +1592,7 @@ function handleData(data) {
         var table = document.getElementById("wishList");
         var tbody = table.getElementsByTagName("tbody")[0];
         var rows = Array.from(tbody.getElementsByTagName("tr"));
+        var headerRow = table.tHead.rows[3];
         var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
 
     // Clear any existing arrows from the current column header
