@@ -58,7 +58,7 @@
     overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
   }
   table {
-    width: 95%;
+    width: 98%;
     margin: 0 auto; /* Center the container */
     font-size: 12px;
     border: 2px solid #E89AFF; /* Table border */
@@ -229,7 +229,7 @@
     padding: 4px;
     box-sizing: border-box;
     height: 26px;
-    margin-right: 10px
+    margin-right: 10px;
     min-width: 60px;
 }
 /*Style for the TWL ID # input*/
@@ -239,7 +239,6 @@
         }
         .twl-input-wrapper input {
             padding-left: 5px; /* Adjust as necessary */
-            minimum-width: 30px; /* Adjust width as necessary */
             width: 30px;
             min-width: 50px;
             margin-right: 10px;
@@ -264,10 +263,10 @@
 
     /*Keep the Filter Select2 Fields the width of the Columns*/
     .select2-selection select2-selection--multiple {
-        width: auto !important;
+        width: 100% !important;
     }
     .select2-search--inline .select2-search__field {
-        width: auto !important;
+        width: 100% !important;
     }
     .select2-selection__rendered {
         height: 28px !important;
@@ -418,16 +417,15 @@
             margin-bottom: 4px; /* Add bottom margin */
             display: inline-block;
         }
-#date-placeholder {
-    font-style: italic;
-    font-size: 14px;
-    margin-bottom: 10px;
-    white-space: nowrap;
-    display: inline-block;
-    text-align: right;
-    float: right;
-    overflow: visible;
-}
+        #date-placeholder {
+            font-style: italic;
+            font-size: 14px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            text-align: right;
+            float: right;
+            overflow: visible;
+        }
     /* Remove any inherited hover effects that might apply broadly */
     tr:hover {
         text-decoration: none; /* Ensure no row-wide hover effects are applied */
@@ -499,7 +497,7 @@
           background-color: #D9D9D9; /* Gray background for intensity part*/
           color: black; /*Black text for better readability*/
       }
-  .centered { text-align: center; }
+  .centered { text-align: center; vertical-align: middle; }
 
 /* Custom Tooltip Styling*/
 .image-tooltip-container {
@@ -682,7 +680,7 @@
                     <div id="pagination-controls" class="pagination-controls"></div><br>
                 </div>
             </td>
-            <td>
+            <td class="centered">
                 <button id="accessibilityToggleButton" onclick="toggleAccessibility()">Toggle Accessibility</button>
             </td>
         </tr>
@@ -873,7 +871,8 @@ function updateRowsPerPage() {
             element.select2({
                 closeOnSelect: false,
                 placeholder: text,
-                allowClear: true
+                allowClear: true,
+                width: '100%' // Ensure Select2 is responsive
             }).on('select2:close', function () {
                 $(this).data('select2').$selection.find('.select2-selection__rendered').html(text);
             });
@@ -885,13 +884,14 @@ function updateRowsPerPage() {
             allowClear: true,
             closeOnSelect: true,
             minimumResultsForSearch: Infinity, // Disable search box for dateFilter
-            tags: false // Ensure tags are not allowed
+            tags: false, // Ensure tags are not allowed
+            width: '100%' // Ensure Select2 is responsive
         }).on('select2:selecting', function (e) {
             // Deselect all currently selected items
             $(this).val(null).trigger('change');
             // Ensure only the new item is selected
             $(this).val(e.params.args.data.id).trigger('change');
-        })
+        });
 
         // Apply the helper function with specific placeholders for each multiple selection filter
         setPlaceholderText($('#wishStatusFilter'), 'By Status');
@@ -902,7 +902,8 @@ function updateRowsPerPage() {
         // Initialize rowsPerPage with Select2
         $('#rowsPerPage').select2({
             placeholder: 'Rows per page',
-            minimumResultsForSearch: Infinity // Disable search box for rowsPerPage
+            minimumResultsForSearch: Infinity, // Disable search box for rowsPerPage
+            width: '100%' // Ensure Select2 is responsive
         });
     }
 
