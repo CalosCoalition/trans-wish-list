@@ -214,11 +214,23 @@
     overflow: visible;
 }
 /* Style for the search input */
-.search-input {
+#searchInput {
     display: inline-block;
     flex-grow: 1;
     padding: 4px;
     box-sizing: border-box;
+    margin-right: 10px;
+    margin-left: 5px;
+    height: 26px;
+}
+#twlIdInput {
+    display: inline-block;
+    flex-grow: 1;
+    padding: 4px;
+    box-sizing: border-box;
+    height: 26px;
+    margin-right: 10px
+    min-width: 60px;
 }
 /*Style for the TWL ID # input*/
         .twl-input-wrapper {
@@ -227,7 +239,10 @@
         }
         .twl-input-wrapper input {
             padding-left: 5px; /* Adjust as necessary */
-            width: auto; /* Adjust width as necessary */
+            minimum-width: 30px; /* Adjust width as necessary */
+            width: 30px;
+            min-width: 50px;
+            margin-right: 10px;
         }
 /* Style for the th that contains the reset search button */
 .reset-button-container {
@@ -324,17 +339,16 @@
         width: calc(100% - 25px); /* Ensure the container fills the th and subtract the padding */
         padding-left: 25px; /* Add padding to the left */
     }
-    .reset-filters-button, #toggleFiltersButton {
+    #resetFiltersButton, #toggleFiltersButton {
         padding: 4px 8px; /* Padding for the button */
         font-size: 10px; /* Match the font size of the checkboxes */
         cursor: pointer; /* Indicates the button is clickable */
         border: 1px solid; /* Border color to match the theme */
         border-radius: 5px; /* Rounded corners for the button */
-        height: 20px; /* Set the height of the button */
+        height: 10px; /* Set the height of the button */
         width: auto; /* Set the width of the button */
         font-weight: bold;
         text-decoration: none !important;
-        margin-bottom: 4px; /* Add bottom margin */
         display: inline-block;
     }
     .reset-filters-button.hover-effect, .reset-filters-button:hover, #toggleFiltersButton:hover {
@@ -580,8 +594,8 @@
             <th colspan="8">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <button id="toggleFiltersButton" style = "margin-right: 3px; font-size: 14px; height: 28px; font-weight: bold;">▼</button>
-                    <input type="text" id="searchInput" placeholder="Search List..." onkeyup="applyAllFilters()" style="flex: 1; height: 30px; padding: 4px; box-sizing: border-box;">
-                    <button onclick="resetFilters()" style = "margin-left: 3px; width: auto; font-size: 14px; height: 30px; font-weight: bold;">Reset Search</button>
+                    <input type="text" id="searchInput" placeholder="Search List..." onkeyup="applyAllFilters()">
+                    <button id="resetFiltersButton" onclick="resetFilters()" style = "margin-left: 3px; width: auto; font-size: 14px; height: 30px; font-weight: bold;">Reset Search</button>
                 </div>
             </th>
         </tr>
@@ -673,14 +687,14 @@
             </td>
         </tr>
 <tr>
-    <td colspan="7" style="text-align: center;">
-        <select id="rowsPerPage" style="width: 80px !important;" onchange="updateRowsPerPage()">
-            <option value="20">20 rows</option>
-            <option value="50">50 rows</option>
-            <option value="100">100 rows</option>
-        </select>    
-    </td>
-    <td style="position: relative;">
+    <td colspan="8" style="position: relative;">
+        <div id="select-container">
+            <select id="rowsPerPage" style="width: 80px !important;" onchange="updateRowsPerPage()">
+                <option value="20">20 rows</option>
+                <option value="50">50 rows</option>
+                <option value="100">100 rows</option>
+            </select>
+        </div>
         <div id="date-placeholder"></div>
     </td>
 </tr>
