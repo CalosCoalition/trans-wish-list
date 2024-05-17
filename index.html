@@ -831,11 +831,7 @@ function updateRowsPerPage() {
     currentPage = 1; // Reset to first page
     applyAllFilters();
     paginateTable(rowsPerPage, currentPage);
-
-    // Wait half a second before setting the height and sending the message to the parent
-    setTimeout(() => {
-        adjustIframeHeight();
-    }, 500); // 500 milliseconds = half a second
+    adjustIframeHeight();
 }
     function enhanceAccessibility() {
         document.querySelectorAll('table').forEach(table => table.setAttribute('role', 'table'));
