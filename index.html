@@ -1615,8 +1615,8 @@ function handleData(data) {
             bValue = parseFloat(bValue);
         } else {
             // Handle textual comparison
-            aValue = aValue.toLowerCase();
-            bValue = bValue.toLowerCase();
+            aValue = aValue?.toLowerCase() || ""; // Add null/undefined check
+            bValue = bValue?.toLowerCase() || ""; // Add null/undefined check
         }
 
         if (isAscending) {
