@@ -2,7 +2,7 @@
 <html>
 <head>
 <!-- This Code, Application, Images, Data, and all related physical, metaphysical, and software entities related to this application belong to The Calos Coalition, a registered 501c3 non-profit. Developed by Ms. Thea Ross for use within https://www.caloscoalition.com and the Calos App. Reproduction is strictly limited; to share, please share the weblink on our website. To contact us regarding any issues, reach out to admin@caloscoalition.com. -->
-<title>Public Trans Wish List</title>
+<title>Trans Wish List</title>
 <!-- Include jQuery (Latest Stable Version) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- Include Select2 CSS (Latest Stable Version) -->
@@ -663,7 +663,7 @@
             <th onclick="sortTable(2)" data-order="asc">Wish Urgency</th>
             <th onclick="sortTable(3)" data-order="asc">Posting Title</th>
             <th onclick="sortTable(4)" data-order="asc">Wish Status</th>
-            <th onclick="sortTable(5)" data-order="asc">Public Name</th>
+            <th onclick="sortTable(5)" data-order="asc">Name</th>
             <th onclick="sortTable(6)" data-order="asc">Verified?</th>
             <th onclick="sortTable(7)" data-order="asc">TWL ID #</th>
         </tr>
@@ -734,7 +734,6 @@ async function fetchWishListData() {
         return [];
     }
 }
-
 // Attach Filter Listeners
 function addEventListeners() {
     document.getElementById('dateFilter').addEventListener('change', applyAllFilters);
@@ -753,6 +752,68 @@ function addEventListeners() {
         handleTwlInput();
     });
 }
+// Array of URLs for 64px versions of the Wish Type images
+const wishType64pxIcon = [
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Clothing%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Dream%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Educational%20Grant%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Employment%20Support%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Experiences%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Family%20Support%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Financial%20Assistance%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Food%20%26%20Essentials%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/General%20Aid_Other%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Housing%20Assistance%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Legal%20Aid%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Medical%20Aid%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Mental%20Health%20Support%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Pet%20Care%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Self-Care%20%26%20Wellness%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Social%20%26%20Community%20Engagement%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Technology%20%26%20Equipment%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Transition%20Assistance%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Travel%20Assistance%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Type%20Unknown%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(64x64)/Vehicle%20Assistance%20Icon.png"
+];
+// Array of URLs for 512px versions of the Wish Type images
+const wishType512pxIcon = [
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Clothing%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Dream%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Educational%20Grant%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Employment%20Support%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Experiences%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Family%20Support%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Financial%20Assistance%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Food%20%26%20Essentials%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/General%20Aid_Other%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Housing%20Assistance%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Legal%20Aid%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Medical%20Aid%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Mental%20Health%20Support%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Pet%20Care%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Self-Care%20%26%20Wellness%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Social%20%26%20Community%20Engagement%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Technology%20%26%20Equipment%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Transition%20Assistance%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Travel%20Assistance%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Type%20Unknown%20Icon.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Vehicle%20Assistance%20Icon.png"
+];
+// Array of URLs for Wish Status related images
+const wishStatusIcon = [
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish%20Hover.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled%20Hover.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled.png",
+  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled%20Hover.png"
+];
+// Static defined strings for other specified images
+const calosEmblemAndTextImageURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-and-text.png";
+const unverifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Unverified.png";
+const verifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Verified.png";
+/* you can all the static strings within code or the strings in array wishTypeIcons64px[0]*/
 
 // Define Global Variables
 let prevSortedColumnIndex = null;
@@ -1106,11 +1167,11 @@ function updateWishUrgency(cell, timeframe, intensity) {
             statusContainer.appendChild(statusTooltip); // Append the tooltip to the container
             cellWishStatus.appendChild(statusContainer); // Append the container to the cell
             cellWishStatus.setAttribute('data-sort', statusSortValue);
-        // Set Public Name
+        // Set Name
             const cellName = row.insertCell();
-            cellName.textContent = item['Public Name'];
-        // Sort alphabetically by public name
-            cellName.setAttribute('data-sort', item['Public Name'].toLowerCase()); // Use lowercase for consistent sorting
+            cellName.textContent = item['Name'];
+        // Sort alphabetically by name
+            cellName.setAttribute('data-sort', item['Name'].toLowerCase()); // Use lowercase for consistent sorting
         // Set Verified Status with Images
             const verificationContainer = document.createElement('div');
             verificationContainer.className = 'image-tooltip-container';
@@ -1157,7 +1218,7 @@ function updateWishUrgency(cell, timeframe, intensity) {
 //Function to open Modal Views/Wish Views
     function openDetailView(item) {
         var content = `
-            <p><strong>Public Name:</strong> ${item['Public Name']}</p>
+            <p><strong>Name:</strong> ${item['Name']}</p>
             <p><strong>Location:</strong> ${item['Location']}</p>
             <p><strong>Wish Urgency:</strong> ${item['Wish Urgency']}</p>
             <p><strong>Posting Title:</strong> ${item['Posting Title']}</p>
@@ -1168,7 +1229,7 @@ function updateWishUrgency(cell, timeframe, intensity) {
         `;
     // Conditionally add content based on preferences
         if (item['Content Preferences']['Wish Story']) {
-            content += `<p><strong>Wish Story:</strong> ${item['Trans Wish List Public Description Text']}</p>`;
+            content += `<p><strong>Wish Story:</strong> ${item['Trans Wish List Description Text']}</p>`;
         }
         if (item['Content Preferences']['Voice Recording'] && item['Recorded Message URL']) {
             content += `<audio controls><source src="${item['Recorded Message URL']}" type="audio/mpeg">Your browser does not support the audio element.</audio>`;
