@@ -1588,10 +1588,11 @@ function handleData(data) {
             lastButton.addEventListener('click', () => paginateTable(rowsPerPage, totalPages));
             paginationControls.appendChild(lastButton);
         }
-        function sortTable(columnIndex) {
-            var table = document.querySelector("#wishList tbody");
-    var headerRow = document.querySelector("#wishList thead tr"); // Adjust if needed based on your actual header row
-    var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
+    function sortTable(columnIndex) {
+        var table = document.getElementById("wishList");
+        var tbody = table.getElementsByTagName("tbody")[0];
+        var rows = Array.from(tbody.getElementsByTagName("tr"));
+        var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
 
     // Clear any existing arrows from the current column header
     headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
