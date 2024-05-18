@@ -986,6 +986,7 @@ document.addEventListener('DOMContentLoaded', async function() {
    if (loadingScreen && wishListTable) {
         // Show the loading screen
         loadingScreen.style.display = 'flex';
+        wishListTable.style.display = 'none'; // Hide the table while loading
 
         initializeSelect2Elements();
         try {
@@ -1018,7 +1019,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             // Hide the loading screen and show the table
             loadingScreen.style.display = 'none';
-            wishListTable.style.opacity = 1;
+            wishListTable.style.display = 'table'; // Show the table when done loading
+            wishListTable.style.opacity = 1; //Reveal by restoring Opacity to table
         } catch (error) {
             console.error('Error fetching wish list data:', error);
             // Optionally hide the loading screen in case of error
