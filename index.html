@@ -940,6 +940,7 @@ let currentPage = 1;
 let rowsPerPage = 20;
 let accessibilityEnabled = false;
 const locationSet = new Set();
+let data = [];
 let filteredData = [];
 // Begin Async Loading of Data to pass for Handling
 async function fetchWishListData() {
@@ -979,7 +980,7 @@ async function fetchWishListData() {
             });
         }
 
-        document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function() {
   initializeSelect2Elements();
   const loadingScreen = document.getElementById('loading-screen');
   const wishListTable = document.getElementById('wishList');
@@ -989,9 +990,8 @@ async function fetchWishListData() {
     loadingScreen.style.display = 'flex';
     wishListTable.style.display = 'none'; // Hide the table while loading
 
-    initializeSelect2Elements();
     try {
-      const data = await fetchWishListData();
+      data = await fetchWishListData();
       if (!data || !Array.isArray(data)) {
         console.error('No data available or data is not in the correct format.');
         return;
