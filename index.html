@@ -723,7 +723,7 @@
 <body>
   <div class="header">
     <a href="https://twl.caloscoalition.com">
-      <img src="https://lh3.google.com/u/0/d/1DBTKzgwpwpH-ff24IlUrY9bkLpSB-7Kl" alt="Calos Coalition Shield Emblem Logo" aria-label="Calos Coalition Home">
+      <img src="https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-and-text.png" alt="Calos Coalition Shield Emblem Logo" aria-label="Calos Coalition Home">
     </a>
     <h1><br>Trans Wish List</h1>
   </div>
@@ -734,7 +734,6 @@
       <a href="https://www.caloscoalition.com/submitstory" aria-label="Share Joy">Share Joy</a>
     </h2>
   </div>
-  
   <!-- New table for search and filters -->
   <table id="filterTable" aria-label="Filter Controls" style="padding: 10px 20px;">
     <thead>
@@ -811,8 +810,14 @@
   
   <!-- Wish List Table -->
   <div id="wish-list-container">
+  <!-- Loading Screen -->
     <div id="loading-screen">
-        <img src="https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-loadingBlue.gif" aria-label="Loading...">
+        <img src="https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_LOADING.gif" aria-label="Loading...">
+    </div>
+  <!-- Error Screen -->
+    <div id="error-screen" style="display: none;">
+      <img src="https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif" alt="Error" aria-label="Error">
+      <p id="error-message">Failed to load data. Please try again later.</p>
     </div>
   <table id="wishList" aria-label="Trans Wish List" style="padding-top:10px;">
     <thead>
@@ -930,7 +935,6 @@ const wishStatusIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled%20Hover.png"
 ];
 
-const calosEmblemAndTextImageURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-and-text.png";
 const unverifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Unverified.png";
 const verifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Verified.png";
 let prevSortedColumnIndex = null;
@@ -981,70 +985,78 @@ async function fetchWishListData() {
         }
 
 document.addEventListener('DOMContentLoaded', async function() {
-  initializeSelect2Elements();
-  addEventListeners();
-  enhanceAccessibility();
-  const toggleButton = document.getElementById('toggleFiltersButton');
-  const loadingScreen = document.getElementById('loading-screen');
-  const wishListTable = document.getElementById('wishList');
+    initializeSelect2Elements();
+    addEventListeners();
+    enhanceAccessibility();
+    const loadingScreen = document.getElementById('loading-screen');
+    const errorScreen = document.getElementById('error-screen');
+    const errorMessage = document.getElementById('error-message');
+    const wishListTable = document.getElementById('wishList');
 
-  // Show the loading screen
-  if (loadingScreen && wishListTable) {
-    loadingScreen.style.display = 'flex';
-    wishListTable.style.display = 'none'; // Hide the table while loading
+    // Show the loading screen
+    if (loadingScreen && wishListTable && errorScreen && errorMessage) {
+        loadingScreen.style.display = 'flex';
+        wishListTable.style.display = 'none'; // Hide the table while loading
+        errorScreen.style.display = 'none'; // Hide the error screen
 
-    try {
-      data = await fetchWishListData();
-      if (!data || !Array.isArray(data)) {
-        console.error('No data available or data is not in the correct format.');
-        return;
-      }
+        try {
+            data = await fetchWishListData();
+            if (!data || !Array.isArray(data)) {
+                throw new Error('No data available or data is not in the correct format.');
+            }
 
-      const datePlaceholder = document.getElementById('date-placeholder');
-      if (datePlaceholder) {
-        const today = new Date();
-        const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
-        datePlaceholder.textContent = formattedDate;
-      }
-      console.log('Fetched Data:', data);
-      handleData(data);
-      populateFilters(data);
-      applyAllFilters();
+            const datePlaceholder = document.getElementById('date-placeholder');
+            if (datePlaceholder) {
+                const today = new Date();
+                const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
+                datePlaceholder.textContent = formattedDate;
+            }
+            console.log('Fetched Data:', data);
+            handleData(data);
+            populateFilters(data);
+            applyAllFilters();
 
-      filteredData = data;  // Set filteredData to the fetched data
-      paginateAndRender();
+            filteredData = data;  // Set filteredData to the fetched data
+            paginateAndRender();
 
-      handleUrlParameters(); // Ensure this is called after data is loaded and rendered
-      const filterRow = document.getElementById('filterRow');
-      const displayRow = document.getElementById('filterDisplayRow');
+            handleUrlParameters(); // Ensure this is called after data is loaded and rendered
+            const filterRow = document.getElementById('filterRow');
+            const displayRow = document.getElementById('filterDisplayRow');
 
-      // Hide the loading screen and show the table
-      loadingScreen.style.display = 'none';
-      wishListTable.style.display = 'table'; // Show the table when done loading
-      wishListTable.style.opacity = 1; //Reveal by restoring Opacity to table
-    } catch (error) {
-      console.error('Error fetching wish list data:', error);
-      // Optionally hide the loading screen in case of error
-      loadingScreen.style.display = 'none';
+            // Hide the loading screen and show the table
+            loadingScreen.style.display = 'none';
+            wishListTable.style.display = 'table'; // Show the table when done loading
+            wishListTable.style.opacity = 1; // Reveal by restoring Opacity to table
+        } catch (error) {
+            console.error('Error fetching wish list data:', error);
+            // Hide the loading screen and show the error screen with message
+            loadingScreen.style.display = 'none';
+            displayErrorScreen(error.message)
+        }
+    } else {
+        console.error('Loading screen, error screen, or wish list table not found.');
     }
-  } else {
-    console.error('Loading screen or wish list table not found.');
-  }
 });
+// Function Defined to display an Error Screen Message to the User
+function displayErrorScreen(message) {
+  const errorDisplayMessage = message;
+    errorMessage.textContent = errorDisplayMessage; // Set the error message
+    errorScreen.style.display = 'block';
+}
 
 function handleUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
-            const searchQuery = urlParams.get('search');
-            const autoOpen = urlParams.get('autoOpen') === 'true';
-            console.log(searchQuery, autoOpen);
+            const twlIdQuery = urlParams.get('twlID');
+            const aO = urlParams.get('aO') === 'true';
+            console.log(twlIdQuery, aO);
             const searchInput = document.getElementById('twlIdInput');
-            if (searchInput && searchQuery) {
-                searchInput.value = searchQuery;
+            if (searchInput && twlIdQuery) {
+                searchInput.value = twlIdQuery;
                 applyAllFilters();
                 paginateAndRender();
-                if (autoOpen) {
+                if (aO) {
                     handleTwlInput();
-                    const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${searchQuery}']`);
+                    const firstVisibleRow = document.querySelector(`#wishList tbody tr[data-item*='${twlIdQuery}']`);
                     if (firstVisibleRow) {
                         const itemData = JSON.parse(firstVisibleRow.getAttribute('data-item'));
                         openDetailView(itemData);
