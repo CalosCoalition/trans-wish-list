@@ -1690,7 +1690,8 @@ function updatePaginationControls(totalPages, currentPage) {
     lastButton.addEventListener('click', () => paginateTable(rowsPerPage, totalPages));
     paginationControls.appendChild(lastButton);
 }
-        function sortTable(columnIndex) {
+
+function sortTable(columnIndex) {
     var table = document.getElementById("wishList");
     var tbody = table.getElementsByTagName("tbody")[0];
     var headerRow = table.tHead.rows[0];
@@ -1742,9 +1743,6 @@ function updatePaginationControls(totalPages, currentPage) {
     // Re-append sorted rows to the table body
     rowsArray.forEach(row => tbody.appendChild(row));
 
-    // Update row colors if needed
-    updateRowColors();
-
     // Remove the arrow from the previously sorted column
     if (prevSortedColumnIndex !== null && prevSortedColumnIndex !== columnIndex) {
         const prevHeaderCell = headerRow.cells[prevSortedColumnIndex];
@@ -1762,7 +1760,8 @@ function updatePaginationControls(totalPages, currentPage) {
             currentHeaderCell.textContent += ' ⤓'; // Descending arrow
         }
     }
-
+    // Update row colors if needed
+    updateRowColors();
     // Update the previously sorted column index
     prevSortedColumnIndex = columnIndex;
 }
