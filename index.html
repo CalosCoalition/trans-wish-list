@@ -978,7 +978,8 @@ async function fetchWishListData() {
                 handleTwlInput();
             });
         }
-        document.addEventListener('DOMContentLoaded', async function() {
+
+document.addEventListener('DOMContentLoaded', async function() {
   initializeSelect2Elements();
   const loadingScreen = document.getElementById('loading-screen');
   const wishListTable = document.getElementById('wishList');
@@ -1014,9 +1015,7 @@ async function fetchWishListData() {
 
       // Define rows
       const rows = Array.from(wishListTable.getElementsByTagName('tr'));
-      filteredData = rows.map(row => {
-        return Array.from(row.cells).map(cell => cell.innerText.trim());
-      });
+      filteredData = data;
       paginateAndRender();
 
       handleUrlParameters(); // Ensure this is called after data is loaded and rendered
