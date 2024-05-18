@@ -939,7 +939,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     addEventListeners();
     enhanceAccessibility();
     initializeSelect2Elements();
-    setupToggleButton();
+    const toggleButton = document.getElementById('toggleFiltersButton');
 
     console.log('Fetched Data:', data);
     handleData(data);
@@ -948,8 +948,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     paginateAndRender();
 
     handleUrlParameters(); // Ensure this is called after data is loaded and rendered
-
-    logInitialFilterRowState();
+    const filterRow = document.getElementById('filterRow');
+    const displayRow = document.getElementById('filterDisplayRow');
   } catch (error) {
     console.error('Error fetching wish list data:', error);
   }
@@ -982,26 +982,6 @@ function handleUrlParameters() {
                 searchInput.addEventListener('input', function() {
                     applyAllFilters();
                 });
-            }
-        }
-
-        function setupToggleButton() {
-            const toggleButton = document.getElementById('toggleFiltersButton');
-            if (toggleButton) {
-                toggleButton.addEventListener('click', toggleFilterRow);
-                console.log('Toggle button found and event listener added.');
-            } else {
-                console.error('Toggle button not found');
-            }
-        }
-
-        function logInitialFilterRowState() {
-            const filterRow = document.getElementById('filterRow');
-            const displayRow = document.getElementById('filterDisplayRow');
-            if (filterRow && displayRow) {
-                console.log('Initial state - filterRow:', window.getComputedStyle(filterRow).display, 'filterDisplayRow:', window.getComputedStyle(displayRow).display);
-            } else {
-                console.error('Filter rows not found. filterRow:', filterRow, 'displayRow:', displayRow);
             }
         }
 
