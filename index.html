@@ -885,7 +885,6 @@ let currentPage = 1;
 let rowsPerPage = 20;
 let accessibilityEnabled = false;
 const locationSet = new Set();
-let filteredData = [];
 // Begin Async Loading of Data to pass for Handling
 async function fetchWishListData() {
             try {
@@ -1279,7 +1278,7 @@ function applyAllFilters() {
   const filterTwlId = "TWL-" + twlIdValue;
 
   const rows = document.querySelectorAll("#wishList tbody tr");
-  filteredData = Array.from(rows).filter(row => {
+  let filteredData = Array.from(rows).filter(row => {
     let visible = true;
 
     const daysSince = parseInt(row.getAttribute('data-days'), 10);
@@ -1781,7 +1780,6 @@ function resetFilters() {
           });
           document.getElementById('searchInput').value = ''; // Clear the search input
           document.getElementById('twlIdInput').value = ''; // Clear the TWL ID input
-          filteredData  = null;
           applyAllFilters(); // Reapply filters to update view
       }
       function updateRowColors() {
