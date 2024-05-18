@@ -1790,28 +1790,43 @@ function handleTwlKeyPress(event) {
 }
 // Creates a NO MATCH row if no wish with that ID number exists
 function createNoMatchRow(id) {
-      const tableBody = document.querySelector("#wishList tbody");
-      const row = document.createElement('tr');
-      const cell = document.createElement('td');
-      cell.setAttribute('colspan', '8');
-      cell.style.textAlign = 'center';
-      cell.style.color = 'red';
-      cell.textContent = `Sorry, No Wish with TWL-${id} was found.`;
+    const tableBody = document.querySelector("#wishList tbody");
+    const row = document.createElement('tr');
+    const cell = document.createElement('td');
+    cell.setAttribute('colspan', '8');
+    cell.style.textAlign = 'center';
 
-      const image = document.createElement('img');
-      image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
-      image.alt = 'Error';
-      image.style.width = '50px';
-      image.style.height = '50px';
-      image.style.marginLeft = '10px';
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.alignItems = 'center';
+    container.style.justifyContent = 'center';
 
-      cell.appendChild(image);
-      row.appendChild(cell);
+    const image = document.createElement('img');
+    image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
+    image.alt = 'Error';
+    image.style.width = '400px';
+    image.style.height = '400px';
+    image.style.marginBottom = '10px'; // Space between image and text
 
-      row.addEventListener('click', () => {
-          document.getElementById('twlIdInput').value = '';
-          applyAllFilters();
-      });
+    const text = document.createElement('div');
+    text.style.color = 'red';
+    text.textContent = `Sorry, No Wish with TWL-${id} was found.`;
+
+    container.appendChild(image);
+    container.appendChild(text);
+    cell.appendChild(container);
+    row.appendChild(cell);
+    tableBody.appendChild(row);
+
+    // Add event listener to clear the TWL ID input when the row is clicked
+    row.addEventListener('click', () => {
+        document.getElementById('twlIdInput').value = '';
+        applyAllFilters();
+        updateFilterDisplayRow();
+        updateRowColors();
+    });
+}
 
       tableBody.appendChild(row);
 }        
