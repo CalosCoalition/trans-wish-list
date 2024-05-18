@@ -979,7 +979,7 @@ async function fetchWishListData() {
             });
         }
 
-document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', async function() {
   initializeSelect2Elements();
   const loadingScreen = document.getElementById('loading-screen');
   const wishListTable = document.getElementById('wishList');
@@ -1013,9 +1013,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       populateFilters(data);
       applyAllFilters();
 
-      // Define rows
-      const rows = Array.from(wishListTable.getElementsByTagName('tr'));
-      filteredData = data;
+      filteredData = data;  // Set filteredData to the fetched data
       paginateAndRender();
 
       handleUrlParameters(); // Ensure this is called after data is loaded and rendered
@@ -1325,85 +1323,79 @@ function updateFilterDisplayRow() {
         cell.appendChild(intensitySpan);
         cell.appendChild(timeframeSpan);
     }
-function applyAllFilters() {
-  const dateFilterValues = $('#dateFilter').val() || [];
-  const locationFilterValues = $('#locationFilter').val() || [];
-  const urgencyFilterValues = $('#urgencyFilter').val() || [];
-  const hasContentFilterValues = $('#hasContentFilter').val() || [];
-  const wishStatusFilterValues = $('#wishStatusFilter').val() || [];
+    function applyAllFilters() {
+    const dateFilterValues = $('#dateFilter').val() || [];
+    const locationFilterValues = $('#locationFilter').val() || [];
+    const urgencyFilterValues = $('#urgencyFilter').val() || [];
+    const hasContentFilterValues = $('#hasContentFilter').val() || [];
+    const wishStatusFilterValues = $('#wishStatusFilter').val() || [];
+    const includeAnonymous = document.getElementById('includeAnonymous').checked;
+    const includeUnverified = document.getElementById('includeUnverified').checked;
+    const searchValue = document.getElementById('searchInput').value.toLowerCase();
+    const twlIdValue = document.getElementById('twlIdInput').value.trim();
 
-  const includeAnonymous = document.getElementById('includeAnonymous').checked;
-  const includeUnverified = document.getElementById('includeUnverified').checked;
+    filteredData = data.filter(item => {
+        let visible = true;
 
-  const searchValue = document.getElementById('searchInput').value.toLowerCase();
-  const twlIdValue = document.getElementById('twlIdInput').value.trim();
-  const filterTwlId = "TWL-" + twlIdValue;
+        if (dateFilterValues.length > 0) {
+            const daysSince = parseInt(item['daysSince'], 10);
+            visible = dateFilterValues.some(value => {
+                const maxDays = parseInt(value.replace('days', ''), 10);
+                return daysSince <= maxDays;
+            });
+        }
 
-  const rows = document.querySelectorAll("#wishList tbody tr");
-  filteredData = Array.from(rows).filter(row => {
-    let visible = true;
+        if (locationFilterValues.length > 0) {
+            visible = visible && locationFilterValues.includes(item['Location']);
+        }
 
-    const daysSince = parseInt(row.getAttribute('data-days'), 10);
-    if (dateFilterValues.length > 0) {
-      visible = dateFilterValues.some(value => {
-        const maxDays = parseInt(value.replace('days', ''), 10);
-        return daysSince <= maxDays;
-      });
-    }
+        if (urgencyFilterValues.length > 0) {
+            visible = visible && urgencyFilterValues.includes(item['Wish Urgency']);
+        }
 
-    if (locationFilterValues.length > 0) {
-      const location = row.cells[1].textContent;
-      visible = visible && locationFilterValues.some(value => location.includes(value));
-    }
+        if (hasContentFilterValues.length > 0) {
+            const hasImage = item['Content Preferences'].includes('Photo(s)') && item['Image URL'];
+            const hasAudio = item['Content Preferences'].includes('Voice Recording') && item['Recorded Message URL'];
+            const hasVideo = item['Content Preferences'].includes('Video Link') && item['Link to Video'];
+            const hasLinks = item['Links'];
+            const hasNoContent = item['Content Preferences'].trim() === 'Wish Story' && !hasImage && !hasAudio && !hasVideo && !hasLinks;
+            
+            visible = visible && hasContentFilterValues.some(value => {
+                if (value === 'hasImage') return hasImage;
+                if (value === 'hasLinks') return hasLinks;
+                if (value === 'hasAudio') return hasAudio;
+                if (value === 'hasVideo') return hasVideo;
+                if (value === 'hasNoContent') return hasNoContent;
+            });
+        }
 
-    if (urgencyFilterValues.length > 0) {
-      const urgency = row.cells[2].textContent.trim();
-      visible = visible && urgencyFilterValues.some(value => urgency.includes(value));
-    }
+        if (wishStatusFilterValues.length > 0) {
+            visible = visible && wishStatusFilterValues.includes(item['Wish Status']);
+        }
 
-    if (hasContentFilterValues.length > 0) {
-      const hasImage = row.querySelector('img') !== null;
-      const hasLinks = row.querySelectorAll('a').length > 0;
-      const hasAudio = row.querySelector('audio') !== null;
-      const hasVideo = row.querySelector('video') !== null;
-      const hasNoContent = !(hasImage || hasLinks || hasAudio || hasVideo);
+        if (!includeAnonymous && item['Public Name'].trim() === 'Anonymous') {
+            visible = false;
+        }
 
-      visible = visible && hasContentFilterValues.some(value => {
-        if (value === 'hasImage') return hasImage;
-        if (value === 'hasLinks') return hasLinks;
-        if (value === 'hasAudio') return hasAudio;
-        if (value === 'hasVideo') return hasVideo;
-        if (value === 'hasNoContent') return hasNoContent;
-      });
-    }
+        if (!includeUnverified && item['Verified?'].trim() !== '✔️') {
+            visible = false;
+        }
 
-    if (wishStatusFilterValues.length > 0) {
-      const wishStatus = row.cells[4].textContent.trim();
-      visible = visible && wishStatusFilterValues.includes(wishStatus);
-    }
+        if (searchValue && !item['Posting Title'].toLowerCase().includes(searchValue)) {
+            visible = false;
+        }
 
-    if (!includeAnonymous && row.cells[5].textContent.trim() === 'Anonymous') {
-      visible = false;
-    }
+        if (twlIdValue && !item['TWL ID #'].includes(`TWL-${twlIdValue}`)) {
+            visible = false;
+        }
 
-    if (!includeUnverified && row.cells[6].textContent.trim() !== '✔️') {
-      visible = false;
-    }
+        return visible;
+    });
 
-    if (searchValue && !row.textContent.toLowerCase().includes(searchValue)) {
-      visible = false;
-    }
-
-    if (twlIdValue && !row.textContent.includes(filterTwlId)) {
-      visible = false;
-    }
-
-    return visible;
-  });
-  console.log('Filtered Data:', filteredData);
-  paginateAndRender();
-  updateFilterDisplayRow();
-  updateRowColors(); // Update row colors after filtering
+    console.log('Filtered Data:', filteredData);
+    paginateAndRender();
+    updateFilterDisplayRow();
+    updateRowColors(); // Update row colors after filtering
 }
 
 function paginateAndRender() {
@@ -1700,7 +1692,8 @@ function sortTable(columnIndex) {
     const table = document.getElementById("wishList");
     const tbody = table.getElementsByTagName("tbody")[0];
     const headerRow = table.tHead.rows[0];
-    var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
+    const currentOrder = headerRow.cells[columnIndex].getAttribute("data-order");
+    const isAscending = currentOrder === "asc";
 
     // Clear any existing arrows from the current column header
     headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
@@ -1709,20 +1702,7 @@ function sortTable(columnIndex) {
     headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
     // Determine which data to sort: filteredData or all rows in the table
-    let rowsArray;
-    if (filteredData && filteredData.length > 0) {
-        rowsArray = filteredData.map(data => {
-            const row = document.createElement('tr');
-            for (const key in data) {
-                const cell = document.createElement('td');
-                cell.innerText = data[key];
-                row.appendChild(cell);
-            }
-            return row;
-        });
-    } else {
-        rowsArray = Array.from(tbody.querySelectorAll("tr"));
-    }
+    let rowsArray = filteredData.length ? filteredData : Array.from(tbody.querySelectorAll("tr"));
 
     // Sort rows based on the column index
     rowsArray.sort((a, b) => {
@@ -1743,11 +1723,7 @@ function sortTable(columnIndex) {
             bValue = bValue.toLowerCase();
         }
 
-        if (isAscending) {
-            return aValue > bValue ? 1 : -1;
-        } else {
-            return aValue < bValue ? 1 : -1;
-        }
+        return isAscending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
     });
 
     // Clear existing rows in the table body
