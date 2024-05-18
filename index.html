@@ -1469,7 +1469,7 @@ function handleData(data) {
         row.setAttribute('data-item', JSON.stringify(item)); // Add this line for Search Bar
         
         // Set the 'data-days' attribute for each row
-        row.setAttribute('data-days', item.daysSince); // 'daysSince' is calculated and passed from the server
+        row.setAttribute('data-days', item.daysSince || 0); // 'daysSince' is calculated and passed from the server
         
         // Set Date Applied with a sortable ISO string in the 'data-sort' attribute
         const cellDate = row.insertCell();
@@ -1480,38 +1480,38 @@ function handleData(data) {
         
         // Set Location
         const cellLocation = row.insertCell();
-        cellLocation.textContent = item['Location'];
+        cellLocation.textContent = item['Location'] || '';
         
         // Handle Wish Urgency
         const cellUrgency = row.insertCell();
-        const fullUrgencyText = item['Wish Urgency'];
+        const fullUrgencyText = item['Wish Urgency'] || '';
         const urgencyParts = fullUrgencyText.split(", "); // Assuming the format is "Intensity, Timeframe"
 
         // Use the updateWishUrgency function to handle the cell content and styling
-        updateWishUrgency(cellUrgency, urgencyParts[1], urgencyParts[0]); // Note the order: timeframe, intensity
+        updateWishUrgency(cellUrgency, urgencyParts[1] || '', urgencyParts[0] || ''); // Note the order: timeframe, intensity
         
         // Determine content availability based on preferences and actual content
-        const hasImage = item['Content Preferences'].includes('Photo(s)') && item['Image URL'] ? true : false;
-        const hasAudio = item['Content Preferences'].includes('Voice Recording') && item['Recorded Message URL'] ? true : false;
-        const hasVideo = item['Content Preferences'].includes('Video Link') && item['Link to Video'] ? true : false;
-        const hasLinks = item['Links'] ? true : false;
-        const hasNoContent = item['Content Preferences'].trim() === 'Wish Story' && !hasImage && !hasAudio && !hasVideo && !hasLinks;
+        const hasImage = item['Content Preferences']?.includes('Photo(s)') && item['Image URL'];
+        const hasAudio = item['Content Preferences']?.includes('Voice Recording') && item['Recorded Message URL'];
+        const hasVideo = item['Content Preferences']?.includes('Video Link') && item['Link to Video'];
+        const hasLinks = item['Links'];
+        const hasNoContent = item['Content Preferences']?.trim() === 'Wish Story' && !hasImage && !hasAudio && !hasVideo && !hasLinks;
         // Set Content Related attributes based on content checks
-        row.setAttribute('data-has-image', hasImage);
-        row.setAttribute('data-has-audio', hasAudio);
-        row.setAttribute('data-has-video', hasVideo);
-        row.setAttribute('data-has-links', hasLinks);
-        row.setAttribute('data-has-no-content', hasNoContent);
+        row.setAttribute('data-has-image', hasImage ? 'true' : 'false');
+        row.setAttribute('data-has-audio', hasAudio ? 'true' : 'false');
+        row.setAttribute('data-has-video', hasVideo ? 'true' : 'false');
+        row.setAttribute('data-has-links', hasLinks ? 'true' : 'false');
+        row.setAttribute('data-has-no-content', hasNoContent ? 'true' : 'false');
 
         // Set Posting Title
         const cellTitle = row.insertCell();
-        cellTitle.textContent = item['Posting Title'];
+        cellTitle.textContent = item['Posting Title'] || '';
 
         // Set Wish Status with Images
         const statusContainer = document.createElement('div');
         statusContainer.className = 'image-tooltip-container';
         const cellWishStatus = row.insertCell();
-        const wishStatus = item['Wish Status'];
+        const wishStatus = item['Wish Status'] || '';
         let statusSortValue = '';
         const statusImage = document.createElement('img');
         statusImage.style.display = 'block';
@@ -1548,15 +1548,15 @@ function handleData(data) {
 
         // Set Public Name
         const cellName = row.insertCell();
-        cellName.textContent = item['Public Name'];
+        cellName.textContent = item['Public Name'] || '';
         // Sort alphabetically by public name
-        cellName.setAttribute('data-sort', item['Public Name'].toLowerCase()); // Use lowercase for consistent sorting
+        cellName.setAttribute('data-sort', item['Public Name']?.toLowerCase() || ''); // Use lowercase for consistent sorting
 
         // Set Verified Status with Images
         const verificationContainer = document.createElement('div');
         verificationContainer.className = 'image-tooltip-container';
         const cellVerified = row.insertCell();
-        const verificationStatus = item['Verified?'];
+        const verificationStatus = item['Verified?'] || '';
         let sortValue = '';
         const verifiedImage = document.createElement('img');
         verifiedImage.style.display = 'block';
@@ -1590,7 +1590,7 @@ function handleData(data) {
         
         // Set TWL ID # (assuming numeric sorting)
         const cellID = row.insertCell();
-        cellID.textContent = item['TWL ID #'];
+        cellID.textContent = item['TWL ID #'] || '';
         cellID.setAttribute('data-sort', parseInt(item['TWL ID #'], 10).toString());
 
         // Add click event listener for the detail view modal
@@ -1702,7 +1702,7 @@ function sortTable(columnIndex) {
     headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
     // Determine which data to sort: filteredData or all rows in the table
-    let rowsArray = filteredData.length ? filteredData : Array.from(tbody.querySelectorAll("tr"));
+    let rowsArray = Array.from(tbody.querySelectorAll("tr"));
 
     // Sort rows based on the column index
     rowsArray.sort((a, b) => {
@@ -1723,7 +1723,11 @@ function sortTable(columnIndex) {
             bValue = bValue.toLowerCase();
         }
 
-        return isAscending ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
+        if (isAscending) {
+            return aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
+        } else {
+            return aValue < bValue ? 1 : (aValue > bValue ? -1 : 0);
+        }
     });
 
     // Clear existing rows in the table body
