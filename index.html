@@ -588,12 +588,12 @@
     }
   
 /* Custom Tooltip Styling */
-.image-tooltip-container {
+.image-tooltip-container, .text-tooltip-container {
     position: relative;
     display: inline-block;
 }
 
-.tooltip {
+.image-tooltip, .text-tooltip {
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -603,14 +603,11 @@
     padding: 5px 0;
     position: absolute;
     z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
     opacity: 0;
     transition: opacity 0.6s;
 }
 
-.tooltip::after {
+.image-tooltip::after, .text-tooltip::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -620,12 +617,6 @@
     border-style: solid;
     border-color: black transparent transparent transparent;
 }
-
-.image-tooltip-container:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-}
-  
     /* Modal popup styles */
     #modal {
       display: none;
@@ -1800,7 +1791,7 @@ function createNoMatchRow(id) {
     container.style = "display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;";
 
     const textContainer = document.createElement('div');
-    textContainer.className = 'image-tooltip-container';
+    textContainer.className = 'text-tooltip-container';
     textContainer.style = "cursor: pointer; margin-top: 10px;";
 
     const text = document.createElement('div');
@@ -1808,7 +1799,7 @@ function createNoMatchRow(id) {
     text.textContent = `Sorry, No Wish with TWL-${id} was found.`;
 
     const textTooltip = document.createElement('span');
-    textTooltip.className = 'tooltip';
+    textTooltip.className = 'text-tooltip';
     textTooltip.textContent = 'Return to Main List';
 
     const imageContainer = document.createElement('div');
@@ -1821,7 +1812,7 @@ function createNoMatchRow(id) {
     image.style = "width:300px; height:300px; margin-top: 20px;";
 
     const imageTooltip = document.createElement('span');
-    imageTooltip.className = 'tooltip';
+    imageTooltip.className = 'image-tooltip';
     imageTooltip.textContent = 'Return to Main List';
 
     textContainer.appendChild(text);
@@ -1846,6 +1837,13 @@ function createNoMatchRow(id) {
 
     imageContainer.addEventListener('click', clearTwlInput);
     textContainer.addEventListener('click', clearTwlInput);
+
+    // Add event listeners for tooltips
+    [imageContainer, textContainer].forEach(container => {
+        container.addEventListener('mouseover', showTooltip);
+        container.addEventListener('mousemove', moveTooltip);
+        container.addEventListener('mouseout', hideTooltip);
+    });
 }
         function toggleFilterRow() {
             var filterRow = document.getElementById('filterRow');
@@ -1976,7 +1974,31 @@ function handleFilterRowClick(event) {
     console.error('removeFiltersButton not found');
   }
 }
+function showTooltip(event) {
+    const tooltip = event.currentTarget.querySelector('.image-tooltip, .text-tooltip');
+    if (tooltip) {
+        tooltip.style.visibility = 'visible';
+        tooltip.style.opacity = '1';
+    }
+}
 
+function moveTooltip(event) {
+    const tooltip = event.currentTarget.querySelector('.image-tooltip, .text-tooltip');
+    if (tooltip) {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        tooltip.style.left = `${mouseX + 10}px`;
+        tooltip.style.top = `${mouseY + 10}px`;
+    }
+}
+
+function hideTooltip(event) {
+    const tooltip = event.currentTarget.querySelector('.image-tooltip, .text-tooltip');
+    if (tooltip) {
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.opacity = '0';
+    }
+}
 </script>
 </body>
 </html>
