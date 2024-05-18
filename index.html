@@ -1588,12 +1588,11 @@ function handleData(data) {
             lastButton.addEventListener('click', () => paginateTable(rowsPerPage, totalPages));
             paginationControls.appendChild(lastButton);
         }
-    function sortTable(columnIndex) {
-        var table = document.getElementById("wishList");
-        var tbody = table.getElementsByTagName("tbody")[0];
-        var rows = Array.from(tbody.getElementsByTagName("tr"));
-        var headerRow = table.tHead.rows[3];
-        var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
+        function sortTable(columnIndex) {
+    var table = document.getElementById("wishList");
+    var tbody = table.getElementsByTagName("tbody")[0];
+    var headerRow = table.tHead.rows[3];
+    var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
 
     // Clear any existing arrows from the current column header
     headerRow.cells[columnIndex].textContent = headerRow.cells[columnIndex].textContent.replace(/[⤓⤒]/g, '');
@@ -1601,8 +1600,13 @@ function handleData(data) {
     // Toggle sorting order
     headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
-    // Get all rows from the table body
-    const rowsArray = Array.from(tbody.querySelectorAll("tr"));
+    // Determine which data to sort: filteredData or all data
+    var rowsArray;
+    if (filteredData && filteredData.length > 0) {
+        rowsArray = filteredData;
+    } else {
+        rowsArray = Array.from(tbody.querySelectorAll("tr"));
+    }
 
     // Sort rows based on the column index
     rowsArray.sort((a, b) => {
@@ -1631,10 +1635,10 @@ function handleData(data) {
     });
 
     // Clear existing rows in the table body
-    tableBody.innerHTML = '';
+    tbody.innerHTML = '';
 
     // Re-append sorted rows to the table body
-    rowsArray.forEach(row => tableBody.appendChild(row));
+    rowsArray.forEach(row => tbody.appendChild(row));
 
     // Update row colors if needed
     updateRowColors();
@@ -1777,6 +1781,7 @@ function resetFilters() {
           });
           document.getElementById('searchInput').value = ''; // Clear the search input
           document.getElementById('twlIdInput').value = ''; // Clear the TWL ID input
+          filteredData  = null;
           applyAllFilters(); // Reapply filters to update view
       }
       function updateRowColors() {
