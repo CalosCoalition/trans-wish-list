@@ -1162,7 +1162,7 @@ function applyLocationFilter() {
         $('#locationFilter').select2({ placeholder: 'Select Location', closeOnSelect: false });
     }
 
-function updateFilterDisplayRow() {
+    function updateFilterDisplayRow() {
   const filterDisplayRow = document.getElementById('filterDisplayRow');
   filterDisplayRow.innerHTML = '';
 
@@ -1888,26 +1888,31 @@ function resetFilters() {
         }
     });
 }
-      function handleFilterRowClick(event) {
-        const button = document.getElementById('removeFiltersButton');
-        // Check if the clicked element is not one of the filter removal links (span tags)
-        if (!event.target.closest('span')) {
-            // Simulate hover effect
-            button.classList.add('hover-effect');
-            setTimeout(() => {
-                button.classList.remove('hover-effect');
-            }, 200); // This timeout removes the hover effect shortly after it's applied
+function handleFilterRowClick(event) {
+  const button = document.getElementById('removeFiltersButton');
+  if (button) {
+    // Check if the clicked element is not one of the filter removal links (span tags)
+    if (!event.target.closest('span')) {
+      // Simulate hover effect
+      button.classList.add('hover-effect');
+      setTimeout(() => {
+        button.classList.remove('hover-effect');
+      }, 200); // This timeout removes the hover effect shortly after it's applied
 
-            // Simulate click effect
-            button.classList.add('active');
-            setTimeout(() => {
-                button.classList.remove('active');
-            }, 150); // This timeout removes the active effect, making it seem like a quick press
+      // Simulate click effect
+      button.classList.add('active');
+      setTimeout(() => {
+        button.classList.remove('active');
+      }, 150); // This timeout removes the active effect, making it seem like a quick press
 
-            // Finally trigger the button's default action
-            button.click();
-        }
-    } 
+      // Finally trigger the button's default action
+      button.click();
+    }
+  } else {
+    console.error('removeFiltersButton not found');
+  }
+}
+
 </script>
 </body>
 </html>
