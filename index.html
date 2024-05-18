@@ -89,7 +89,7 @@
         position: relative; /* Ensures the loading screen covers this container */
     }
 
-    #wish-list-table {
+    #wish-list {
         opacity: 0; /* Initially hide the wish list table */
         transition: opacity 0.5s; /* Smooth transition when showing the table */
     }    
@@ -812,7 +812,7 @@
   <!-- Wish List Table -->
   <div id="wish-list-container">
     <div id="loading-screen">
-        <img src="https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-loading.gif" aria-label="Loading...">
+        <img src="https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos-emblem-loadingBlue.gif" aria-label="Loading...">
     </div>
   <table id="wishList" aria-label="Trans Wish List" style="padding-top:10px;">
     <thead>
@@ -981,44 +981,52 @@ async function fetchWishListData() {
 document.addEventListener('DOMContentLoaded', async function() {
   initializeSelect2Elements();
   const loadingScreen = document.getElementById('loading-screen');
-  const wishListTable = document.getElementById('wish-list-table');
-    
+  const wishListTable = document.getElementById('wish-list');
 // Show the loading screen
-  loadingScreen.style.display = 'flex';
-  wishListTable.style.display = 'none'; // Ensure the table is hidden while loading
-  try {
-        const data = await fetchWishListData();
-        if (!data || !Array.isArray(data)) {
-            console.error('No data available or data is not in the correct format.');
-            return;
+   if (loadingScreen && wishListTable) {
+        // Show the loading screen
+        loadingScreen.style.display = 'flex';
+        wishListTable.style.display = 'none'; // Hide the table while loading
+
+        initializeSelect2Elements();
+        try {
+            const data = await fetchWishListData();
+            if (!data || !Array.isArray(data)) {
+                console.error('No data available or data is not in the correct format.');
+                return;
+            }
+
+            const datePlaceholder = document.getElementById('date-placeholder');
+            if (datePlaceholder) {
+                const today = new Date();
+                const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
+                datePlaceholder.textContent = formattedDate;
+            }
+
+            addEventListeners();
+            enhanceAccessibility();
+            const toggleButton = document.getElementById('toggleFiltersButton');
+
+            console.log('Fetched Data:', data);
+            handleData(data);
+            populateFilters(data);
+            applyAllFilters();
+            paginateAndRender();
+
+            handleUrlParameters(); // Ensure this is called after data is loaded and rendered
+            const filterRow = document.getElementById('filterRow');
+            const displayRow = document.getElementById('filterDisplayRow');
+
+            // Hide the loading screen and show the table
+            loadingScreen.style.display = 'none';
+            wishListTable.style.display = 'table'; // Make the table visible
+        } catch (error) {
+            console.error('Error fetching wish list data:', error);
+            // Optionally hide the loading screen in case of error
+            loadingScreen.style.display = 'none';
         }
-
-        const datePlaceholder = document.getElementById('date-placeholder');
-        const today = new Date();
-        const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
-        datePlaceholder.textContent = formattedDate;
-
-        addEventListeners();
-        enhanceAccessibility();
-        const toggleButton = document.getElementById('toggleFiltersButton');
-
-        console.log('Fetched Data:', data);
-        handleData(data);
-        populateFilters(data);
-        applyAllFilters();
-        paginateAndRender();
-
-        handleUrlParameters(); // Ensure this is called after data is loaded and rendered
-        const filterRow = document.getElementById('filterRow');
-        const displayRow = document.getElementById('filterDisplayRow');
-
-        // Hide the loading screen and show the table
-        loadingScreen.style.display = 'none';
-        wishListTable.style.display = 'table';
-    } catch (error) {
-        console.error('Error fetching wish list data:', error);
-        // Optionally hide the loading screen in case of error
-        loadingScreen.style.display = 'none';
+    } else {
+        console.error('Loading screen or wish list table not found.');
     }
 });
 
