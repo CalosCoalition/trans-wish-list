@@ -1797,19 +1797,17 @@ function createNoMatchRow(id) {
     cell.style.textAlign = 'center';
 
     const container = document.createElement('div');
-    container.style.display = 'flex';
-    container.style.flexDirection = 'column';
-    container.style.alignItems = 'center';
-    container.style.justifyContent = 'center';
+    container.style = "display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;";
+    container.title = 'Return to Main List'; // Tooltip text
 
     const text = document.createElement('div');
-    text.style = "color: red; font-size: 14px; cursor: pointer;"
+    text.style = "color: red; font-size: 14px;"
     text.textContent = `Sorry, No Wish with TWL-${id} was found.`;
 
     const image = document.createElement('img');
     image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
     image.alt = 'Error';
-    image.style ="width:300px; height:300px; marginTop: 20px; cursor: pointer;"
+    image.style = "width:300px; height:300px; margin-top: 20px;"
 
     container.appendChild(image);
     container.appendChild(text);
