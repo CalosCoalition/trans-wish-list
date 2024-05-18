@@ -589,41 +589,41 @@
   
     /* Custom Tooltip Styling */
     .image-tooltip-container {
-      position: relative;
-      display: inline-block;
+        position: relative;
+        display: inline-block;
     }
-    
+
     .tooltip {
-      visibility: hidden;
-      width: 120px;
-      background-color: black;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 5px 0;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      margin-left: -60px;
-      opacity: 0;
-      transition: opacity 0.6s;
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.6s;
     }
-    
+
     .tooltip::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: black transparent transparent transparent;
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: black transparent transparent transparent;
     }
-    
+
     .image-tooltip-container:hover .tooltip {
-      visibility: visible;
-      opacity: 1;
+        visibility: visible;
+        opacity: 1;
     }
   
     /* Modal popup styles */
@@ -1797,31 +1797,47 @@ function createNoMatchRow(id) {
     cell.style.textAlign = 'center';
 
     const container = document.createElement('div');
-    container.className = 'image-tooltip-container'; // Use the existing class
     container.style = "display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;";
 
+    const textContainer = document.createElement('div');
+    textContainer.className = 'image-tooltip-container';
+    textContainer.style = "cursor: pointer; margin-top: 10px;";
+
     const text = document.createElement('div');
-    text.style = "color: red; font-size: 14px; cursor: pointer; margin-top: 10px;";
+    text.style = "color: red; font-size: 14px;";
     text.textContent = `Sorry, No Wish with TWL-${id} was found.`;
+
+    const textTooltip = document.createElement('span');
+    textTooltip.className = 'tooltip';
+    textTooltip.textContent = 'Return to Main List';
+
+    const imageContainer = document.createElement('div');
+    imageContainer.className = 'image-tooltip-container';
+    imageContainer.style = "cursor: pointer;";
 
     const image = document.createElement('img');
     image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
     image.alt = 'Error';
-    image.style = "width:300px; height:300px; margin-top: 20px; cursor: pointer;";
+    image.style = "width:300px; height:300px; margin-top: 20px;";
 
-    const tooltip = document.createElement('span');
-    tooltip.className = 'tooltip'; // Use the existing tooltip class
-    tooltip.textContent = 'Return to Main List';
+    const imageTooltip = document.createElement('span');
+    imageTooltip.className = 'tooltip';
+    imageTooltip.textContent = 'Return to Main List';
 
-    container.appendChild(image);
-    container.appendChild(text);
-    container.appendChild(tooltip); // Append the tooltip to the container
+    textContainer.appendChild(text);
+    textContainer.appendChild(textTooltip);
+
+    imageContainer.appendChild(image);
+    imageContainer.appendChild(imageTooltip);
+
+    container.appendChild(imageContainer);
+    container.appendChild(textContainer);
     cell.appendChild(container);
     row.appendChild(cell);
     tableBody.appendChild(row);
 
     // Add event listener to clear the TWL ID input when the image is clicked
-    image.addEventListener('click', () => {
+    imageContainer.addEventListener('click', () => {
         document.getElementById('twlIdInput').value = '';
         applyAllFilters();
         updateFilterDisplayRow();
@@ -1829,7 +1845,7 @@ function createNoMatchRow(id) {
     });
 
     // Add event listener to clear the TWL ID input when the text is clicked
-    text.addEventListener('click', () => {
+    textContainer.addEventListener('click', () => {
         document.getElementById('twlIdInput').value = '';
         applyAllFilters();
         updateFilterDisplayRow();
