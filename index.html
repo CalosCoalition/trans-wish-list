@@ -1011,6 +1011,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             handleData(data);
             populateFilters(data);
             applyAllFilters();
+            filteredData = rows.map(row => {return Array.from(row.cells).map(cell => cell.innerText.trim());});
             paginateAndRender();
 
             handleUrlParameters(); // Ensure this is called after data is loaded and rendered
@@ -1692,9 +1693,9 @@ function updatePaginationControls(totalPages, currentPage) {
 }
 
 function sortTable(columnIndex) {
-    var table = document.getElementById("wishList");
-    var tbody = table.getElementsByTagName("tbody")[0];
-    var headerRow = table.tHead.rows[0];
+    const table = document.getElementById("wishList");
+    const tbody = table.getElementsByTagName("tbody")[0];
+    const headerRow = table.tHead.rows[0];
     var isAscending = headerRow.cells[columnIndex].getAttribute("data-order") === "asc";
 
     // Clear any existing arrows from the current column header
@@ -1703,10 +1704,18 @@ function sortTable(columnIndex) {
     // Toggle sorting order
     headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
-    // Determine which data to sort: filteredData or all data
-    var rowsArray;
+    // Determine which data to sort: filteredData or all rows in the table
+    let rowsArray;
     if (filteredData && filteredData.length > 0) {
-        rowsArray = filteredData;
+        rowsArray = filteredData.map(data => {
+            const row = document.createElement('tr');
+            for (const key in data) {
+                const cell = document.createElement('td');
+                cell.innerText = data[key];
+                row.appendChild(cell);
+            }
+            return row;
+        });
     } else {
         rowsArray = Array.from(tbody.querySelectorAll("tr"));
     }
@@ -1760,8 +1769,10 @@ function sortTable(columnIndex) {
             currentHeaderCell.textContent += ' ⤓'; // Descending arrow
         }
     }
+
     // Update row colors if needed
     updateRowColors();
+
     // Update the previously sorted column index
     prevSortedColumnIndex = columnIndex;
 }
