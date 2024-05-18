@@ -1802,16 +1802,14 @@ function createNoMatchRow(id) {
     container.style.alignItems = 'center';
     container.style.justifyContent = 'center';
 
+    const text = document.createElement('div');
+    text.style = "color: red; font-size: 14px; cursor: pointer;"
+    text.textContent = `Sorry, No Wish with TWL-${id} was found.`;
+
     const image = document.createElement('img');
     image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
     image.alt = 'Error';
-    image.style.width = '400px';
-    image.style.height = '400px';
-    image.style.marginBottom = '10px'; // Space between image and text
-
-    const text = document.createElement('div');
-    text.style.color = 'red';
-    text.textContent = `Sorry, No Wish with TWL-${id} was found.`;
+    image.style ="width:300px; height:300px; marginTop: 20px; cursor: pointer;"
 
     container.appendChild(image);
     container.appendChild(text);
