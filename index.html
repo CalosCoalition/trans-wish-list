@@ -747,9 +747,9 @@
           </div>
         </th>
       </tr>
-      <tr id="filterRow">
+      <tr id="filterRow" style="padding-left: 8px;">
         <th>
-          <select id="dateFilter" onchange="applyAllFilters()" style="padding-left: 8px;" multiple aria-label="Filter by Date">
+          <select id="dateFilter" onchange="applyAllFilters()" multiple aria-label="Filter by Date">
             <option value="30days">Last 30 days</option>
             <option value="60days">Last 60 days</option>
             <option value="90days">Last 90 days</option>
@@ -1755,24 +1755,25 @@ function sortTable(columnIndex) {
     // Update the previously sorted column index
     prevSortedColumnIndex = columnIndex;
 }
-
 // Function for handling TWL Search Bar Input
     function handleTwlInput() {
         var input = document.getElementById('twlIdInput');
         var value = input.value.replace(/\D/g, ''); // Remove non-digit characters
         value = value.padStart(6, '0'); // Pad with leading zeros to make it 6 digits
         input.value = value; // Update input value
-        
-        if (value === "000000") {
-            input.value = ''; // Clear the input value
-            updateFilterDisplayRow();
-        } else {
-            applyAllFilters(); // Call the combined filter function
-            updateFilterDisplayRow(); // Re-render the filter display row
-            updateRowColors(); // Update row colors after filtering
-        }
-    }
 
+        if (value === "000000") {
+        input.value = ''; // Clear the input value
+        updateFilterDisplayRow();
+    } else {
+        if (input.value.length > 6) {
+            input.value = input.value.slice(-6);
+        }
+        applyAllFilters(); // Call the combined filter function
+        updateFilterDisplayRow(); // Re-render the filter display row
+        updateRowColors(); // Update row colors after filtering
+      }
+    }
 // Handle key press event
         function handleTwlKeyPress(event) {
             clearTimeout(twlInputTimeout); // Clear previous timeout
