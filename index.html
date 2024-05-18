@@ -951,6 +951,7 @@ async function fetchWishListData() {
             });
         }
 document.addEventListener('DOMContentLoaded', async function() {
+  initializeSelect2Elements();
   try {
     const data = await fetchWishListData();
     if (!data || !Array.isArray(data)) {
@@ -965,7 +966,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     addEventListeners();
     enhanceAccessibility();
-    initializeSelect2Elements();
     const toggleButton = document.getElementById('toggleFiltersButton');
 
     console.log('Fetched Data:', data);
