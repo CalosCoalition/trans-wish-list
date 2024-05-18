@@ -201,31 +201,31 @@
     }
     
     .newStatus-icon {
-      background-image: url('https://lh3.google.com/u/0/d/1HKxEOpBRyE35FUjDOovuR5ZTjskvsTMr');
+      background-image: url('https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish.png');
     }
     
     .newStatus-icon:hover {
-      background-image: url('https://lh3.google.com/u/0/d/1HIRdhX_lsmFjNJaabTQz36M-xb1ODz_h');
+      background-image: url('https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled%20Hover.png');
     }
     
     .fulfilled-icon {
-      background-image: url('https://lh3.google.com/u/0/d/1H78Xxha9fcFXA3hic__5plCWFQ9BkagR');
+      background-image: url('https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled.png');
       height: 50px; /* Set according to your needs */
       width: 50px; /* Set according to your needs */
     }
     
     .fulfilled-icon:hover {
-      background-image: url('https://lh3.google.com/u/0/d/1HFzgGRYEQq-Q6L0ZEc8csirgzXhfC5i0');
+      background-image: url('https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled%20Hover.png');
     }
     
     .unfulfilled-icon {
-      background-image: url('https://lh3.google.com/u/0/d/1HEiT1SchXaXPVCvH9GXPPTF4KXlY9oka');
+      background-image: url('https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled.png');
       height: 50px;
       width: 50px;
     }
     
     .unfulfilled-icon:hover {
-      background-image: url('https://lh3.google.com/u/0/d/1HCdAJf4Hh7IEPfTwb5brteGpUbJTAmVB');
+      background-image: url('https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled%20Hover.png');
     }
     
     .icon-image {
@@ -926,17 +926,6 @@ const wishType512pxIcon = [
   "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/twlWishTypeIcons(512x512)/Vehicle%20Assistance%20Icon.png"
 ];
 
-const wishStatusIcon = [
-  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish.png",
-  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish%20Hover.png",
-  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled.png",
-  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled%20Hover.png",
-  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled.png",
-  "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled%20Hover.png"
-];
-
-const unverifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Unverified.png";
-const verifiedBadgeURL = "https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Verified.png";
 let prevSortedColumnIndex = null;
 let isFilterVisible = true;
 let twlInputTimeout;
@@ -1535,18 +1524,18 @@ function handleData(data) {
         statusTooltip.textContent = wishStatus; // Tooltip text
         if (wishStatus === 'New/Unfulfilled') {
             row.setAttribute('data-sort', 'New/Unfulfilled');  // New/Unfulfilled
-            statusImage.src = 'https://lh3.google.com/u/0/d/1HKxEOpBRyE35FUjDOovuR5ZTjskvsTMr';
+            statusImage.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/New%20Wish.png';
             statusImage.className = 'icon-cell newStatus-icon';
             statusImage.alt = 'New/Unfulfilled';
             statusSortValue = '3';
         } else if (wishStatus === 'Unfulfilled') {
-            statusImage.src = 'https://lh3.google.com/u/0/d/1HEiT1SchXaXPVCvH9GXPPTF4KXlY9oka';//URL to Unfulfilled Image
+            statusImage.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Unfilled.png';//URL to Unfulfilled Image
             statusImage.className = 'icon-cell unfulfilled-icon';
             statusImage.alt = 'Unfulfilled';
             statusSortValue = '2';
             row.setAttribute('data-sort', 'Unfulfilled');  // Unfulfilled
         } else if (wishStatus === 'Fulfilled') {
-            statusImage.src = 'https://lh3.google.com/u/0/d/1H78Xxha9fcFXA3hic__5plCWFQ9BkagR'; //URL to Fulfilled Image
+            statusImage.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/wishStatusIcons/Filled.png'; //URL to Fulfilled Image
             statusImage.className = 'icon-cell fulfilled-icon';
             statusImage.alt = 'Fulfilled';
             statusSortValue = '1';
@@ -1584,12 +1573,12 @@ function handleData(data) {
             row.setAttribute('data-verified', 'Pending');  // Pending
             sortValue = '3';
         } else if (verificationStatus === 'Unverified') {
-            verifiedImage.src = 'https://lh3.google.com/u/0/d/1FRB5gDmVzKlWf6DX6GD2LfEZgmsseyvQ';
+            verifiedImage.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Unverified.png';
             verifiedImage.alt = 'Unverified';
             sortValue = '2';
             row.setAttribute('data-verified', 'Unverified');  // Unverified
         } else if (verificationStatus === 'Verified') {
-            verifiedImage.src = 'https://lh3.google.com/u/0/d/1ylrnVGjCtac2ABcXk-SMA6Is3hueS-j9';
+            verifiedImage.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/verifiedBadge/Verified.png';
             verifiedImage.alt = 'Verified';
             sortValue = '1';
             row.setAttribute('data-verified', 'Verified');  // Verified
@@ -1783,18 +1772,49 @@ function sortTable(columnIndex) {
         }
         applyAllFilters(); // Call the combined filter function
         updateFilterDisplayRow(); // Re-render the filter display row
-        updateRowColors(); // Update row colors after filtering
+        updateRowColors(); // Update row colors after filtering       
+        const visibleRows = document.querySelectorAll("#wishList tbody tr"); // Check if there are any visible rows
+        if (visibleRows.length === 0) {
+            createNoMatchRow(value); // Call the function to create the "No Match" row
+        }
       }
     }
 // Handle key press event
-        function handleTwlKeyPress(event) {
-            clearTimeout(twlInputTimeout); // Clear previous timeout
-            if (event.key === 'Enter') {
-                handleTwlInput();
-            } else {
-                twlInputTimeout = setTimeout(handleTwlInput, 5000); // Set timeout for 5 seconds
-            }
+function handleTwlKeyPress(event) {
+      clearTimeout(twlInputTimeout); // Clear previous timeout
+        if (event.key === 'Enter') {
+            handleTwlInput();
+        } else {
+            twlInputTimeout = setTimeout(handleTwlInput, 5000); // Set timeout for 5 seconds
         }
+}
+// Creates a NO MATCH row if no wish with that ID number exists
+function createNoMatchRow(id) {
+      const tableBody = document.querySelector("#wishList tbody");
+      const row = document.createElement('tr');
+      const cell = document.createElement('td');
+      cell.setAttribute('colspan', '8');
+      cell.style.textAlign = 'center';
+      cell.style.color = 'red';
+      cell.textContent = `Sorry, No Wish with TWL-${id} was found.`;
+
+      const image = document.createElement('img');
+      image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
+      image.alt = 'Error';
+      image.style.width = '50px';
+      image.style.height = '50px';
+      image.style.marginLeft = '10px';
+
+      cell.appendChild(image);
+      row.appendChild(cell);
+
+      row.addEventListener('click', () => {
+          document.getElementById('twlIdInput').value = '';
+          applyAllFilters();
+      });
+
+      tableBody.appendChild(row);
+}        
 
         function toggleFilterRow() {
             var filterRow = document.getElementById('filterRow');
