@@ -982,6 +982,9 @@ async function fetchWishListData() {
 
 document.addEventListener('DOMContentLoaded', async function() {
   initializeSelect2Elements();
+  addEventListeners();
+  enhanceAccessibility();
+  const toggleButton = document.getElementById('toggleFiltersButton');
   const loadingScreen = document.getElementById('loading-screen');
   const wishListTable = document.getElementById('wishList');
 
@@ -1003,11 +1006,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         const formattedDate = 'Accessed on: ' + today.toLocaleDateString();
         datePlaceholder.textContent = formattedDate;
       }
-
-      addEventListeners();
-      enhanceAccessibility();
-      const toggleButton = document.getElementById('toggleFiltersButton');
-
       console.log('Fetched Data:', data);
       handleData(data);
       populateFilters(data);
@@ -1393,6 +1391,7 @@ function updateFilterDisplayRow() {
     });
 
     console.log('Filtered Data:', filteredData);
+    handleData(filteredData); // Re-render the filtered data
     paginateAndRender();
     updateFilterDisplayRow();
     updateRowColors(); // Update row colors after filtering
@@ -1701,7 +1700,7 @@ function sortTable(columnIndex) {
     // Toggle sorting order
     headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
-    // Determine which data to sort: filteredData or all rows in the table
+    // Get rows to sort
     let rowsArray = Array.from(tbody.querySelectorAll("tr"));
 
     // Sort rows based on the column index
@@ -1723,11 +1722,7 @@ function sortTable(columnIndex) {
             bValue = bValue.toLowerCase();
         }
 
-        if (isAscending) {
-            return aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
-        } else {
-            return aValue < bValue ? 1 : (aValue > bValue ? -1 : 0);
-        }
+        return isAscending ? (aValue > bValue ? 1 : (aValue < bValue ? -1 : 0)) : (aValue < bValue ? 1 : (aValue > bValue ? -1 : 0));
     });
 
     // Clear existing rows in the table body
