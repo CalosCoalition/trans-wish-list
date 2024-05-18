@@ -89,7 +89,7 @@
         position: relative; /* Ensures the loading screen covers this container */
     }
 
-    #wish-list {
+    #wishList {
         opacity: 0; /* Initially hide the wish list table */
         transition: opacity 0.5s; /* Smooth transition when showing the table */
     }    
@@ -981,7 +981,7 @@ async function fetchWishListData() {
 document.addEventListener('DOMContentLoaded', async function() {
   initializeSelect2Elements();
   const loadingScreen = document.getElementById('loading-screen');
-  const wishListTable = document.getElementById('wish-list');
+  const wishListTable = document.getElementById('wishList');
 // Show the loading screen
    if (loadingScreen && wishListTable) {
         // Show the loading screen
