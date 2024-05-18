@@ -1836,21 +1836,16 @@ function createNoMatchRow(id) {
     row.appendChild(cell);
     tableBody.appendChild(row);
 
-    // Add event listener to clear the TWL ID input when the image is clicked
-    imageContainer.addEventListener('click', () => {
+    // Add event listener to clear the TWL ID input when the image or text is clicked
+    const clearTwlInput = () => {
         document.getElementById('twlIdInput').value = '';
         applyAllFilters();
         updateFilterDisplayRow();
         updateRowColors();
-    });
+    };
 
-    // Add event listener to clear the TWL ID input when the text is clicked
-    textContainer.addEventListener('click', () => {
-        document.getElementById('twlIdInput').value = '';
-        applyAllFilters();
-        updateFilterDisplayRow();
-        updateRowColors();
-    });
+    imageContainer.addEventListener('click', clearTwlInput);
+    textContainer.addEventListener('click', clearTwlInput);
 }
         function toggleFilterRow() {
             var filterRow = document.getElementById('filterRow');
