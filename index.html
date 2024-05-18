@@ -1784,7 +1784,7 @@ function handleTwlKeyPress(event) {
             twlInputTimeout = setTimeout(handleTwlInput, 5000); // Set timeout for 5 seconds
         }
 }
-// Creates a NO MATCH row if no wish with that ID number exists
+// Function to create a NO MATCH row if no wish with that ID number exists
 function createNoMatchRow(id) {
     const tableBody = document.querySelector("#wishList tbody");
     const row = document.createElement('tr');
@@ -1795,36 +1795,16 @@ function createNoMatchRow(id) {
     const container = document.createElement('div');
     container.style = "display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;";
 
-    const textContainer = document.createElement('div');
-    textContainer.className = 'text-tooltip-container';
-    textContainer.style = "cursor: pointer; margin-top: 10px;";
-
-    const text = document.createElement('div');
-    text.style = "color: red; font-size: 14px;";
-    text.textContent = `Sorry, No Wish with TWL-${id} was found.`;
-
-    const textTooltip = document.createElement('span');
-    textTooltip.className = 'text-tooltip';
-    textTooltip.textContent = 'Return to Main List';
-
-    const imageContainer = document.createElement('div');
-    imageContainer.className = 'image-tooltip-container';
-    imageContainer.style = "cursor: pointer;";
-
+    const imageContainer = createTooltipContainer('image-tooltip-container', '', 'Return to Main List');
     const image = document.createElement('img');
     image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
     image.alt = 'Error';
-    image.style = "width:300px; height:300px; margin-top: 20px;";
+    image.style.width = '300px';
+    image.style.height = '300px';
+    image.style.marginTop = '20px';
+    imageContainer.querySelector('div').appendChild(image);
 
-    const imageTooltip = document.createElement('span');
-    imageTooltip.className = 'image-tooltip';
-    imageTooltip.textContent = 'Return to Main List';
-
-    textContainer.appendChild(text);
-    textContainer.appendChild(textTooltip);
-
-    imageContainer.appendChild(image);
-    imageContainer.appendChild(imageTooltip);
+    const textContainer = createTooltipContainer('text-tooltip-container', `Sorry, No Wish with TWL-${id} was found.`, 'Return to Main List');
 
     container.appendChild(imageContainer);
     container.appendChild(textContainer);
@@ -1978,6 +1958,29 @@ function handleFilterRowClick(event) {
   } else {
     console.error('removeFiltersButton not found');
   }
+}
+// Function to create a tooltip container
+function createTooltipContainer(className, textContent, tooltipText) {
+    const tooltipContainer = document.createElement('div');
+    tooltipContainer.className = className;
+    tooltipContainer.style.cursor = 'pointer';
+    if (className === 'text-tooltip-container') {
+        tooltipContainer.style.marginTop = '10px';
+    }
+
+    const text = document.createElement('div');
+    text.style.color = 'red';
+    text.style.fontSize = '14px';
+    text.textContent = textContent;
+
+    const tooltip = document.createElement('span');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = tooltipText;
+
+    tooltipContainer.appendChild(text);
+    tooltipContainer.appendChild(tooltip);
+
+    return tooltipContainer;
 }
 function showTooltip(event) {
     const tooltip = event.currentTarget.querySelector('.image-tooltip, .text-tooltip');
