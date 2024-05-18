@@ -587,44 +587,44 @@
       vertical-align: middle;
     }
   
-    /* Custom Tooltip Styling */
-    .image-tooltip-container {
-        position: relative;
-        display: inline-block;
-    }
+/* Custom Tooltip Styling */
+.image-tooltip-container {
+    position: relative;
+    display: inline-block;
+}
 
-    .tooltip {
-        visibility: hidden;
-        width: 120px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 0;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -60px;
-        opacity: 0;
-        transition: opacity 0.6s;
-    }
+.tooltip {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.6s;
+}
 
-    .tooltip::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: black transparent transparent transparent;
-    }
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
 
-    .image-tooltip-container:hover .tooltip {
-        visibility: visible;
-        opacity: 1;
-    }
+.image-tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
   
     /* Modal popup styles */
     #modal {
@@ -1801,7 +1801,7 @@ function createNoMatchRow(id) {
 
     const textContainer = document.createElement('div');
     textContainer.className = 'image-tooltip-container';
-    textContainer.style = "cursor: pointer; margin-top: 10px; position: relative;";
+    textContainer.style = "cursor: pointer; margin-top: 10px;";
 
     const text = document.createElement('div');
     text.style = "color: red; font-size: 14px;";
@@ -1813,7 +1813,7 @@ function createNoMatchRow(id) {
 
     const imageContainer = document.createElement('div');
     imageContainer.className = 'image-tooltip-container';
-    imageContainer.style = "cursor: pointer; position: relative;";
+    imageContainer.style = "cursor: pointer;";
 
     const image = document.createElement('img');
     image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
