@@ -1801,7 +1801,7 @@ function createNoMatchRow(id) {
 
     const textContainer = document.createElement('div');
     textContainer.className = 'image-tooltip-container';
-    textContainer.style = "cursor: pointer; margin-top: 10px;";
+    textContainer.style = "cursor: pointer; margin-top: 10px; position: relative;";
 
     const text = document.createElement('div');
     text.style = "color: red; font-size: 14px;";
@@ -1813,7 +1813,7 @@ function createNoMatchRow(id) {
 
     const imageContainer = document.createElement('div');
     imageContainer.className = 'image-tooltip-container';
-    imageContainer.style = "cursor: pointer;";
+    imageContainer.style = "cursor: pointer; position: relative;";
 
     const image = document.createElement('img');
     image.src = 'https://raw.githubusercontent.com/CalosCoalition/trans-wish-list/main/assets/images/calos_ERROR.gif';
