@@ -601,7 +601,7 @@
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-    position: absolute;
+    position: fixed; /* Change to fixed */
     z-index: 1;
     opacity: 0;
     transition: opacity 0.6s;
@@ -616,6 +616,11 @@
     border-width: 5px;
     border-style: solid;
     border-color: black transparent transparent transparent;
+}
+
+.image-tooltip-container:hover .image-tooltip, .text-tooltip-container:hover .text-tooltip {
+    visibility: visible;
+    opacity: 1;
 }
     /* Modal popup styles */
     #modal {
@@ -1985,8 +1990,8 @@ function showTooltip(event) {
 function moveTooltip(event) {
     const tooltip = event.currentTarget.querySelector('.image-tooltip, .text-tooltip');
     if (tooltip) {
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
+        const mouseX = event.pageX;
+        const mouseY = event.pageY;
         tooltip.style.left = `${mouseX + 10}px`;
         tooltip.style.top = `${mouseY + 10}px`;
     }
