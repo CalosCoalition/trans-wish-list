@@ -1602,7 +1602,7 @@ function handleData(data) {
     headerRow.cells[columnIndex].setAttribute("data-order", isAscending ? "desc" : "asc");
 
     // Get all rows from the table body
-    const rowsArray = Array.from(tableBody.querySelectorAll("tr"));
+    const rowsArray = Array.from(tbody.querySelectorAll("tr"));
 
     // Sort rows based on the column index
     rowsArray.sort((a, b) => {
